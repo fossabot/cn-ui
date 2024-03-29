@@ -155,6 +155,9 @@ importers:
       '@cn-ui/reactive':
         specifier: workspace:^
         version: link:../reactive
+      '@cn-ui/sortable':
+        specifier: workspace:^
+        version: link:../sortable
       '@solid-primitives/keyed':
         specifier: ^1.2.2
         version: 1.2.2(solid-js@1.8.16)
@@ -200,9 +203,6 @@ importers:
       solidjs-use:
         specifier: ^2.3.0
         version: 2.3.0
-      sortablejs:
-        specifier: ^1.15.2
-        version: 1.15.2
       split.js:
         specifier: ^1.6.5
         version: 1.6.5
@@ -358,6 +358,18 @@ importers:
       solidjs-use:
         specifier: ^2.3.0
         version: 2.3.0
+
+  packages/sortable:
+    dependencies:
+      '@cn-ui/reactive':
+        specifier: workspace:^
+        version: link:../reactive
+      solid-js:
+        specifier: ^1.8.16
+        version: 1.8.16
+      sortablejs:
+        specifier: ^1.15.2
+        version: 1.15.2
 
   packages/storybook-solidjs-docgen:
     dependencies:

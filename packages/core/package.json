@@ -7,6 +7,10 @@
     "files": [
         "dist"
     ],
+    "sideEffects": [
+        "./dist/cn-uno.css",
+        "./dist/esm/style.css"
+    ],
     "keywords": [
         "cn-ui",
         "component",
@@ -45,6 +49,7 @@
     "dependencies": {
         "@ark-ui/solid": "^2.2.0",
         "@cn-ui/reactive": "workspace:^",
+        "@cn-ui/sortable": "workspace:^",
         "@solid-primitives/keyed": "^1.2.2",
         "@storybook/test": "^8.0.4",
         "@tanstack/solid-table": "^8.15.0",
