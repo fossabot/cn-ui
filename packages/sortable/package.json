@@ -1,19 +1,16 @@
 {
-    "name": "@cn-ui/highlight",
+    "name": "@cn-ui/sortable",
     "version": "1.0.0",
     "description": "",
     "main": "src/index.ts",
-    "scripts": {
-        "test": ""
-    },
+    "scripts": {},
     "sideEffects": false,
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
         "@cn-ui/reactive": "workspace:^",
-        "hast-util-to-jsx-runtime": "^2.3.0",
-        "lowlight": "^3.1.0",
-        "solid-js": "^1.8.16"
+        "solid-js": "^1.8.16",
+        "sortablejs": "^1.15.2"
     }
 }

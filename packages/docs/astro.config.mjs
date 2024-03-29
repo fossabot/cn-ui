@@ -33,6 +33,9 @@ export default defineConfig({
     },
     vite: {
         // important for client:load
+        resolve: {
+            conditions: ['solid', 'module']
+        },
         ssr: {
             noExternal: ['solid-icons'],
             resolve: {

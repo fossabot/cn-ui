@@ -17,7 +17,7 @@ const getFiles = async (base = 'esm') => {
 const e = await glob([`./src/*/index.ts`])
 const jsFile = e
     .map((i) => {
-        return `export * from './${path.relative('./src/', i).replace('.ts', '')}';`
+        return `export * from './${path.relative('./src/', i).replace('.ts', '')}'`
     })
     .join('\n')
 fs.writeFileSync('./src/index.ts', jsFile)

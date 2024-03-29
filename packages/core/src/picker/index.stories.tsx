@@ -62,13 +62,14 @@ export const Picker: Story = {
     },
     args: {}
 }
-
+import { getChinaAddressOptions } from '@cn-ui/area-data'
 export const _AddressPicker: Story = {
     render() {
         const data = atom<SelectItemsType[]>([])
+        const options = getChinaAddressOptions()
         return (
             <>
-                <AddressPicker v-model={data}></AddressPicker>
+                <AddressPicker v-model={data} options={}></AddressPicker>
                 {data().map((i) => i.label)}
             </>
         )

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from 'storybook-solidjs'
 import { SortableList, SortableShared } from './index'
 import { atom, computed, resource } from '@cn-ui/reactive'
 import Mock from 'mockjs-ts'
-import { Flex } from '../container'
+import { Flex } from '@cn-ui/core'
 
 const meta = {
     title: 'Layout 布局组件/Sortable 拖拽排序',
