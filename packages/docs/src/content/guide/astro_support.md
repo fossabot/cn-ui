@@ -4,14 +4,15 @@ description: 'Lorem ipsum dolor sit amet'
 pubDate: '2024/3/28'
 heroImage: '/blog-placeholder-3.jpg'
 ---
-## Astro 适配
+
+# Astro 适配
 
 ```sh
 npm i @cn-ui/core
 pnpm i @cn-ui/core
 ```
 
-### astro.onfig.mjs
+## astro.config.mjs
 
 ```diff
 // astro.cofnig.mjs
@@ -40,13 +41,13 @@ export default defineConfig({
 })
 ```
 
-### 添加基础的 CSS 文件 | Add Basic CSS File
+## 添加基础的 CSS 文件
 
 ```js
 import '@cn-ui/core/dist/cn-uno.css'
 ```
 
-### 快乐地使用组件！
+## 快乐地使用组件！
 
 ```tsx
 import { Button } from '@cn-ui/core'
