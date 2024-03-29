@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro'
+import { PostList } from '../../components/PostList'
 import { getCollection } from 'astro:content'
 
 const posts = (await getCollection('components')).sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
@@ -8,19 +9,7 @@ const posts = (await getCollection('components')).sort((a, b) => a.data.pubDate.
 <Layout>
     <main>
         <section>
-            <ul>
-                {
-                    posts.map((post) => (
-                        <li>
-                            <a href={`/components/${post.slug}/`}>
-                                <h4 class="title">{post.data.title}</h4>
-                                <p class="date" />
-                            </a>
-                        </li>
-                    ))
-                }
-            </ul>
+            <PostList posts={posts} prefix={'/components'}></PostList>
         </section>
     </main>
 </Layout>
-
