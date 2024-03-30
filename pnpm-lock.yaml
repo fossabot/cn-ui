@@ -145,6 +145,25 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0(@types/node@18.0.0)(jsdom@22.1.0)
 
+  packages/analyze:
+    dependencies:
+      '@cn-ui/core':
+        specifier: workspace:^
+        version: link:../core
+      brotli-size:
+        specifier: ^4.0.0
+        version: 4.0.0
+      gzip-size:
+        specifier: ^7.0.0
+        version: 7.0.0
+      p-limit:
+        specifier: ^5.0.0
+        version: 5.0.0
+    devDependencies:
+      rollup-plugin-analyzer:
+        specifier: ^4.0.0
+        version: 4.0.0
+
   packages/area-data:
     devDependencies:
       '@vant/area-data':
@@ -6187,6 +6206,13 @@ packages:
     dependencies:
       fill-range: 7.0.1
 
+  /brotli-size@4.0.0:
+    resolution: {integrity: sha512-uA9fOtlTRC0iqKfzff1W34DXUA3GyVqbUaeo3Rw3d4gd1eavKVCETXrn3NzO74W+UVkG3UHu8WxUi+XvKI/huA==}
+    engines: {node: '>= 10.16.0'}
+    dependencies:
+      duplexer: 0.1.1
+    dev: false
+
   /browser-assert@1.2.1:
     resolution: {integrity: sha1-mqpaKox0aFwq4Fv+Ru/WBvBowgA=}
     dev: true
@@ -7046,9 +7072,12 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
+  /duplexer@0.1.1:
+    resolution: {integrity: sha512-sxNZ+ljy+RA1maXoUReeqBBpBC6RLKmg5ewzV+x+mSETmWNoKdZN6vcQjpFROemza23hGFskJtFNoUWUaQ+R4Q==}
+    dev: false
+
   /duplexer@0.1.2:
     resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}
-    dev: true
 
   /duplexify@3.7.1:
     resolution: {integrity: sha512-07z8uv2wMyS51kKhD1KsdXJg5WQ6t93RneqRxUHnskXVtlYYkLqM0gqStQZ3pj073g687jPCHrqNfCzawLYh5g==}
@@ -8032,6 +8061,13 @@ packages:
     dependencies:
       duplexer: 0.1.2
     dev: true
+
+  /gzip-size@7.0.0:
+    resolution: {integrity: sha512-O1Ld7Dr+nqPnmGpdhzLmMTQ4vAsD+rHwMm1NLUmoUFFymBOMKxCCrtDxqdBRYXdeEPEi3SyoR4TizJLQrnKBNA==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      duplexer: 0.1.2
+    dev: false
 
   /handlebars@4.7.8:
     resolution: {integrity: sha512-vafaFqs8MZkRrSX7sFVUdo3ap/eNiLnb4IakshzvP56X5Nr1iGKAIqdX6tMlm6HcNRIkr6AxO5jFEoJzzpT8aQ==}
@@ -11519,6 +11555,11 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+
+  /rollup-plugin-analyzer@4.0.0:
+    resolution: {integrity: sha512-LL9GEt3bkXp6Wa19SNR5MWcvHNMvuTFYg+eYBZN2OIFhSWN+pEJUQXEKu5BsOeABob3x9PDaLKW7w5iOJnsESQ==}
+    engines: {node: '>=8.0.0'}
+    dev: true
 
   /rollup-plugin-bundle-stats@4.12.1(core-js@3.36.1)(rollup@4.13.0):
     resolution: {integrity: sha512-hRuo/NlmqzexyzTAG8kn1m9D94nMntdIiNoxhH0uMIO54uP1s0idGUcoxmKOh2/+LUFlSvS1KEDhz22/O65p1w==}
