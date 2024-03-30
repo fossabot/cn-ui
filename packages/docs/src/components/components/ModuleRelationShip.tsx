@@ -60,18 +60,11 @@ export const ModuleRelationShip = () => {
                 },
                 animationDurationUpdate: 1500,
                 animationEasingUpdate: 'quinticInOut',
-                legend: {
-                    data: cateList
-                },
 
-                grid: {
-                    left: '30%',
-                    right: '30%'
-                },
                 series: [
                     {
                         type: 'graph',
-                        zoom: 0.7,
+                        zoom: 0.8,
                         categories: cateList.map((i, index) => ({
                             name: i
                         })),
@@ -81,11 +74,6 @@ export const ModuleRelationShip = () => {
                                 category: cateList.indexOf(node.category)
                             }
                         }),
-                        select: {
-                            label: {
-                                show: true
-                            }
-                        },
                         selectedMode: 'multiple',
                         layout: 'circular',
                         circular: {
@@ -94,11 +82,10 @@ export const ModuleRelationShip = () => {
                         edgeSymbol: ['none', 'arrow'],
                         links: json.edges,
                         emphasis: {
-                            focus: 'adjacency',
-                            label: {
-                                position: 'right',
-                                show: true
-                            }
+                            focus: 'adjacency'
+                        },
+                        label: {
+                            show: true
                         },
                         lineStyle: {
                             color: 'source',

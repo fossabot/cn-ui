@@ -1,7 +1,7 @@
 import { classNames, toCSSPx } from '@cn-ui/reactive'
 import { Flex } from '../container/Flex'
 import './index.css'
-import 'wc-spinners/src/components/react-spinners/bounce-spinner'
+// import 'wc-spinners/src/components/react-spinners/bounce-spinner'
 import { Accessor, JSXElement, ResolvedJSXElement } from 'solid-js'
 import { useElementBounding } from 'solidjs-use'
 import { Portal } from 'solid-js/web'
@@ -21,7 +21,7 @@ export const Loading = (props: { el: Accessor<ResolvedJSXElement>; children?: JS
             }}
         >
             {/* @ts-ignore */}
-            {props.children ?? <bounce-spinner></bounce-spinner>}
+            {props.children}
         </Flex>
     )
     if (props.portalled) {
