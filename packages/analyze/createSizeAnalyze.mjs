@@ -9,13 +9,13 @@ const files = await glob('./dist/assets/*.js')
 const report = files.map(i => {
     const file = fs.readFileSync(i)
     return {
-        name: i,
+        name: i.match(/\/(\w+)-.*/)[1],
         size: fs.statSync(i).size,
         gzip: gzipSizeSync(file),
         br: brotliSize.sync(file)
     }
 }).sort((a, b) => b.size - a.size)
-fs.writeFileSync('./dist/size_report.json', JSON.stringify(report))
+fs.writeFileSync('./size_report.json', JSON.stringify(report))
 
 import filesize from 'file-size'
 console.table(report.map(i => {
