@@ -17,6 +17,7 @@
         "@astrojs/solid-js": "^4.0.1",
         "@cn-ui/core": "workspace:^",
         "astro": "^4.5.9",
+        "echarts": "^5.5.0",
         "solid-js": "^1.8.16",
         "typescript": "^5.4.3"
     },
