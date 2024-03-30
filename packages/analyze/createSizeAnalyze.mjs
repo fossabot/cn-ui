@@ -4,14 +4,25 @@ import { gzipSize, gzipSizeSync } from 'gzip-size';
 import brotliSize from 'brotli-size'
 
 // 分析构建出来的文件的大小
-const files = await glob('./dist/*.js')
+const files = await glob('./dist/assets/*.js')
 
 const report = files.map(i => {
     const file = fs.readFileSync(i)
-    return [i, {
+    return {
+        name: i,
         size: fs.statSync(i).size,
         gzip: gzipSizeSync(file),
         br: brotliSize.sync(file)
-    }]
-})
+    }
+}).sort((a, b) => b.size - a.size)
 fs.writeFileSync('./dist/size_report.json', JSON.stringify(report))
+
+import filesize from 'file-size'
+console.table(report.map(i => {
+    return {
+        name: i.name,
+        size: filesize(i.size).human(),
+        gzip: filesize(i.gzip).human(),
+        br: filesize(i.br).human()
+    }
+}))

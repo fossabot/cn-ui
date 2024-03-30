@@ -33,22 +33,32 @@ const buildConfig = (entry) => {
             },
 
             solid(),
-            analyze({
-                stdout: false,
-                summaryOnly: true
-            })
+            // analyze({
+            //     stdout: false,
+            //     summaryOnly: true
+            // })
         ],
+        esbuild: {
+            minifyWhitespace: true,
+            minifyIdentifiers: true,
+            minify: true,
+        },
         build: {
             target: 'esnext',
             outDir: 'dist',
-            lib: {
-                entry,
-                formats: ['es'],
-                fileName(format, entryName) {
-                    return entryName + '.js'
-                }
+            emptyOutDir: false,
+            reportCompressedSize: false,
+            // lib: {
+            //     entry,
+            //     formats: ['es'],
+            //     fileName(format, entryName) {
+            //         return entryName + '.js'
+            //     },
+            // },
+            rollupOptions: {
+                input: entry,
             },
-            minify: false,
+            minify: 'esbuild',
         }
     })
 }
@@ -59,7 +69,7 @@ const entries = await glob('./temp/*.ts')
 import pLimit from 'p-limit';
 
 const limit = pLimit(3);
-entries.map(async entry => {
+entries.forEach(entry => {
     limit(async () => {
 
         const config = buildConfig(entry)

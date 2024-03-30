@@ -13,6 +13,7 @@
     "dependencies": {
         "@cn-ui/core": "workspace:^",
         "brotli-size": "^4.0.0",
+        "file-size": "^1.0.0",
         "gzip-size": "^7.0.0",
         "p-limit": "^5.0.0"
     },

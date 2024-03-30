@@ -153,6 +153,9 @@ importers:
       brotli-size:
         specifier: ^4.0.0
         version: 4.0.0
+      file-size:
+        specifier: ^1.0.0
+        version: 1.0.0
       gzip-size:
         specifier: ^7.0.0
         version: 7.0.0
@@ -7601,6 +7604,10 @@ packages:
     dependencies:
       escape-string-regexp: 1.0.5
     dev: true
+
+  /file-size@1.0.0:
+    resolution: {integrity: sha512-tLIdonWTpABkU6Axg2yGChYdrOsy4V8xcm0IcyAP8fSsu6jiXLm5pgs083e4sq5fzNRZuAYolUbZyYmPvCKfwQ==}
+    dev: false
 
   /file-system-cache@2.3.0:
     resolution: {integrity: sha512-l4DMNdsIPsVnKrgEXbJwDJsA5mB8rGwHYERMgqQx/xAUtChPJMre1bXBzDEqqVbWv9AIbFezXMxeEkZDSrXUOQ==}
