@@ -1,15 +1,11 @@
 {
     "name": "@cn-ui/core",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "type": "module",
     "main": "./dist/ssr/index.js",
     "types": "./dist/index.d.ts",
     "files": [
         "dist"
-    ],
-    "sideEffects": [
-        "./dist/cn-uno.css",
-        "./dist/esm/style.css"
     ],
     "keywords": [
         "cn-ui",

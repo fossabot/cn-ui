@@ -8,7 +8,7 @@ import { RootColumnDef, getKeyFromRootColumnDef } from './utils'
 import { useValidator } from './useValidator'
 import { RuleItem } from 'async-validator'
 
-export const MagicFormCtx = createCtx<{
+export const MagicFormCtx = /* @__PURE__ */ createCtx<{
     originData: unknown
     disabled?: boolean
     index?: number

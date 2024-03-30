@@ -5,7 +5,7 @@ import { createMemo, onMount } from 'solid-js'
 import { checkEllipsis } from '../hook/useCheckEllipsis'
 import { VirtualItem } from '@tanstack/solid-virtual'
 import { getCommonPinningStyles } from './getCommonPinningStyles'
-export const MagicTableCellCtx = createCtx<{
+export const MagicTableCellCtx = /* @__PURE__ */ createCtx<{
     contain: Atom<HTMLElement | null>
 }>()
 

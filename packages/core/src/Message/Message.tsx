@@ -81,4 +81,4 @@ export class MessageControl {
         return this.create(message, 'error', duration)
     }
 }
-export const Message = new MessageControl('cn-ui-message-layers')
+export const Message = /* @__PURE__ */ new MessageControl('cn-ui-message-layers')

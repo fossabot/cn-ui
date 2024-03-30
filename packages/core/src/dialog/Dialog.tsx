@@ -5,7 +5,7 @@ import { GlobalDialog } from './useGlobalDialog'
 import { onClickOutside } from 'solidjs-use'
 import { Transition } from 'solid-transition-group'
 import '../animation/fade.css'
-export const DialogCtx = createCtx<DialogExpose>()
+export const DialogCtx = /* @__PURE__ */ createCtx<DialogExpose>()
 export interface DialogExpose extends ReturnType<typeof useBooleanState> {}
 export interface DialogProps {
     id?: string

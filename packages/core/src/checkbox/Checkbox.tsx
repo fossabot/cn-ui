@@ -2,7 +2,7 @@ import { OriginComponent, classNames, computed, createCtx, extendsEvent, useMapp
 import { BaseFormItemType, extendsBaseFormItemProp } from '../form/BaseFormItemType'
 
 export type CheckboxGroupCtxType = ReturnType<typeof useSelect> & {}
-export const CheckboxGroupCtx = createCtx<CheckboxGroupCtxType>({} as any)
+export const CheckboxGroupCtx = /* @__PURE__ */ createCtx<CheckboxGroupCtxType>({} as any)
 
 export interface CheckboxProps extends BaseFormItemType {
     label?: string

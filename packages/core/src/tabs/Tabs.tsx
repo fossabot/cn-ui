@@ -7,7 +7,7 @@ export type TabsContextType = ReturnType<typeof useSelect> & {
     destroyOnHide: boolean
     fill: boolean
 }
-export const TabsContext = createCtx<TabsContextType>()
+export const TabsContext = /* @__PURE__ */ createCtx<TabsContextType>()
 
 export const Tabs = OriginComponent<TabsProps>((props) => {
     const activeId = atomization(props.model ?? '')
