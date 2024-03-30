@@ -1,6 +1,6 @@
 {
     "name": "@cn-ui/core",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "type": "module",
     "main": "./dist/ssr/index.js",
     "types": "./dist/index.d.ts",
@@ -32,6 +32,9 @@
     "publishConfig": {
         "registry": "https://registry.npmjs.org/"
     },
+    "sideEffects": [
+        "*.css"
+    ],
     "scripts": {
         "build": "node ./script/clean-dist.mjs && pnpm build:ssr && vite build -c vite.config.lib.ts && node ./script/build-entry.mjs && pnpm build:css && pnpm docgen",
         "build:css": "unocss \"src/**/*.{ts,tsx,css}\" --out-file dist/cn-uno.css -m --preflights",
