@@ -1,0 +1,30 @@
+{
+    "name": "@cn-ui/svg-spinner",
+    "version": "1.0.0",
+    "description": "SVG Spinner Component for solid-js",
+    "main": "dist/svg-spinner.tsx",
+    "scripts": {
+        "build": "node ./scripts/SVGToSolidComponent.mjs",
+        "prepublish": "pnpm build"
+    },
+    "sideEffects": false,
+    "keywords": [
+        "solid-spinners",
+        "solid-spinner",
+        "solid",
+        "solidjs",
+        "loader",
+        "loaders",
+        "loading",
+        "spinner",
+        "spinners",
+        "progress",
+        "activity"
+    ],
+    "author": "KonghaYao",
+    "license": "MIT",
+    "dependencies": {
+        "@cn-ui/spinners": "^1.0.0",
+        "solid-js": "^1.0.0"
+    }
+}

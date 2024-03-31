@@ -409,6 +409,15 @@ importers:
         specifier: ^1.15.2
         version: 1.15.2
 
+  packages/spinner:
+    dependencies:
+      '@cn-ui/spinners':
+        specifier: ^1.0.0
+        version: 1.0.0
+      solid-js:
+        specifier: ^1.8.16
+        version: 1.8.16
+
   packages/storybook-solidjs-docgen:
     dependencies:
       '@storybook/client-logger':
@@ -2103,6 +2112,12 @@ packages:
       lodash: 4.17.21
       serialize-query-params: 2.0.2
     dev: true
+
+  /@cn-ui/spinners@1.0.0:
+    resolution: {integrity: sha512-LdHeguj1Kmdm8DVbgj4I7jxi047/0EbF4rHMs6N6DTpFLcBHU+PFC7hVl39UMO61BfImQvX/SKYUn719e6am3A==}
+    dependencies:
+      solid-js: 1.8.16
+    dev: false
 
   /@colors/colors@1.5.0:
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}

@@ -23,7 +23,6 @@ export interface DocInfo {
     methods: Array<any>
     props: Record<string, DocAPIInfo>
 }
-
 export const APIOfComponent = (props: { comp?: { __docgenInfo: DocInfo }; doc?: DocInfo }) => {
     const doc = props?.comp?.__docgenInfo?.props ?? props.doc
     if (!doc) {
