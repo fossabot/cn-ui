@@ -1,3 +1,4 @@
-node ./createSourceCode.mjs
-node ./vite.mjs
-node ./createSizeAnalyze.mjs
+node ./scripts/clean-dist.mjs
+node ./scripts/createSourceCode.mjs
+node ./scripts/vite.mjs
+node ./scripts/createSizeAnalyze.mjs

@@ -47,7 +47,7 @@ export const DatePicker = OriginComponent<DatePickerProps, HTMLDivElement, Date[
     return (
         <Popover
             disabled={props.disabled}
-            wrapperClass="p-2"
+            class="p-2"
             content={() => (
                 <DatePanel
                     {...(props as DatePanelProps)}

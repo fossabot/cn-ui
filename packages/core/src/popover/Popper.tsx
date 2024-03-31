@@ -1,5 +1,5 @@
 import { Atom, JSXSlot, NullAtom, OriginComponent, atom, ensureFunctionResult, ensureOnlyChild } from '@cn-ui/reactive'
-import { createEffect, createMemo, onCleanup, onMount, untrack } from 'solid-js'
+import { createEffect, createMemo, onCleanup, onMount } from 'solid-js'
 import { popperGenerator, defaultModifiers } from '@popperjs/core/lib/popper-lite'
 import flip from '@popperjs/core/lib/modifiers/flip'
 import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow'
