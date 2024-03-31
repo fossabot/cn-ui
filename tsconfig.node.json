@@ -23,5 +23,5 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true
     },
-    "include": ["vite.config.ts", "/**/*.stories.tsx"]
+    "include": ["vite.config.ts", "/packages/**/*.stories.tsx"]
 }

@@ -184,6 +184,9 @@ importers:
       '@cn-ui/sortable':
         specifier: workspace:^
         version: link:../sortable
+      '@cn-ui/svg-spinner':
+        specifier: workspace:^
+        version: link:../spinner
       '@solid-primitives/keyed':
         specifier: ^1.2.2
         version: 1.2.2(solid-js@1.8.16)
@@ -415,7 +418,7 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       solid-js:
-        specifier: ^1.8.16
+        specifier: ^1.0.0
         version: 1.8.16
 
   packages/storybook-solidjs-docgen:

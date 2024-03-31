@@ -69,7 +69,7 @@ export const _AddressPicker: Story = {
         const options = getChinaAddressOptions()
         return (
             <>
-                <AddressPicker v-model={data} options={}></AddressPicker>
+                <AddressPicker v-model={data} options={options}></AddressPicker>
                 {data().map((i) => i.label)}
             </>
         )
