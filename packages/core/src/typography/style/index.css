@@ -120,14 +120,14 @@
 }
 
 .cn-typography table {
-    --at-apply: block w-[max-content] max-w-[100%] overflow-auto;
+    --at-apply: max-w-[100%] overflow-auto;
 }
 
 /* 同 ul/ol，在文章中应用 table 基本格式 */
 .cn-typography table th,
 .cn-typography table td,
 .cn-typography table caption {
-    --at-apply: border border-solid border-design-border px-2 py-4 text-design-h2;
+    --at-apply: border px-2 py-4;
 }
 
 .cn-typography table caption {

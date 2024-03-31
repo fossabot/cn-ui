@@ -37,7 +37,7 @@ export default defineConfig({
             conditions: ['solid', 'module']
         },
         ssr: {
-            noExternal: ['solid-icons'],
+            noExternal: ['solid-icons', '@popperjs/core'],
             resolve: {
                 externalConditions: ['solid', 'module', 'import']
             }
