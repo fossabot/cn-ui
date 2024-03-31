@@ -4,8 +4,6 @@ import { PickerColumn } from './PickerColumn'
 import { OriginComponent, computed } from '@cn-ui/reactive'
 import { SelectItemsType } from '../select/Select'
 
-
-
 export interface AddressPickerProps {
     options: {
         label: string
@@ -14,7 +12,6 @@ export interface AddressPickerProps {
 }
 
 export const AddressPicker = OriginComponent<AddressPickerProps, HTMLDivElement, SelectItemsType[]>((props) => {
-    
     const data = props.model
 
     const rebuildOptions = () => {

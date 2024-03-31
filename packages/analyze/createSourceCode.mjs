@@ -2,17 +2,17 @@ import fs from 'fs'
 
 export const createSourceCode = (imports, options) => {
     fs.writeFileSync(`./temp/${imports[0]}.ts`, `import { ${imports.join(', ')} } from '@cn-ui/core';\n console.log(${imports.join(', ')})`)
-};
+}
 
 // 将需要分析的组件放置在这里
-[
+;[
     ['Avatar'],
     ['Button'],
     ['Checkbox'],
     ['CheckboxGroup'], // TODO
-    ['Collapse'],// TODO
+    ['Collapse'], // TODO
     ['Flex'],
-    ['Container', 'Main', "Header", 'Aside', 'Footer', 'Center'],
+    ['Container', 'Main', 'Header', 'Aside', 'Footer', 'Center'],
     ['DatePicker'], // TODO
     ['Dialog'],
     // Extra
@@ -20,11 +20,11 @@ export const createSourceCode = (imports, options) => {
 
     ['FloatingButton'],
     ['MagicForm'],
-    ['GroupList'],// TODO
+    ['GroupList'], // TODO
     ['Icon'],
     ['Image'],
     ['BaseInput'],
-    ['InputNumber'],// TODO
+    ['InputNumber'], // TODO
     ['LazyLoad'],
     ['Loading'],
     ['Message'],
@@ -33,16 +33,18 @@ export const createSourceCode = (imports, options) => {
     ['Pagination'],
     ['PickerColumn'],
     ['AddressPicker'],
-    ['Popover'],// TODO
-    ['Row', "Col"],
-    ['Select'],// TODO
+    ['Popover'], // TODO
+    ['Row', 'Col'],
+    ['Select'], // TODO
     ['Splitter'],
-    ['MagicTable'],// TODO
-    ['Tabs', "Tab"],
-    ['Tag', "TagGroup"],
+    ['MagicTable'], // TODO
+    ['Tabs', 'Tab'],
+    ['Tag', 'TagGroup'],
     ['TOC'],
     ['Typography'],
     ['VirtualList'],
     ['VirtualGrid'],
-    ['WaterFall'],
-].forEach(i => { createSourceCode(i) })
+    ['WaterFall']
+].forEach((i) => {
+    createSourceCode(i)
+})

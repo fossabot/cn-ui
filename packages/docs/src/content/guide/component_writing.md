@@ -14,9 +14,9 @@ heroImage: '/blog-placeholder-3.jpg'
 2. 描述信息（description）包含简单的文本说明，用于描述使用场景
 
 3. 附加信息：
-   1.  Import: 导入组件的方式
-   2.  Source: 源代码位置
-   3.  Docs: 文档源码位置
+    1. Import: 导入组件的方式
+    2. Source: 源代码位置
+    3. Docs: 文档源码位置
 
 ## 正文部分
 

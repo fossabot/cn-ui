@@ -21,28 +21,31 @@ const SVGToSolidComponent = (svgs) => {
     }
     const header = `// @ts-nocheck\n` + `import type { JSX } from 'solid-js';\n`
 
-
     const names = []
-    const finalCode = header + svgs.map(i => {
-        const compName = i.name
-        const name = moveNumberToEnd(capitalize(lodash.camelCase(compName.replace('.svg', ''))))
-        const svgCode = i.code
-            // 处理 svg 属性传递问题
-            .replace(/<svg(.*?)>/, '<svg$1 {...props}>')
-            // style 标签在里面报错问题
-            .replace(/<style(.*?)>(.*?)<\/style>/, '<style$1>{`$2`}<\/style>')
+    const finalCode =
+        header +
+        svgs
+            .map((i) => {
+                const compName = i.name
+                const name = moveNumberToEnd(capitalize(lodash.camelCase(compName.replace('.svg', ''))))
+                const svgCode = i.code
+                    // 处理 svg 属性传递问题
+                    .replace(/<svg(.*?)>/, '<svg$1 {...props}>')
+                    // style 标签在里面报错问题
+                    .replace(/<style(.*?)>(.*?)<\/style>/, '<style$1>{`$2`}</style>')
 
-        names.push(name)
-        const code = `
+                names.push(name)
+                const code = `
 export const ${name} = /* __@PURE__ */ (props: JSX.SvgSVGAttributes<SVGSVGElement>) => {
     return ${svgCode}
 }
     `
-        return code
-    }).join('\n')
+                return code
+            })
+            .join('\n')
     return { exports: names, code: finalCode }
 }
 
-const exports = SVGToSolidComponent(files.map(i => ({ name: path.basename(i), code: fs.readFileSync(i, 'utf-8') })))
+const exports = SVGToSolidComponent(files.map((i) => ({ name: path.basename(i), code: fs.readFileSync(i, 'utf-8') })))
 fs.writeFileSync('./dist/svg-spinner.tsx', exports.code)
 fs.writeFileSync('./dist/svg-spinner.exports.json', JSON.stringify(exports.exports))

@@ -20,5 +20,5 @@ export default defineConfig({
             chineseType: 'simplified' // 指定文本为简体中文
         })
     ],
-    transformers: [transformerDirectives()],
+    transformers: [transformerDirectives()]
 })

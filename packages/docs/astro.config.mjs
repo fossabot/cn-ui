@@ -42,7 +42,6 @@ export default defineConfig({
                 externalConditions: ['solid', 'module', 'import']
             }
         },
-        plugins: [
-        ]
+        plugins: []
     }
 })

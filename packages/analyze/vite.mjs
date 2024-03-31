@@ -8,7 +8,7 @@ const ignoreDeps = ['solid-js', 'solid-js/web', 'solid-js/store']
 const buildConfig = (entry) => {
     const collection = new Map()
     return defineConfig({
-        mode: "production",
+        mode: 'production',
         plugins: [
             {
                 name: 'external',
@@ -24,7 +24,6 @@ const buildConfig = (entry) => {
                         if (ignoreDeps.includes(source)) {
                             return { id: source, external: true }
                         }
-
                     }
                 },
                 async generateBundle(outputOptions, bundle) {
@@ -32,7 +31,7 @@ const buildConfig = (entry) => {
                 }
             },
 
-            solid(),
+            solid()
             // analyze({
             //     stdout: false,
             //     summaryOnly: true
@@ -41,7 +40,7 @@ const buildConfig = (entry) => {
         esbuild: {
             minifyWhitespace: true,
             minifyIdentifiers: true,
-            minify: true,
+            minify: true
         },
         build: {
             target: 'esnext',
@@ -56,9 +55,9 @@ const buildConfig = (entry) => {
             //     },
             // },
             rollupOptions: {
-                input: entry,
+                input: entry
             },
-            minify: 'esbuild',
+            minify: 'esbuild'
         }
     })
 }
@@ -66,12 +65,11 @@ import { glob } from 'glob'
 
 const entries = await glob('./temp/*.ts')
 
-import pLimit from 'p-limit';
+import pLimit from 'p-limit'
 
-const limit = pLimit(3);
-entries.forEach(entry => {
+const limit = pLimit(3)
+entries.forEach((entry) => {
     limit(async () => {
-
         const config = buildConfig(entry)
         return build(config)
     })
