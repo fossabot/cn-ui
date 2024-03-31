@@ -80,16 +80,3 @@ export const Tooltips: Story = {
     },
     args: {}
 }
-import { Popper } from './Popper'
-export const P: Story = {
-    render() {
-        return (
-            <Flex class="h-full bg-gray-100">
-                <Popper content={<div>'12321323'</div>}>
-                    <Button>按钮</Button>
-                </Popper>
-            </Flex>
-        )
-    },
-    args: {}
-}
