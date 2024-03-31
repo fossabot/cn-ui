@@ -194,14 +194,14 @@ importers:
         specifier: ^8.0.4
         version: 8.0.4(vitest@1.4.0)
       '@tanstack/solid-table':
-        specifier: ^8.15.0
-        version: 8.15.0(solid-js@1.8.16)
+        specifier: ^8.15.3
+        version: 8.15.3(solid-js@1.8.16)
       '@tanstack/solid-virtual':
         specifier: ^3.2.0
         version: 3.2.0(solid-js@1.8.16)
       '@tanstack/table-core':
-        specifier: ^8.14.0
-        version: 8.14.0
+        specifier: ^8.15.3
+        version: 8.15.3
       '@tanstack/virtual-core':
         specifier: ^3.2.0
         version: 3.2.0
@@ -4041,13 +4041,13 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
-  /@tanstack/solid-table@8.15.0(solid-js@1.8.16):
-    resolution: {integrity: sha512-WQTTcJCf+Z+rdjVkYmLbOd93n7uW5bYrR8roAhMdIl1Oi5VXtHKbd1BA2jX6G4M7mSrEVYyCikO/rXvpFLjLzQ==}
+  /@tanstack/solid-table@8.15.3(solid-js@1.8.16):
+    resolution: {integrity: sha512-TIYmgpSGcvN+vq+T+0T7i2orDoeRMUZRAEJ7bbWdGWmQj/ppejkcCmhec6Lspk2IL9FP8KCyM6yRCSVRSzWFSQ==}
     engines: {node: '>=12'}
     peerDependencies:
       solid-js: '>=1.3'
     dependencies:
-      '@tanstack/table-core': 8.14.0
+      '@tanstack/table-core': 8.15.3
       solid-js: 1.8.16
     dev: false
 
@@ -4060,8 +4060,8 @@ packages:
       solid-js: 1.8.16
     dev: false
 
-  /@tanstack/table-core@8.14.0:
-    resolution: {integrity: sha512-wDhpKJahGHWhmRt4RxtV3pES63CoeadljGWS/xeS9OJr1HBl2NB+OO44ht3sxDH5j5TRDAbQzC0NvSlsUfn7lQ==}
+  /@tanstack/table-core@8.15.3:
+    resolution: {integrity: sha512-wOgV0HfEvuMOv8RlqdR9MdNNqq0uyvQtP39QOvGlggHvIObOE4exS+D5LGO8LZ3LUXxId2IlUKcHDHaGujWhUg==}
     engines: {node: '>=12'}
     dev: false
 
