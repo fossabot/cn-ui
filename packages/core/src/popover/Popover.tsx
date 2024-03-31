@@ -1,4 +1,4 @@
-import { JSXSlot, NullAtom, OriginComponent, computed, ensureFunctionResult } from '@cn-ui/reactive'
+import { JSXSlot, NullAtom, OriginComponent, ensureFunctionResult } from '@cn-ui/reactive'
 import { Popover as _Popover, PopoverRootProps as $PopoverProps, usePopoverContext } from '@ark-ui/solid'
 
 export interface PopoverProps extends NonNullable<$PopoverProps['positioning']> {
@@ -12,7 +12,7 @@ import './index.css'
 import { children, createEffect, createMemo } from 'solid-js'
 import { pick } from 'lodash-es'
 import { spread } from './spread'
-import { MaybeAccessor, useElementHover } from 'solidjs-use'
+import { usePopoverHover } from './usePopoverHover'
 
 export const Popover = OriginComponent<PopoverProps, HTMLDivElement, boolean>((props) => {
     const positioning = createMemo(() =>
@@ -77,14 +77,6 @@ export const Popover = OriginComponent<PopoverProps, HTMLDivElement, boolean>((p
         </>
     )
 })
-export const usePopoverHover = (els: MaybeAccessor<EventTarget | null | undefined>[]) => {
-    const hoveringState = els.map((el) => useElementHover(el, { delayLeave: 300 }))
-    const hovering = computed(() => hoveringState.some((i) => i()))
-    return {
-        hovering
-    }
-}
-
 export const PopoverTrigger = (props: { disabled?: boolean; as: () => HTMLElement }) => {
     const api = usePopoverContext()
     if (!props.as()) return null

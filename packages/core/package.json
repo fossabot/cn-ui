@@ -50,6 +50,7 @@
         "@cn-ui/reactive": "workspace:^",
         "@cn-ui/sortable": "workspace:^",
         "@cn-ui/svg-spinner": "workspace:^",
+        "@popperjs/core": "^2.11.8",
         "@solid-primitives/keyed": "^1.2.2",
         "@storybook/test": "^8.0.4",
         "@tanstack/solid-table": "^8.15.3",
@@ -68,8 +69,7 @@
         "solidjs-use": "^2.3.0",
         "split.js": "^1.6.5",
         "ts-toolbelt": "^9.6.0",
-        "viewerjs": "^1.11.6",
-        "wc-spinners": "^1.1.1"
+        "viewerjs": "^1.11.6"
     },
     "devDependencies": {
         "@alenaksu/json-viewer": "^2.0.1",

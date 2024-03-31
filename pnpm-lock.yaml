@@ -187,6 +187,9 @@ importers:
       '@cn-ui/svg-spinner':
         specifier: workspace:^
         version: link:../spinner
+      '@popperjs/core':
+        specifier: ^2.11.8
+        version: 2.11.8
       '@solid-primitives/keyed':
         specifier: ^1.2.2
         version: 1.2.2(solid-js@1.8.16)
@@ -244,9 +247,6 @@ importers:
       viewerjs:
         specifier: ^1.11.6
         version: 1.11.6
-      wc-spinners:
-        specifier: ^1.1.1
-        version: 1.1.1
     devDependencies:
       '@alenaksu/json-viewer':
         specifier: ^2.0.1
@@ -2927,6 +2927,10 @@ packages:
   /@polka/url@1.0.0-next.25:
     resolution: {integrity: sha512-j7P6Rgr3mmtdkeDGTe0E/aYyWEWVtc5yFXtHCRHs28/jptDEWfaVOc5T7cblqy1XKPPfCxJc/8DwQ5YgLOZOVQ==}
     dev: true
+
+  /@popperjs/core@2.11.8:
+    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
+    dev: false
 
   /@radix-ui/react-compose-refs@1.0.1(@types/react@18.2.70)(react@18.2.0):
     resolution: {integrity: sha512-fDSBgd44FKHa1FRMU59qBMPFcl2PZE+2nmqunj+BWFyYYjnhIDWL2ItDs3rrbJDQOtzt5nIebLCQc4QRfz6LJw==}
@@ -13455,11 +13459,6 @@ packages:
       glob-to-regexp: 0.4.1
       graceful-fs: 4.2.11
     dev: true
-
-  /wc-spinners@1.1.1:
-    resolution: {integrity: sha512-N6XTH64mWzMrijhFhniSQKckI8n1opB9qSTzZYHwOF/qAMMIbsD9zSiG+eYTCX5Xb/qYgm6xnKOeDMM6+3rZJA==}
-    engines: {node: '>=8.9.0'}
-    dev: false
 
   /wcwidth@1.0.1:
     resolution: {integrity: sha1-8LDc+RW8X/FSivrbLA4XtTLaL+g=}
