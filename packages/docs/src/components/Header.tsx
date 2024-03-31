@@ -17,7 +17,7 @@ export const Header = () => {
         }
     ]
     return (
-        <header class="px-8 gap-12 flex items-center h-16 border-b border-design-border sticky top-0 left-0 backdrop-blur-lg ">
+        <header class="px-8 gap-12 flex items-center h-16 border-b border-design-border sticky top-0 left-0 backdrop-blur-lg z-50">
             <a href="/" class="text-2xl font-bold">
                 <span class="px-1 bg-design-title text-design-pure">CN UI</span>
             </a>

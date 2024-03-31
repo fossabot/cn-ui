@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import Layout from './Layout.astro'
+import { Typography, TOC } from '@cn-ui/core'
+import type { MarkdownLayoutProps } from 'astro'
+import { CompHeader } from '../components/components/CompHeader'
+type Props = MarkdownLayoutProps<CollectionEntry<'blog'>['data']>
+
+const { title, description, pubDate, updatedDate, heroImag, headings, compName } = Astro.props
+---
+
+<Layout {...Astro.props}>
+    <Typography class="pr-52 pl-12 bg-gray-50/90">
+        <CompHeader title={title} {...Astro.props} />
+        <slot />
+    </Typography>
+    <TOC headings={headings} class="fixed top-20 right-2 w-48 border-l-2 pl-2 border-design-border" />
+</Layout>

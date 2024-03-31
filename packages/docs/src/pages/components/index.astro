@@ -9,7 +9,7 @@ const posts = (await getCollection('components')).sort((a, b) => a.data.pubDate.
 <Layout>
     <main>
         <section>
-            <PostList posts={posts} prefix={'/components'}></PostList>
+            <PostList posts={posts} prefix={'/components'} />
         </section>
     </main>
 </Layout>

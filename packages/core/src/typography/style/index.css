@@ -12,7 +12,7 @@
 
 .cn-typography {
     font-family: var(--default-font);
-    --at-apply: box-border w-full px-8 pb-12 font-thin text-design-title;
+    --at-apply: box-border w-full pb-12 text-design-title;
     /* 默认不显示下划线，保持页面简洁 */
 }
 .cn-typography ins,

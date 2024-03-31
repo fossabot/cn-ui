@@ -33,7 +33,8 @@ export const APIOfComponent = (props: { comp?: { __docgenInfo: DocInfo }; doc?: 
         return a.required - b.required
     })
     return (
-        <div class=" p-4 rounded-xl">
+        <div class=" py-4 rounded-xl">
+            <h2> API 列表</h2>
             <table class="w-full ">
                 <thead>
                     <tr>
