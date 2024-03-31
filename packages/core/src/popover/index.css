@@ -17,7 +17,7 @@
     transform: rotate(45deg);
     top: 0;
     left: 0;
-    background: black;
+    background: var(--cn-bg-design-pure);
 }
 
 .popover__arrow::before {

@@ -78,7 +78,6 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                 <Popover
                     disabled={props.disabled}
                     v-model={PopoverOpen}
-                    initialFocusEl={input}
                     sameWidth
                     trigger="none"
                     content={() => (
@@ -93,7 +92,6 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                             ></SelectPanel>
                         </nav>
                     )}
-                    placement="bottom-start"
                 >
                     <BaseInput
                         id={props.id}

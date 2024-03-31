@@ -8,6 +8,7 @@ import { Col } from '../RowAndCol'
 import { Flex } from '../container/Flex'
 import { CheckboxGroup } from '../checkbox'
 import { Button } from '../button'
+import { createEffect } from 'solid-js'
 
 const meta = {
     title: 'Data 数据展示/Popover 弹出层',
@@ -70,11 +71,23 @@ export const Primary: Story = {
 
 export const Tooltips: Story = {
     render() {
+        const show = atom(false)
+        createEffect(() => console.log(show()))
         return (
             <Flex class="h-full bg-gray-100">
-                <Popover disabled content={'12321323'} trigger={'hover'}>
+                <Popover sameWidth v-model={show} content={'12321323'} trigger={'hover'} clickOutsideClose={false}>
                     <Button>按钮</Button>
                 </Popover>
+                <Button
+                    onclick={() =>
+                        show((i) => {
+                            console.log(1, !i)
+                            return !i
+                        })
+                    }
+                >
+                    按钮
+                </Button>
             </Flex>
         )
     },

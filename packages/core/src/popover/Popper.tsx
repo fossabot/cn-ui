@@ -1,5 +1,5 @@
-import { Atom, JSXSlot, NullAtom, OriginComponent, atom, computed, ensureFunctionResult, ensureOnlyChild } from '@cn-ui/reactive'
-import { createEffect, onCleanup, onMount } from 'solid-js'
+import { Atom, JSXSlot, NullAtom, OriginComponent, atom, ensureFunctionResult, ensureOnlyChild } from '@cn-ui/reactive'
+import { createEffect, createMemo, onCleanup, onMount, untrack } from 'solid-js'
 import { popperGenerator, defaultModifiers } from '@popperjs/core/lib/popper-lite'
 import flip from '@popperjs/core/lib/modifiers/flip'
 import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow'
@@ -17,7 +17,7 @@ const createPopper = popperGenerator({
         computeStyles,
         {
             name: 'sameWidth',
-            enabled: true,
+            enabled: false,
             phase: 'beforeWrite',
             requires: ['computeStyles'],
             fn: ({ state }) => {
@@ -36,60 +36,85 @@ import { usePopoverHover } from './usePopoverHover'
 import { onClickOutside, useEventListener } from 'solidjs-use'
 import type { Placement } from '@popperjs/core'
 import { pick } from 'lodash-es'
+import { useFocusIn } from './useFocusIn'
 
 export interface PopperProps {
     content: JSXSlot
-    trigger?: 'click' | 'hover' | 'none'
+    trigger?: 'click' | 'hover' | 'focus' | 'none'
     placement?: Placement
     disabled?: boolean
+    sameWidth?: boolean
+    clickOutsideClose?: boolean
 }
-export const Popper = OriginComponent<PopperProps>((props) => {
-    const child = ensureOnlyChild(() => props.children) as () => HTMLElement
-    const popoverContent = NullAtom<HTMLElement>(null)
-    const arrow = NullAtom<HTMLElement>(null)
-    const { show, hide } = usePopper(
-        child,
-        popoverContent,
-        arrow,
-        computed(() => pick(props, ['placement', 'disabled']))
-    )
+export const Popper = OriginComponent<PopperProps, HTMLElement, boolean>(
+    (props) => {
+        const child = ensureOnlyChild(() => props.children) as () => HTMLElement
+        if (isServer) return <>{child()}</>
+        const popoverContent = NullAtom<HTMLElement>(null)
+        const arrow = NullAtom<HTMLElement>(null)
+        const { show, hide } = usePopper(
+            child,
+            popoverContent,
+            arrow,
+            createMemo(() => pick(props, 'placement', 'disabled', 'sameWidth'))
+        )
 
-    // hover
-    const { hovering } = usePopoverHover([child, popoverContent])
+        // hover
+        const { hovering, hoveringState } = usePopoverHover([child, popoverContent])
+        const contentHovering = hoveringState[1]
+        const [focused] = useFocusIn(child)
+        // click
+        const clickState = atom(false)
+        useEventListener(child, 'pointerdown', () => clickState((i) => !i))
+        onClickOutside(
+            popoverContent,
+            () => {
+                if (props.model() === true && props.clickOutsideClose !== false) {
+                    props.model(false)
+                }
+            },
+            {
+                ignore: [child]
+            }
+        )
+        // 此处进行对 model 数据的统一
+        createEffect(() => {
+            switch (props.trigger) {
+                case 'hover':
+                    return props.model(() => hovering())
+                case 'focus':
+                    return props.model(() => focused() || contentHovering())
+                case 'none':
+                    return
+                case 'click':
+                default:
+                    return props.model(() => clickState())
+            }
+        })
+        createEffect(() => (props.model() ? show() : hide()))
 
-    // click
-    const clickState = atom(false)
-    useEventListener(child, 'pointerdown', () => {
-        clickState((i) => !i)
-    })
-    onClickOutside(popoverContent, () => (!props.trigger || props.trigger === 'click') && clickState(false), {
-        ignore: [child]
-    })
-    const showing = computed(() => {
-        switch (props.trigger) {
-            case 'hover':
-                return hovering()
-            case 'none':
-                return props.model()
-            case 'click':
-            default:
-                return clickState()
-        }
-    })
-    createEffect(() => (showing() ? show() : hide()))
-
-    return (
-        <>
-            {child()}
-            {!isServer && (
-                <div ref={popoverContent} class="hidden popover__content bg-design-title text-design-pure p-1 rounded-md" role="tooltip">
+        return (
+            <>
+                {child()}
+                <div
+                    ref={(el) => {
+                        popoverContent(el)
+                        props.ref?.(el)
+                    }}
+                    class={props.class('hidden popover__content p-1 rounded-md')}
+                    style={props.style()}
+                    role="tooltip"
+                >
                     <div class="popover__arrow" ref={arrow}></div>
                     {ensureFunctionResult(props.content)}
                 </div>
-            )}
-        </>
-    )
-})
+            </>
+        )
+    },
+    {
+        modelValue: false
+    }
+)
 
 /** 对于 Popper js 的封装 */
 function usePopper(
@@ -119,6 +144,10 @@ function usePopper(
             ]
         })
     })
+
+    const updatingOptions = () => {
+        return [{ name: 'sameWidth', enabled: !!getOptions().sameWidth }]
+    }
     function show() {
         if (getOptions().disabled) return
         // Make the tooltip visible
@@ -127,7 +156,7 @@ function usePopper(
         // Enable the event listeners
         popperInstance.setOptions((options) => ({
             ...options,
-            modifiers: [...(options.modifiers as any[]), { name: 'eventListeners', enabled: true }]
+            modifiers: [...(options.modifiers as any[]), ...updatingOptions(), { name: 'eventListeners', enabled: true }]
         }))
 
         // Update its position
@@ -142,7 +171,7 @@ function usePopper(
         // Disable the event listeners
         popperInstance.setOptions((options) => ({
             ...options,
-            modifiers: [...(options.modifiers as any[]), { name: 'eventListeners', enabled: false }]
+            modifiers: [...(options.modifiers as any[]), ...updatingOptions(), { name: 'eventListeners', enabled: false }]
         }))
     }
     onCleanup(() => popperInstance && popperInstance.destroy())

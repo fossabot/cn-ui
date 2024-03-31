@@ -5,6 +5,7 @@ export const usePopoverHover = (els: MaybeAccessor<EventTarget | null | undefine
     const hoveringState = els.map((el) => useElementHover(el, { delayLeave: 300 }))
     const hovering = computed(() => hoveringState.some((i) => i()))
     return {
-        hovering
+        hovering,
+        hoveringState
     }
 }
