@@ -33,7 +33,7 @@ export const IconSearch = () => {
 
     const watchingTab = atom('Ai')
 
-    const pack = resource(() => loader[watchingTab()](), { initValue: {} })
+    const pack = resource(async () => loader[watchingTab()](), { initValue: {} })
     const totalAvailable = computed(() =>
         Object.keys(pack())
             .filter((i) => i !== 'default')
