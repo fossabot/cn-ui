@@ -19,7 +19,10 @@ export function HeaderCell<T, D>(props: {
     const column = createMemo(() => header().column)
     return (
         <th
-            class={classNames(props.absolute && 'absolute', 'pointer-events-auto block bg-gray-100 py-2 text-sm')}
+            class={classNames(
+                props.absolute && 'absolute',
+                'pointer-events-auto block bg-gray-50 py-2 text-sm border-b border-r border-solid border-gray-200 '
+            )}
             style={{
                 width: toCSSPx(header().getSize()),
                 height: toCSSPx(estimateHeight(), '48px'),
@@ -38,7 +41,7 @@ export function HeaderCell<T, D>(props: {
                     onTouchStart={header().getResizeHandler()}
                     class={classNames(
                         'absolute top-0 right-0 h-full w-px hover:w-1 hover:bg-primary-600 select-none touch-none cursor-col-resize',
-                        header().column.getIsResizing() ? 'cn-table-header-is-resizing bg-primary-600 z-10' : ' bg-design-border'
+                        header().column.getIsResizing() ? 'cn-table-header-is-resizing bg-primary-600 z-10' : ' bg-transparent'
                     )}
                     style={{
                         transform: header().column.getIsResizing()

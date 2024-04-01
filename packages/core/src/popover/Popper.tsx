@@ -101,7 +101,7 @@ export const Popper = OriginComponent<PopperProps, HTMLElement, boolean>(
                         popoverContent(el)
                         props.ref?.(el)
                     }}
-                    class={props.class('hidden popover__content p-1 rounded-md')}
+                    class={props.class('hidden popover__content bg-design-pure p-1 rounded-md')}
                     style={props.style()}
                     role="tooltip"
                 >

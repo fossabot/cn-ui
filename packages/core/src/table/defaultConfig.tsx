@@ -6,7 +6,7 @@ import { AiOutlineCaretDown, AiOutlineCaretRight } from 'solid-icons/ai'
 
 export const selectionConfig = {
     id: '$select',
-    size: 35,
+    size: 48,
     header: ({ table }) => {
         return (
             <div class="px-2">
@@ -49,7 +49,7 @@ export const indexConfig = {
 
 export const expandingConfig = {
     id: '$expanding',
-    size: 60,
+    size: 48,
     header: ' ',
     enableResizing: false,
     cell(ctx) {

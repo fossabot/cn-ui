@@ -1,7 +1,7 @@
 import { glob } from 'glob'
-import fs from 'fs'
+import fs from 'fs-extra'
 import path from 'path'
-import lodash from 'lodash'
+import * as lodash from 'lodash-es'
 const files = await glob('./node_modules/@cn-ui/spinners/svg-css/*.svg')
 
 /** 将 SVG 字符串转化为 typescript 的 Solidjs 组件 */
@@ -47,5 +47,5 @@ export const ${name} = /* __@PURE__ */ (props: JSX.SvgSVGAttributes<SVGSVGElemen
 }
 
 const exports = SVGToSolidComponent(files.map((i) => ({ name: path.basename(i), code: fs.readFileSync(i, 'utf-8') })))
-fs.writeFileSync('./dist/svg-spinner.tsx', exports.code)
-fs.writeFileSync('./dist/svg-spinner.exports.json', JSON.stringify(exports.exports))
+fs.outputFileSync('./dist/svg-spinner.tsx', exports.code)
+fs.outputFileSync('./dist/svg-spinner.exports.json', JSON.stringify(exports.exports))

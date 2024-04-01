@@ -39,6 +39,7 @@
         "@unocss/reset": "^0.58.6",
         "@unocss/transformer-directives": "^0.58.6",
         "@vant/touch-emulator": "^1.4.0",
+        "fs-extra": "^11.2.0",
         "glob": "^10.3.10",
         "hast-util-to-jsx-runtime": "^2.3.0",
         "jsdom": "^22.1.0",
