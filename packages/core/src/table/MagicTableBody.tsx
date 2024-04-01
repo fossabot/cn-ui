@@ -7,11 +7,10 @@ export function MagicTableBody<T>(props: { rowAbsolute: boolean }) {
 
     return (
         <tbody
+            class="block relative border-x border-gray-200"
             style={{
-                display: 'block',
                 height: `${rowVirtualizer.getTotalSize()}px`,
-                width: toCSSPx(props.rowAbsolute ? tableWidth() : 'fit-content'),
-                position: 'relative'
+                width: toCSSPx(props.rowAbsolute ? tableWidth() : 'fit-content')
             }}
         >
             <Key by="key" each={rowVirtualizer.getVirtualItems()}>
