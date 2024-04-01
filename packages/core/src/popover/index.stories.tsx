@@ -93,3 +93,17 @@ export const Tooltips: Story = {
     },
     args: {}
 }
+export const AppendMode: Story = {
+    name: '附加模式',
+    render() {
+        const show = atom(false)
+        createEffect(() => console.log(show()))
+        return (
+            <Flex class="h-full bg-gray-100">
+                <Button id="my-btn">你不需要嵌套 DOM，而是使用 HTML 原生支持的选择器</Button>
+                <Popover popoverTarget="#my-btn" sameWidth v-model={show} content={'12321323'} trigger={'hover'} clickOutsideClose={false}></Popover>
+            </Flex>
+        )
+    },
+    args: {}
+}

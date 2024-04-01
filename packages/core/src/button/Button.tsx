@@ -49,6 +49,7 @@ export const Button = OriginComponent<ButtonProps, HTMLButtonElement>((props) =>
 
     return (
         <button
+            id={props.id}
             type={props.htmlType}
             class={props.class(
                 'cn-button transition-colors ',

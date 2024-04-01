@@ -1,4 +1,4 @@
-import { Atom, JSXSlot, NullAtom, OriginComponent, atom, ensureFunctionResult, ensureOnlyChild } from '@cn-ui/reactive'
+import { Atom, JSXSlot, NullAtom, OriginComponent, atom, computed, ensureFunctionResult, ensureOnlyChild } from '@cn-ui/reactive'
 import { createEffect, createMemo, onCleanup, onMount } from 'solid-js'
 import { popperGenerator, defaultModifiers } from '@popperjs/core/lib/popper-lite'
 import flip from '@popperjs/core/lib/modifiers/flip'
@@ -45,27 +45,32 @@ export interface PopperProps {
     disabled?: boolean
     sameWidth?: boolean
     clickOutsideClose?: boolean
+    /** 支持通过 CSS 选择器直接虚拟链接对象, */
+    popoverTarget?: string
 }
 export const Popper = OriginComponent<PopperProps, HTMLElement, boolean>(
     (props) => {
-        const child = ensureOnlyChild(() => props.children) as () => HTMLElement
+        const child = ensureOnlyChild(() => props.children) as unknown as Atom<HTMLElement>
         if (isServer) return <>{child()}</>
         const popoverContent = NullAtom<HTMLElement>(null)
+        // fix: 封装一层 child 避免初始化时序混乱
+        const popoverTarget = computed(() => child())
         const arrow = NullAtom<HTMLElement>(null)
         const { show, hide } = usePopper(
-            child,
+            popoverTarget,
             popoverContent,
             arrow,
-            createMemo(() => pick(props, 'placement', 'disabled', 'sameWidth'))
+            createMemo(() => pick(props, 'placement', 'disabled', 'sameWidth')),
+            props
         )
 
         // hover
-        const { hovering, hoveringState } = usePopoverHover([child, popoverContent])
+        const { hovering, hoveringState } = usePopoverHover([popoverTarget, popoverContent])
         const contentHovering = hoveringState[1]
-        const [focused] = useFocusIn(child)
+        const [focused] = useFocusIn(popoverTarget)
         // click
         const clickState = atom(false)
-        useEventListener(child, 'pointerdown', () => clickState((i) => !i))
+        useEventListener(popoverTarget, 'pointerdown', () => clickState((i) => !i))
         onClickOutside(
             popoverContent,
             () => {
@@ -74,7 +79,7 @@ export const Popper = OriginComponent<PopperProps, HTMLElement, boolean>(
                 }
             },
             {
-                ignore: [child]
+                ignore: [popoverTarget]
             }
         )
         // 此处进行对 model 数据的统一
@@ -118,14 +123,19 @@ export const Popper = OriginComponent<PopperProps, HTMLElement, boolean>(
 
 /** 对于 Popper js 的封装 */
 function usePopper(
-    child: () => HTMLElement,
+    target: Atom<HTMLElement>,
     popoverContent: Atom<HTMLElement | null>,
     arrow: Atom<HTMLElement | null>,
-    getOptions: () => Partial<PopperProps>
+    getOptions: () => Partial<PopperProps>,
+    props: PopperProps
 ) {
     let popperInstance: Instance
     onMount(() => {
-        popperInstance = createPopper(child() as Element, popoverContent() as HTMLElement, {
+        if (props.popoverTarget) {
+            const el = document.querySelector(props.popoverTarget)! as HTMLElement
+            if (el) target(el)
+        }
+        popperInstance = createPopper(target() as Element, popoverContent() as HTMLElement, {
             ...getOptions(),
             modifiers: [
                 {
