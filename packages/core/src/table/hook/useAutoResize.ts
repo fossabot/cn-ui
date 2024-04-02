@@ -1,10 +1,14 @@
-import { atom } from '@cn-ui/reactive'
+import { atom, computed } from '@cn-ui/reactive'
 import { Accessor, onCleanup, onMount } from 'solid-js'
 import { useResizeObserver } from 'solidjs-use'
 
-export const useAutoResize = (sizer: Accessor<HTMLElement | null>) => {
+/** 自动根据父元素的大小变更自己的大小 */
+export const useAutoResize = (ElRef: Accessor<HTMLElement | null>) => {
     const width$ = atom(0)
     const height$ = atom(0)
+
+    const sizer = computed<HTMLElement | null>(() => ElRef()?.parentElement!)
+    onMount(() => sizer.recomputed())
 
     let resizerStopper: ReturnType<typeof useResizeObserver>['stop']
     onMount(() => {

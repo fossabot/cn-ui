@@ -21,7 +21,7 @@ export function HeaderCell<T, D>(props: {
         <th
             class={classNames(
                 props.absolute && 'absolute',
-                'pointer-events-auto block bg-gray-50 py-2 text-sm border-b border-r border-solid border-gray-200 '
+                'pointer-events-auto block bg-gray-100 py-2 text-sm border-b border-r border-solid border-gray-300/80 '
             )}
             style={{
                 width: toCSSPx(header().getSize()),
@@ -40,8 +40,8 @@ export function HeaderCell<T, D>(props: {
                     onMouseDown={header().getResizeHandler()}
                     onTouchStart={header().getResizeHandler()}
                     class={classNames(
-                        'absolute top-0 right-0 h-full w-px hover:w-1 hover:bg-primary-600 select-none touch-none cursor-col-resize',
-                        header().column.getIsResizing() ? 'cn-table-header-is-resizing bg-primary-600 z-10' : ' bg-transparent'
+                        'absolute top-0 right-0 h-full hover:w-1 transition-colors hover:bg-primary-600 select-none touch-none cursor-col-resize',
+                        header().column.getIsResizing() ? 'cn-table-header-is-resizing bg-primary-600 w-1 z-10' : ' bg-transparent w-px'
                     )}
                     style={{
                         transform: header().column.getIsResizing()
