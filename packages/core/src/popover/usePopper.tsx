@@ -3,6 +3,7 @@ import { onCleanup, onMount } from 'solid-js'
 import type { Instance } from '@popperjs/core/lib/popper-lite'
 import { createPopper } from './createPopper'
 import { PopperProps } from './Popper'
+import { isServer } from 'solid-js/web'
 
 /** 对于 Popper js 的封装 */
 export function usePopper(
@@ -14,9 +15,14 @@ export function usePopper(
 ) {
     let popperInstance: Instance
     onMount(() => {
+        if (isServer) return
         if (props.popoverTarget) {
             const el = document.querySelector(props.popoverTarget)! as HTMLElement
-            if (el) target(el)
+            if (el) {
+                target(el)
+            } else {
+                throw new Error("Popover | can't find element " + props.popoverTarget)
+            }
         }
         popperInstance = createPopper(target() as Element, popoverContent() as HTMLElement, {
             ...getOptions(),
@@ -43,8 +49,6 @@ export function usePopper(
     }
     function show() {
         if (getOptions().disabled) return
-        // Make the tooltip visible
-        popoverContent()!.classList.remove('hidden')
 
         // Enable the event listeners
         popperInstance.setOptions((options) => ({
@@ -58,8 +62,6 @@ export function usePopper(
 
     function hide() {
         if (getOptions().disabled) return
-        // Hide the tooltip
-        popoverContent()!.classList.add('hidden')
 
         // Disable the event listeners
         popperInstance.setOptions((options) => ({

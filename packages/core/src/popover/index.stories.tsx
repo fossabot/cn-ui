@@ -3,13 +3,12 @@ import type { Meta, StoryObj } from 'storybook-solidjs'
 import { Popover, PopoverProps } from './index'
 import { atom } from '@cn-ui/reactive'
 import { For } from 'solid-js/web'
-import { Row } from '../RowAndCol/Row'
-import { Col } from '../RowAndCol'
+import { Col, Row } from '../RowAndCol'
 import { Flex } from '../container/Flex'
 import { CheckboxGroup } from '../checkbox'
 import { Button } from '../button'
 import { createEffect } from 'solid-js'
-
+import { Alert } from '../Message'
 const meta = {
     title: 'Data 数据展示/Popover 弹出层',
     component: Popover,
@@ -101,7 +100,27 @@ export const AppendMode: Story = {
         return (
             <Flex class="h-full bg-gray-100">
                 <Button id="my-btn">你不需要嵌套 DOM，而是使用 HTML 原生支持的选择器</Button>
-                <Popover popoverTarget="#my-btn" sameWidth v-model={show} content={'12321323'} trigger={'hover'} clickOutsideClose={false}></Popover>
+                <Popover
+                    popoverTarget="#my-btn"
+                    sameWidth
+                    v-model={show}
+                    content={(context) => {
+                        const { model } = context!
+                        return (
+                            <div class="flex flex-col">
+                                <Alert type="warning" message="是否要执行删除操作"></Alert>
+                                <div class="flex justify-end">
+                                    <Button onclick={() => model(false)}>取消</Button>
+                                    <Button danger type="primary" onclick={() => {model(false)}}>
+                                        确认
+                                    </Button>
+                                </div>
+                            </div>
+                        )
+                    }}
+                    trigger={'hover'}
+                    clickOutsideClose={false}
+                ></Popover>
             </Flex>
         )
     },
