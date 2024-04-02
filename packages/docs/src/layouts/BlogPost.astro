@@ -1,10 +1,12 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import BaseHead from '../components/BaseHead.astro'
+import { Header } from '../components/Header'
+import { Typography, TOC } from '@cn-ui/core'
+import type { MarkdownLayoutProps } from 'astro'
+type Props = MarkdownLayoutProps<CollectionEntry<'blog'>['data']>
 
-type Props = CollectionEntry<'blog'>['data']
-
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props
+const { title, description, pubDate, updatedDate, heroImag, headings } = Astro.props
 ---
 
 <html lang="en">
@@ -13,6 +15,10 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
     </head>
 
     <body>
-        <slot />
+        <Header client:load />
+        <Typography class="pr-52">
+            <slot />
+        </Typography>
+        <TOC headings={headings} class="fixed top-20 right-2 w-48 border-l-2 pl-2 border-design-border" />
     </body>
 </html>

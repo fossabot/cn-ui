@@ -15,4 +15,4 @@ export type MagicTableCtxType<T = unknown> = {
     defaultCell?: <T, D>(props: CellContext<T, D>) => JSX.Element
 } & ReturnType<typeof useVirtual<T>>
 
-export const MagicTableCtx = createCtx<MagicTableCtxType>()
+export const MagicTableCtx = /* @__PURE__ */ createCtx<MagicTableCtxType>()

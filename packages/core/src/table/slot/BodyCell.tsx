@@ -5,7 +5,7 @@ import { createMemo, onMount } from 'solid-js'
 import { checkEllipsis } from '../hook/useCheckEllipsis'
 import { VirtualItem } from '@tanstack/solid-virtual'
 import { getCommonPinningStyles } from './getCommonPinningStyles'
-export const MagicTableCellCtx = createCtx<{
+export const MagicTableCellCtx = /* @__PURE__ */ createCtx<{
     contain: Atom<HTMLElement | null>
 }>()
 
@@ -28,7 +28,7 @@ export function BodyCell<T, D>(props: BodyCellProps<T, D>) {
     return (
         <MagicTableCellCtx.Provider value={{ contain }}>
             <td
-                class={classNames(props.absolute !== false && 'absolute', 'cn-table-body-cell block transition-colors border-b')}
+                class={classNames(props.absolute !== false && 'absolute', 'cn-table-body-cell block transition-colors border-b border-r')}
                 data-index={props.item.index}
                 ref={(el) => {
                     contain(el)

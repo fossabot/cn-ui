@@ -15,7 +15,7 @@ import '../animation/cn-list.css'
 import { TransitionGroup } from 'solid-transition-group'
 import { BaseFormItemType, extendsBaseFormItemProp } from '../form/BaseFormItemType'
 
-export const SelectCtx = createCtx<ReturnType<typeof useSelect>>()
+export const SelectCtx = /* @__PURE__ */ createCtx<ReturnType<typeof useSelect>>()
 export interface SelectProps extends BaseFormItemType {
     /** TODO 异步态监控 */
     options: SelectItemsType[]
@@ -78,7 +78,6 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                 <Popover
                     disabled={props.disabled}
                     v-model={PopoverOpen}
-                    initialFocusEl={input}
                     sameWidth
                     trigger="none"
                     content={() => (
@@ -93,7 +92,6 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                             ></SelectPanel>
                         </nav>
                     )}
-                    placement="bottom-start"
                 >
                     <BaseInput
                         id={props.id}

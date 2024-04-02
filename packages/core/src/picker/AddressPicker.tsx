@@ -1,33 +1,22 @@
 import { For } from 'solid-js'
 import { Flex } from '../container'
 import { PickerColumn } from './PickerColumn'
-import compressedData from '@cn-ui/area-data/dist/area.json'
-import { decompress } from '@cn-ui/area-data'
-import { memoize } from 'lodash-es'
 import { OriginComponent, computed } from '@cn-ui/reactive'
 import { SelectItemsType } from '../select/Select'
 
-const _getChinaAddressOptions = () => {
-    return [decompress(compressedData.province_list), decompress(compressedData.city_list), decompress(compressedData.county_list)].map((i) => {
-        return Object.entries(i).map(([key, value]) => {
-            return {
-                label: value,
-                value: key
-            }
-        })
-    })
+export interface AddressPickerProps {
+    options: {
+        label: string
+        value: string
+    }[][]
 }
-export const getChinaAddressOptions = memoize(_getChinaAddressOptions) as typeof _getChinaAddressOptions
-
-export interface AddressPickerProps { }
 
 export const AddressPicker = OriginComponent<AddressPickerProps, HTMLDivElement, SelectItemsType[]>((props) => {
-    const options = getChinaAddressOptions()
     const data = props.model
 
     const rebuildOptions = () => {
         const provinceCode = data()[0].value.toString().slice(0, 2)
-        const cityUnderProvince = options[1].filter((i) => i.value.startsWith(provinceCode))
+        const cityUnderProvince = props.options[1].filter((i) => i.value.startsWith(provinceCode))
         if (!data()[1].value.toString().startsWith(provinceCode)) {
             data((i) => {
                 const newArr = [...i]
@@ -37,7 +26,7 @@ export const AddressPicker = OriginComponent<AddressPickerProps, HTMLDivElement,
         }
 
         const cityCode = data()[1].value.toString().slice(0, 4)
-        const countyUnderCity = options[2].filter((i) => i.value.startsWith(cityCode))
+        const countyUnderCity = props.options[2].filter((i) => i.value.startsWith(cityCode))
         if (!data()[2].value.toString().startsWith(cityCode)) {
             data((i) => {
                 const newArr = [...i]
@@ -46,12 +35,12 @@ export const AddressPicker = OriginComponent<AddressPickerProps, HTMLDivElement,
             })
         }
 
-        return [options[0], cityUnderProvince, countyUnderCity]
+        return [props.options[0], cityUnderProvince, countyUnderCity]
     }
     const initModel = () => {
         console.log(props.model())
         if (!props.model()?.length) {
-            props.model(options.map((i) => i[0]))
+            props.model(props.options.map((i) => i[0]))
         }
         rebuildOptions()
     }

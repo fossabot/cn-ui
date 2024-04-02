@@ -12,7 +12,7 @@
         "storybook": "storybook dev -p 6006",
         "type-check": "tsc -p tsconfig.node.json",
         "build-storybook": "storybook build",
-        "prettier": "prettier --write src/**/*",
+        "prettier": "prettier --write packages/**/*",
         "build": "pnpm --filter \"*\" build && pnpm build-storybook"
     },
     "dependencies": {
@@ -39,6 +39,7 @@
         "@unocss/reset": "^0.58.6",
         "@unocss/transformer-directives": "^0.58.6",
         "@vant/touch-emulator": "^1.4.0",
+        "fs-extra": "^11.2.0",
         "glob": "^10.3.10",
         "hast-util-to-jsx-runtime": "^2.3.0",
         "jsdom": "^22.1.0",

@@ -5,13 +5,11 @@ import { Flex } from '../container'
 import { Icon } from '../icon/Icon'
 import { AiOutlineRight } from 'solid-icons/ai'
 import { Popover, PopoverProps } from '../popover'
+import { SelectItemsType } from '../select'
 
-export type CommonGroupListConfig = {
-    label?: string
+export interface CommonGroupListConfig extends SelectItemsType {
     /** @private */
     level?: number
-    value?: string
-    disabled?: boolean
     /** 在此之后显示分隔符号 */
     withSeparate?: boolean
     description?: JSXSlot

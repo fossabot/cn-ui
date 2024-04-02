@@ -1,0 +1,5 @@
+temp
+node_modules
+size_report.json
+*.sh
+storybook-solidjs-docgen

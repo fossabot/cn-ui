@@ -27,17 +27,18 @@ export function HeaderRow<T>(props: {
     const rightSideLeft = createMemo(() => {
         return width() - paddingRight()
     })
+
     return (
         <Show when={!props.hideWhenEmpty || columns().length}>
             <tr
                 data-level={props.level}
-                class={classNames(props.position !== 'center' ? 'absolute pointer-events-none' : 'relative', ' flex border-b w-full')}
+                class={classNames(props.position !== 'center' ? 'absolute pointer-events-none cn-fixed-table-header' : 'relative', ' flex border-b w-full')}
                 style={
                     props.absolute
                         ? {
-                            height: toCSSPx(estimateHeight(), '48px'),
-                            top: props.position !== 'center' ? toCSSPx(props.level * 48) : undefined
-                        }
+                              height: toCSSPx(estimateHeight(), '48px'),
+                              top: props.position !== 'center' ? toCSSPx(props.level * 48) : undefined
+                          }
                         : {}
                 }
             >

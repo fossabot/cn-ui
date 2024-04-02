@@ -30,6 +30,9 @@ export const Primary: Story = {
                     <Button type="dashed" onclick={toggleTheme}>
                         按钮
                     </Button>
+                    <Button type="text" onclick={toggleTheme}>
+                        按钮
+                    </Button>
                     <Button type="link" onclick={toggleTheme}>
                         按钮
                     </Button>
@@ -40,6 +43,9 @@ export const Primary: Story = {
                     </Button>
                     <Button danger>按钮</Button>
                     <Button type="dashed" danger>
+                        按钮
+                    </Button>
+                    <Button type="text" danger>
                         按钮
                     </Button>
                     <Button type="link" danger>
@@ -54,6 +60,9 @@ export const Primary: Story = {
                     <Button type="dashed" disabled>
                         按钮
                     </Button>
+                    <Button type="text" disabled>
+                        按钮
+                    </Button>
                     <Button type="link" disabled>
                         按钮
                     </Button>
@@ -66,6 +75,9 @@ export const Primary: Story = {
                         按钮
                     </Button>
                     <Button type="dashed" danger disabled>
+                        按钮
+                    </Button>
+                    <Button type="text" danger disabled>
                         按钮
                     </Button>
                     <Button type="link" danger disabled>

@@ -1,0 +1,52 @@
+---
+title: 'Button 按钮'
+description: '按钮 是承接用户触达行为的代码触发单位'
+pubDate: '2024/3/28'
+compName: 'Button'
+image: 'buttonHero'
+sourceLink: '/packages/core/src/button'
+---
+
+import { Button } from '@cn-ui/core/dist/docgen.mjs'
+import { APIOfComponent } from '../../components/APIOfComponent'
+
+## 设计理念
+
+## 代码演示
+
+import { CodeExample } from '../../components/components/CodeExample'
+import { ButtonExample } from '../../example/ButtonExample'
+
+### 普通模式
+
+普通模式的 Button 适用于大多数场景，包括表单提交、页面跳转等。
+
+**Default 模式** 适用于较为普通的功能，其并非常用功能，但是仍然需要按钮进行触达操作。
+
+**Primary 模式** 适用于关键性的操作，一个子场景中用于标记最为核心的触达功能；不建议在一个子场景中拥有多个 Primary 按钮，避免主要关系的弱化。
+
+**Dash 模式** 适用于需要强调一定程度的动态效果的操作，例如加载、刷新等场景。
+
+**Text 模式** 适用于需要弱化按钮的视觉效果，例如按钮嵌入到文本，或者置于操作栏时；其主要的特点在于没有边界感，能够融入到内容语境中，这点同 Link 一致。
+
+**Link 模式** 适用于需要将按钮作为超链接的形式出现，例如跳转到其他页面或网站。注意，在使用 Link 模式时需要特别注意按钮的位置和样式，避免与其他链接混淆。
+
+<CodeExample>
+    <ButtonExample></ButtonExample>
+</CodeExample>
+
+### DangerZone 危险模式
+
+危险模式在普通模式的基础上，更改颜色为危险的红色，其可以用于危险的后端操作，如删除 Github 仓库，删除多条数据项等场景。
+
+危险模式常常伴随低模态弹窗，危险的颜色配合二次确认，可以很好的保留一体化应用的感觉，用于替换高模态弹窗带来的隔阂感。
+
+import { ButtonDangerExample } from '../../example/ButtonDangerExample'
+
+<CodeExample>
+    <ButtonDangerExample client:load />
+</CodeExample>
+
+<APIOfComponent doc={Button}></APIOfComponent>
+
+## FAQ

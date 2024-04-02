@@ -9,7 +9,7 @@ export function MagicTableHeader<T>(props: { rowAbsolute: boolean }) {
 
     return (
         <thead
-            class="sticky top-0 z-10 block"
+            class="sticky top-0 z-10 block border-x border-b border-gray-200"
             style={{
                 width: toCSSPx(props.rowAbsolute ? tableWidth() : 'fit-content')
             }}

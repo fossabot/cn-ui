@@ -27,7 +27,7 @@ export const FloatingButton = OriginComponent<FloatingButtonProps>((props) => {
         </Button>
     )
 })
-export const FloatingGroupCtx = createCtx<{}>(undefined, true)
+export const FloatingGroupCtx = /* @__PURE__ */ createCtx<{}>(undefined, true)
 export const FloatingButtonGroup = OriginComponent<{ options: FloatingButtonProps[]; icon?: FloatingButtonProps }, HTMLDivElement, boolean>(
     (props) => {
         const closeBtn = () => (

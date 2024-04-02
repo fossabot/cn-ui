@@ -1,4 +1,4 @@
-import { Type } from "./Type"
+import { Type } from './Type'
 
 const includesPart = (a: string | undefined, b: string[]) => {
     if (!a) return false
@@ -13,10 +13,13 @@ const typeProducer: Record<string, (val: any, name: string) => [string, unknown]
         if (includesPart(Type(data[0]), ['number', 'string', 'regexp', 'boolean'])) {
             val = findProducerAndApply(data[0], '0')[1]
         } else {
-            const newData = data.reduce((col, cur) => {
-                /** @ts-ignore */
-                return Object.assign(col, cur)
-            }, {} as Record<string, unknown>)
+            const newData = data.reduce(
+                (col, cur) => {
+                    /** @ts-ignore */
+                    return Object.assign(col, cur)
+                },
+                {} as Record<string, unknown>
+            )
             val = findProducerAndApply(newData, name)[1]
         }
         if (length === 0) return [name + '|1', [val]]

@@ -49,6 +49,7 @@ export const Button = OriginComponent<ButtonProps, HTMLButtonElement>((props) =>
 
     return (
         <button
+            id={props.id}
             type={props.htmlType}
             class={props.class(
                 'cn-button transition-colors ',
@@ -90,10 +91,12 @@ function createTypeClass(props: OriginComponentInputType<ButtonProps, HTMLButton
             return this.default() + ` border-none ${danger}`
         },
         text() {
-            return 'hover:bg-design-ground'
+            return 'hover:bg-gray-200'
         },
         default: () => {
-            const danger = props.danger ? 'hover:border-error-400 hover:text-error-400' : 'hover:border-primary-400 hover:text-primary-400'
+            const danger = props.danger
+                ? 'hover:border-error-400 hover:text-error-400 active:bg-error-50'
+                : 'hover:border-primary-400 hover:text-primary-400  active:bg-primary-50'
             return `border-design-border border ${danger} bg-transparent`
         }
     })

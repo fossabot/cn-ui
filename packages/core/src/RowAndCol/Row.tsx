@@ -13,7 +13,7 @@ export type RowProps = {
     align?: (typeof RowAlign)[number]
     bottomSpace?: number | string
 }
-export const RowCtx = createCtx<{
+export const RowCtx = /* @__PURE__ */ createCtx<{
     gutterX: string
     gutterY: string
 }>(undefined, true)

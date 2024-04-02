@@ -1,0 +1,16 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import { PostList } from '../../components/PostList'
+import { getCollection } from 'astro:content'
+
+const posts = (await getCollection('guide')).sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
+---
+
+<Layout>
+    <main>
+        <section>
+            <PostList posts={posts} prefix={'/guide'}></PostList>
+        </section>
+    </main>
+</Layout>
+

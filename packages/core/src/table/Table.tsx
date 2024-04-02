@@ -1,4 +1,4 @@
-import { atom, toCSSPx } from '@cn-ui/reactive'
+import { atom, computed, toCSSPx } from '@cn-ui/reactive'
 import {
     getSortedRowModel,
     getCoreRowModel,
@@ -20,7 +20,7 @@ import { MagicTableHeader } from './MagicTableHeader'
 import { MagicTableBody } from './MagicTableBody'
 import { expandingConfig, indexConfig, selectionConfig } from './defaultConfig'
 import { useScroll } from 'solidjs-use'
-import { createMemo } from 'solid-js'
+import { createMemo, onMount } from 'solid-js'
 import { useAutoResize } from './hook/useAutoResize'
 import { JSX } from 'solid-js'
 import { SelectItemsType } from '../select'
@@ -138,8 +138,8 @@ export function MagicTable<T>(props: MagicTableProps<T>) {
 
     const tableContainerRef = atom<HTMLDivElement | null>(null)
     const virtualSettings = useVirtual<T>(table, tableContainerRef, { composedColumns, estimateHeight: () => props.estimateHeight })
-    const tableBox = atom<HTMLDivElement | null>(null)
-    const { height, width } = useAutoResize(tableBox)
+
+    const { height, width } = useAutoResize(tableContainerRef)
     const tableScroll = useScroll(tableContainerRef)
 
     const context: MagicTableCtxType<T> = {
@@ -174,21 +174,19 @@ export function MagicTable<T>(props: MagicTableProps<T>) {
     props.expose?.(expose)
     return (
         <MagicTableCtx.Provider value={context as unknown as MagicTableCtxType}>
-            <div class="relative flex h-full w-full" ref={tableBox}>
-                <table
-                    style={{
-                        display: 'block',
-                        overflow: 'auto',
-                        position: 'relative',
-                        width: toCSSPx(Math.min(width(), virtualSettings.tableWidth() + 5), '400px'),
-                        height: toCSSPx(props.height ?? height(), '400px')
-                    }}
-                    ref={tableContainerRef}
-                >
-                    <MagicTableHeader rowAbsolute></MagicTableHeader>
-                    <MagicTableBody rowAbsolute></MagicTableBody>
-                </table>
-            </div>
+            {/* <div class="relative flex h-full w-full" ref={tableBox}> */}
+            <table
+                class="block overflow-auto relative border border-gray-200"
+                style={{
+                    width: toCSSPx(Math.min(width(), virtualSettings.tableWidth() + 5), '400px'),
+                    height: toCSSPx(props.height ?? height(), '400px')
+                }}
+                ref={tableContainerRef}
+            >
+                <MagicTableHeader rowAbsolute></MagicTableHeader>
+                <MagicTableBody rowAbsolute></MagicTableBody>
+            </table>
+            {/* </div> */}
         </MagicTableCtx.Provider>
     )
 }

@@ -4,7 +4,7 @@ import { Tag } from './index'
 import Mock from 'mockjs-ts'
 import { Flex } from '../container'
 import { For } from 'solid-js'
-import { SortableList } from '../sortable/Sortable'
+import { SortableList } from '@cn-ui/sortable'
 import { atom } from '@cn-ui/reactive'
 
 const meta = {

@@ -1,14 +1,13 @@
 import { Accessor, children, createContext, createEffect, For, JSX, JSXElement, mergeProps, useContext } from 'solid-js'
-import SortableCore from 'sortablejs'
+import type { Options } from 'sortablejs'
 import { OriginComponent, Atom, atomization, extendsEvent, useEffectWithoutFirst, OriginComponentInputType, OriginComponentOutputType } from '@cn-ui/reactive'
 import { useSortable } from './useSortable'
-export { SortableCore }
 /** Sortable 组件的公共参数 */
 export const SortableShared = createContext<{
     /** 当使用 sharedList 的时候进行数据的统一 */
     sharedData?: Atom<any[]>[]
     /** 默认参数 */
-    options?: SortableCore.Options
+    options?: Options
 }>({})
 
 /* TODO 还有很多示例未完成数据统一化 */
@@ -17,7 +16,7 @@ export interface SortableListProps<T extends { id: string }> {
     /** 获取 each 中的元素的 id 的方法，默认获取 */
     getId?: (item: T) => string
     children: (item: T, index: Accessor<number>) => JSXElement
-    options?: SortableCore.Options
+    options?: Options
     disabled?: Atom<boolean>
     setData?: (data: DataTransfer, el: HTMLElement) => void
 }
