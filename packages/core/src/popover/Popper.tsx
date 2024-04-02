@@ -1,4 +1,4 @@
-import { Atom, JSXSlot, NullAtom, OriginComponent, computed, ensureFunctionResult, ensureOnlyChild } from '@cn-ui/reactive'
+import { Atom, JSXSlot, NullAtom, OriginComponent, computed, ensureFunctionResult, ensureOnlyChild, splitOneChild } from '@cn-ui/reactive'
 import { createEffect, createMemo } from 'solid-js'
 import './index.css'
 import { usePopoverHover } from './composable/usePopoverHover'
@@ -23,11 +23,11 @@ export interface PopperProps {
 
 export const Popper = OriginComponent<PopperProps, HTMLElement, boolean>(
     (props) => {
-        const child = ensureOnlyChild(() => props.children) as unknown as Atom<HTMLElement>
+        const [child, otherChildren] = splitOneChild(() => props.children)
 
         const popoverContent = NullAtom<HTMLElement>(null)
         // fix: 封装一层 child 避免初始化时序混乱
-        const popoverTarget = computed(() => child())
+        const popoverTarget = computed(() => child() as HTMLElement)
 
         const arrow = NullAtom<HTMLElement>(null)
         const { show, hide } = usePopper(
@@ -70,6 +70,7 @@ export const Popper = OriginComponent<PopperProps, HTMLElement, boolean>(
         return (
             <>
                 {child()}
+                {otherChildren()}
                 <div
                     ref={(el) => {
                         popoverContent(el)
