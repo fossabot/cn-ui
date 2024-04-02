@@ -32,7 +32,7 @@ export default defineConfig({
 +   vite: {
 +       // important for client:load
 +       ssr: {
-+           noExternal: ['solid-icons'],
++           noExternal: ['solid-icons', '@popperjs/core'],
 +           resolve: {
 +               externalConditions: ['solid', 'module']
 +           }
