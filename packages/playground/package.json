@@ -10,7 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "rollup-web": "^4.6.7"
+    "@opensumi/textmate-languages": "^2.7.2",
+    "monaco-editor": "^0.47.0",
+    "monaco-editor-textmate": "^4.0.0",
+    "monaco-textmate": "^3.0.1",
+    "onigasm": "^2.2.5",
+    "rollup-web": "^4.6.7",
+    "solid-js": "^1.8.16"
   },
   "devDependencies": {
     "vite-plugin-top-level-await": "^1.4.1"

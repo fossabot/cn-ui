@@ -1,5 +1,11 @@
 import { Component, createEffect, createMemo, onCleanup, untrack } from 'solid-js'
 
+type Props = {
+    code: string
+    reloadSignal: boolean
+    devtools?: boolean
+}
+
 export const Preview: Component<Props> = (props) => {
     let iframe!: HTMLIFrameElement
     let devtoolsIframe!: HTMLIFrameElement
@@ -12,14 +18,6 @@ export const Preview: Component<Props> = (props) => {
     // We have that the iframe src is entangled with its loading state
     const iframeSrcUrl = createMemo(() => {
         return '/preview.html'
-    })
-
-    createEffect(() => {
-        const dark = props.isDark
-
-        if (!isIframeReady) return
-
-        iframe.contentDocument!.documentElement.classList.toggle('dark', dark)
     })
 
     createEffect(() => {
@@ -49,11 +47,10 @@ export const Preview: Component<Props> = (props) => {
     onCleanup(() => window.removeEventListener('message', messageListener))
 
     createEffect(() => {
-        localStorage.setItem('uiTheme', props.isDark ? '"dark"' : '"default"')
         devtoolsIframe.contentWindow!.location.reload()
     })
     return (
-        <div class="flex flex-1 flex-col w-screen h-screen" ref={outerContainer}>
+        <div class="flex flex-1 flex-col" ref={outerContainer}>
             <div class="flex-1">
                 <iframe
                     title="Solid REPL"
@@ -81,12 +78,4 @@ export const Preview: Component<Props> = (props) => {
             </div>
         </div>
     )
-}
-
-type Props = {
-    importMap?: any
-    code: string
-    reloadSignal: boolean
-    devtools: boolean
-    isDark: boolean
 }
