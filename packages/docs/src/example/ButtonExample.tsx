@@ -1,6 +1,6 @@
 import { Button } from '@cn-ui/core'
 
-export const ButtonExample = () => {
+export default () => {
     return (
         <div>
             <div class="mb-4 flex gap-4">

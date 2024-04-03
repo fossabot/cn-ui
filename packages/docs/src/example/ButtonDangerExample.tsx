@@ -1,7 +1,7 @@
-import { Alert, Button, Message, Popover } from '@cn-ui/core'
+import { Button, Message, Popover } from '@cn-ui/core'
 import { atom } from '@cn-ui/reactive'
 
-export const ButtonDangerExample = () => {
+export default () => {
     const randomId = 'r-32728290'
     const show = atom(true)
     return (
@@ -13,6 +13,7 @@ export const ButtonDangerExample = () => {
                 <Popover
                     popoverTarget={'#' + randomId}
                     v-model={show}
+                    trigger="none"
                     content={(context) => {
                         const { model } = context!
                         return (

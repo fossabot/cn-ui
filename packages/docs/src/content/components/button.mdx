@@ -9,13 +9,13 @@ sourceLink: '/packages/core/src/button'
 
 import { Button } from '@cn-ui/core/dist/docgen.mjs'
 import { APIOfComponent } from '../../components/APIOfComponent'
+import Demo from '../../components/components/Demo.astro'
 
 ## 设计理念
 
 ## 代码演示
 
-import { CodeExample } from '../../components/components/CodeExample'
-import { ButtonExample } from '../../example/ButtonExample'
+import * as ButtonExample from '../../example/ButtonExample'
 
 ### 普通模式
 
@@ -31,9 +31,9 @@ import { ButtonExample } from '../../example/ButtonExample'
 
 **Link 模式** 适用于需要将按钮作为超链接的形式出现，例如跳转到其他页面或网站。注意，在使用 Link 模式时需要特别注意按钮的位置和样式，避免与其他链接混淆。
 
-<CodeExample>
-    <ButtonExample></ButtonExample>
-</CodeExample>
+<Demo module={ButtonExample}>
+    <ButtonExample.default />
+</Demo>
 
 ### DangerZone 危险模式
 
@@ -41,11 +41,11 @@ import { ButtonExample } from '../../example/ButtonExample'
 
 危险模式常常伴随低模态弹窗，危险的颜色配合二次确认，可以很好的保留一体化应用的感觉，用于替换高模态弹窗带来的隔阂感。
 
-import { ButtonDangerExample } from '../../example/ButtonDangerExample'
+import * as ButtonDangerExample from '../../example/ButtonDangerExample'
 
-<CodeExample>
-    <ButtonDangerExample client:load />
-</CodeExample>
+<Demo module={ButtonDangerExample}>
+    <ButtonDangerExample.default client:load />
+</Demo>
 
 <APIOfComponent doc={Button}></APIOfComponent>
 

@@ -1,0 +1,28 @@
+---
+import { Code } from 'astro:components'
+import type { JSXElement } from 'solid-js'
+
+interface Props {
+    module: {
+        default: () => JSXElement
+    }
+}
+---
+
+<section class="w-full rounded-xl border border-solid overflow-hidden border-gray-300 p-4">
+    <div class="max-h-84 w-full">
+        <slot />
+    </div>
+    <details>
+        <summary> 源代码 </summary>
+        <Code
+            class="text-xs"
+            themes={{
+                dark: 'vitesse-dark',
+                light: 'vitesse-light'
+            }}
+            code={(Astro.props.module as any).SourceCode}
+            lang="tsx"
+        />
+    </details>
+</section>

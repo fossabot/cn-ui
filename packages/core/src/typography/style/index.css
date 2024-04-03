@@ -127,7 +127,7 @@
 .cn-typography table th,
 .cn-typography table td,
 .cn-typography table caption {
-    --at-apply: border px-2 py-4;
+    --at-apply: border border-design-border px-2 py-4;
 }
 
 .cn-typography table caption {
