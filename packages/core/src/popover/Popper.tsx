@@ -1,4 +1,4 @@
-import { Atom, JSXSlot, NullAtom, OriginComponent, computed, ensureFunctionResult, ensureOnlyChild, splitOneChild } from '@cn-ui/reactive'
+import { Atom, JSXSlot, NullAtom, OriginComponent, computed, ensureFunctionResult, splitOneChild } from '@cn-ui/reactive'
 import { createEffect, createMemo } from 'solid-js'
 import './index.css'
 import { usePopoverHover } from './composable/usePopoverHover'
@@ -11,6 +11,12 @@ import { zIndexManager } from './zIndexManager'
 
 export interface PopperProps {
     content: JSXSlot<{ model: Atom<boolean> }>
+    /**
+     * click: 点击触发
+     * hover: 鼠标移入触发
+     * focus: 聚焦触发（未实现）
+     * none: 完全受控模式
+     */
     trigger?: 'click' | 'hover' | 'focus' | 'none'
     placement?: Placement
     disabled?: boolean
@@ -45,7 +51,7 @@ export const Popper = OriginComponent<PopperProps, HTMLElement, boolean>(
         const [focused] = useFocusIn(popoverTarget)
         // click
         useEventListener(popoverTarget, 'pointerdown', () => (props.trigger === 'click' || !props.trigger) && props.model((i) => !i))
-        onClickOutside(popoverContent, () => props.model() === true && props.clickOutsideClose !== false && props.model(false), {
+        onClickOutside(popoverContent, () => props.model() && props.clickOutsideClose !== false && props.trigger !== 'none' && props.model(false), {
             ignore: [popoverTarget]
         })
         // 此处进行对 model 动态数据的统一

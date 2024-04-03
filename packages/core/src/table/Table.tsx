@@ -1,4 +1,4 @@
-import { atom, computed, toCSSPx } from '@cn-ui/reactive'
+import { atom, toCSSPx } from '@cn-ui/reactive'
 import {
     getSortedRowModel,
     getCoreRowModel,
@@ -20,7 +20,7 @@ import { MagicTableHeader } from './MagicTableHeader'
 import { MagicTableBody } from './MagicTableBody'
 import { expandingConfig, indexConfig, selectionConfig } from './defaultConfig'
 import { useScroll } from 'solidjs-use'
-import { createMemo, onMount } from 'solid-js'
+import { createMemo } from 'solid-js'
 import { useAutoResize } from './hook/useAutoResize'
 import { JSX } from 'solid-js'
 import { SelectItemsType } from '../select'

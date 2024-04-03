@@ -95,15 +95,16 @@ export const Tooltips: Story = {
 export const AppendMode: Story = {
     name: '附加模式',
     render() {
-        const show = atom(false)
+        const show = atom(true)
         createEffect(() => console.log(show()))
         return (
             <Flex class="h-full bg-gray-100">
-                <Button id="my-btn">你不需要嵌套 DOM，而是使用 HTML 原生支持的选择器</Button>
+                <Button id="my-btn">你不需要嵌套 JSX，而是使用 HTML 原生支持的选择器</Button>
                 <Popover
                     popoverTarget="#my-btn"
                     sameWidth
                     v-model={show}
+                    trigger="hover"
                     content={(context) => {
                         const { model } = context!
                         return (
@@ -111,14 +112,19 @@ export const AppendMode: Story = {
                                 <Alert type="warning" message="是否要执行删除操作"></Alert>
                                 <div class="flex justify-end">
                                     <Button onclick={() => model(false)}>取消</Button>
-                                    <Button danger type="primary" onclick={() => {model(false)}}>
+                                    <Button
+                                        danger
+                                        type="primary"
+                                        onclick={() => {
+                                            model(false)
+                                        }}
+                                    >
                                         确认
                                     </Button>
                                 </div>
                             </div>
                         )
                     }}
-                    trigger={'hover'}
                     clickOutsideClose={false}
                 ></Popover>
             </Flex>
