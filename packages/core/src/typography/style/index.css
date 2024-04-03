@@ -64,7 +64,7 @@
 .cn-typography blockquote {
     --at-apply: relative my-2 border-l-4 border-solid border-design-border pl-2 font-normal text-design-h2;
 }
-.cn-typography :not(pre) code {
+.cn-typography :not(pre) > code {
     --at-apply: mx-1 my-2 rounded-md px-1;
 }
 

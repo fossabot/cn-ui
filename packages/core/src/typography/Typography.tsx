@@ -23,3 +23,4 @@ export const Typography = OriginComponent<TypographyProps>((props) => {
         </article>
     )
 })
+export { Typography as Typo }
