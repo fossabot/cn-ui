@@ -1,5 +1,5 @@
 import { Atom, JSXSlot, NullAtom, OriginComponent, computed, ensureFunctionResult, splitOneChild } from '@cn-ui/reactive'
-import { createEffect, createMemo } from 'solid-js'
+import { createEffect, createMemo, onMount } from 'solid-js'
 import './index.css'
 import { usePopoverHover } from './composable/usePopoverHover'
 import { onClickOutside, useEventListener } from 'solidjs-use'
@@ -9,7 +9,9 @@ import { useFocusIn } from './composable/useFocusIn'
 import { usePopper } from './usePopper'
 import { zIndexManager } from './zIndexManager'
 
-export interface PopperProps {
+export interface PopoverExpose extends ReturnType<typeof usePopper> {}
+
+export interface PopoverProps {
     content: JSXSlot<{ model: Atom<boolean> }>
     /**
      * click: 点击触发
@@ -18,16 +20,17 @@ export interface PopperProps {
      * none: 完全受控模式
      */
     trigger?: 'click' | 'hover' | 'focus' | 'none'
+    expose?: (expose: PopoverExpose) => void
     placement?: Placement
     disabled?: boolean
     sameWidth?: boolean
     clickOutsideClose?: boolean
     /** 支持通过 CSS 选择器直接虚拟链接对象, */
-    popoverTarget?: string
+    popoverTarget?: string | Element
     zIndex?: number
 }
 
-export const Popper = OriginComponent<PopperProps, HTMLElement, boolean>(
+export const Popover = OriginComponent<PopoverProps, HTMLElement, boolean>(
     (props) => {
         const [child, otherChildren] = splitOneChild(() => props.children)
 
@@ -36,7 +39,7 @@ export const Popper = OriginComponent<PopperProps, HTMLElement, boolean>(
         const popoverTarget = computed(() => child() as HTMLElement)
 
         const arrow = NullAtom<HTMLElement>(null)
-        const { show, hide } = usePopper(
+        const { show, hide, update } = usePopper(
             popoverTarget,
             popoverContent,
             arrow,
@@ -44,6 +47,9 @@ export const Popper = OriginComponent<PopperProps, HTMLElement, boolean>(
             createMemo(() => pick(props, 'placement', 'disabled', 'sameWidth')),
             props
         )
+        onMount(() => {
+            props.expose?.({ show, hide, update })
+        })
 
         // hover
         const { hovering, hoveringState } = usePopoverHover([popoverTarget, popoverContent])

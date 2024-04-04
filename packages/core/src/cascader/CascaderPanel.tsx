@@ -5,14 +5,16 @@ import { Dynamic } from 'solid-js/web'
 import { AiOutlineRight } from 'solid-icons/ai'
 import { Icon } from '../icon'
 
+type SelectedEvent = (checked: CommonGroupListConfig, isLeaf: boolean) => void
+
 export interface CascaderPanelProps {
     options: CommonGroupListConfig[]
+    onSelected?: SelectedEvent
 }
-export const CascaderPanel = OriginComponent<CascaderPanelProps>((props) => {
-    const selected = atom<(CommonGroupListConfig | null)[]>([null])
+export const CascaderPanel = OriginComponent<CascaderPanelProps, HTMLDivElement, CommonGroupListConfig[]>((props) => {
     return (
-        <OriginDiv prop={props} class="border rounded-md flex ">
-            <For each={selected()}>
+        <OriginDiv prop={props} class="border rounded-md flex select-none">
+            <For each={[null, ...props.model()]}>
                 {(item, index) => {
                     const options = item === null ? props.options : item.options
                     return (
@@ -20,15 +22,16 @@ export const CascaderPanel = OriginComponent<CascaderPanelProps>((props) => {
                             <Dynamic
                                 component={CascaderColumn}
                                 options={options!}
-                                selected={selected()[index() + 1]}
-                                onSelect={(checked: CommonGroupListConfig | null, isLeaf: boolean) =>
-                                    isLeaf &&
-                                    selected((i) => {
-                                        const newArr = i.slice(0, index() + 1)
-                                        newArr[index() + 1] = checked
+                                selected={props.model()[index()]}
+                                onSelected={(checked: CommonGroupListConfig, isLeaf: boolean) => {
+                                    props.model((i) => {
+                                        const newArr = i.slice(0, index())
+                                        newArr[index()] = checked
+                                        console.log(newArr)
                                         return newArr
                                     })
-                                }
+                                    props.onSelected?.(checked, isLeaf)
+                                }}
                             ></Dynamic>
                         </Show>
                     )
@@ -37,11 +40,7 @@ export const CascaderPanel = OriginComponent<CascaderPanelProps>((props) => {
         </OriginDiv>
     )
 })
-export const CascaderColumn = (props: {
-    selected?: CommonGroupListConfig | null
-    options: CommonGroupListConfig[]
-    onSelect: (selected: CommonGroupListConfig, isLeaf: boolean) => void
-}) => {
+export const CascaderColumn = (props: { selected?: CommonGroupListConfig | null; options: CommonGroupListConfig[]; onSelected: SelectedEvent }) => {
     return (
         <div class="p-2 flex flex-col border-r text-left">
             <For each={props.options}>
@@ -50,9 +49,9 @@ export const CascaderColumn = (props: {
                         <div
                             class={classNames(
                                 props.selected === item && 'bg-primary-500 text-white',
-                                'flex justify-between px-2 py-1 rounded-md hover:bg-primary-600  hover:text-white transition-colors cursor-pointer items-center'
+                                'flex justify-between px-1 mx-1 py-1 rounded-md hover:bg-primary-600  hover:text-white transition-colors cursor-pointer items-center'
                             )}
-                            onclick={() => props.onSelect(item, !!item.options)}
+                            onclick={() => props.onSelected(item, !item.options)}
                         >
                             <span>{item.label}</span>
 

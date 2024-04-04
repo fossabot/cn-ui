@@ -31,7 +31,7 @@ declare module '@tanstack/solid-table' {
     }
     interface ColumnDefBase<TData extends unknown, TValue = unknown> {
         /** 可编辑表格使用的类型 */
-        type?: 'text' | 'number' | 'date' | 'date-range' | 'select' | 'checkbox' | 'switch' | 'radio'
+        type?: 'text' | 'number' | 'date' | 'date-range' | 'select' | 'checkbox' | 'switch' | 'radio' | 'cascader'
         fixed?: 'left' | 'right'
         options?: SelectItemsType[]
         span?: number

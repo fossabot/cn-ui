@@ -2,7 +2,7 @@ import { Atom } from '@cn-ui/reactive'
 import { onCleanup, onMount } from 'solid-js'
 import type { Instance } from '@popperjs/core/lib/popper-lite'
 import { createPopper } from './createPopper'
-import { PopperProps } from './Popper'
+import { PopoverProps } from './Popper'
 import { isServer } from 'solid-js/web'
 
 /** 对于 Popper js 的封装 */
@@ -10,14 +10,14 @@ export function usePopper(
     target: Atom<HTMLElement>,
     popoverContent: Atom<HTMLElement | null>,
     arrow: Atom<HTMLElement | null>,
-    getOptions: () => Partial<PopperProps>,
-    props: PopperProps
+    getOptions: () => Partial<PopoverProps>,
+    props: PopoverProps
 ) {
     let popperInstance: Instance
     onMount(() => {
         if (isServer) return
         if (props.popoverTarget) {
-            const el = document.querySelector(props.popoverTarget)! as HTMLElement
+            const el = (typeof props.popoverTarget === 'string' ? document.querySelector(props.popoverTarget)! : props.popoverTarget) as HTMLElement
             if (el) {
                 target(el)
             } else {
@@ -70,5 +70,12 @@ export function usePopper(
         }))
     }
     onCleanup(() => popperInstance && popperInstance.destroy())
-    return { show, hide }
+    return {
+        show,
+        hide,
+        /** update position */
+        update() {
+            popperInstance?.update()
+        }
+    }
 }

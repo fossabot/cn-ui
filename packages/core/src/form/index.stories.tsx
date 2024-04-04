@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from 'storybook-solidjs'
 
-import { NullAtom, ObjectAtom, StoreToAtom, atom } from '@cn-ui/reactive'
+import { NullAtom, StoreToAtom, atom } from '@cn-ui/reactive'
 import { FormCore, FormCoreRegister } from './FormCore'
-import { For, createEffect, createMemo, onCleanup } from 'solid-js'
+import { For, onCleanup } from 'solid-js'
 import { FormInput } from '../input/FormInput'
 import { FormSelect } from '../select/FormSelect'
 import { Col, Row } from '../RowAndCol'
 import { createStore } from 'solid-js/store'
 import { JSONViewer } from '../dataViewer'
-import { FormRadio } from '../checkbox/FormRadio'
-import { FormCheckBox } from '../checkbox/FormCheckBox'
-import { FormInputNumber } from '../inputNumber/FormInputNumber'
-import { FormDatePicker, FormDateRangePicker } from '../datePicker/FormDatePicker'
+import { FormCheckBox, FormRadio } from '../checkbox'
+import { FormInputNumber } from '../inputNumber'
+import { FormDatePicker, FormDateRangePicker } from '../datePicker'
 import { ColumnDef } from '@tanstack/solid-table'
 import { MagicForm } from './MagicForm'
+import { FormCascader } from '../cascader'
 
 const meta = {
     title: 'From/FormCore',
@@ -31,6 +31,7 @@ FormCoreRegister.register('date', FormDatePicker, { allowSameRegister: true })
 FormCoreRegister.register('date-range', FormDateRangePicker, { allowSameRegister: true })
 FormCoreRegister.register('radio', FormRadio, { allowSameRegister: true })
 FormCoreRegister.register('checkbox', FormCheckBox, { allowSameRegister: true })
+FormCoreRegister.register('cascader', FormCascader, { allowSameRegister: true })
 const mustFill = {
     required: true,
     message: '此项必填'
@@ -83,6 +84,27 @@ const configs = [
         header: 'radio',
         accessorKey: 'radio',
         type: 'radio',
+        options: [
+            {
+                value: 'jack',
+                label: 'Jack'
+            },
+            {
+                value: 'lucy',
+                label: 'Lucy'
+            },
+            {
+                value: 'tom',
+                label: 'Tom'
+            }
+        ],
+        rules: [mustFill],
+        span: 24
+    },
+    {
+        header: 'cascader',
+        accessorKey: 'cascader',
+        type: 'cascader',
         options: [
             {
                 value: 'jack',
