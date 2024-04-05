@@ -22,7 +22,7 @@ export interface FormCoreProps<T, D> {
 }
 export function FormCore<T, D>(props: FormCoreProps<T, D>) {
     const accessorKey = createMemo(() => getKeyFromRootColumnDef(props.config, props.originData as T, props.index ?? 0))
-    const id = createMemo(() => 'form-' + accessorKey())
+    const id = createMemo(() => 'cn-id-form-' + accessorKey())
     const isRequired = createMemo(() => props.config.required || ensureArrayReturn(props.config.rules).some((i) => i?.required))
     const formCtx = MagicFormCtx.use()
     const errorMessage = createMemo(() => {

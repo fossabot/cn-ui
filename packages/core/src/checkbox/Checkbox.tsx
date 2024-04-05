@@ -6,15 +6,15 @@ export const CheckboxGroupCtx = /* @__PURE__ */ createCtx<CheckboxGroupCtxType>(
 
 export interface CheckboxProps extends BaseFormItemType {
     label?: string
-    value: string
+    value?: string
     indeterminate?: boolean
 }
 export const Checkbox = OriginComponent<CheckboxProps, HTMLInputElement, boolean>((props) => {
     const group = CheckboxGroupCtx.use()
-    group?.register?.(props.value, group.activeIds().has(props.value))
+    group?.register?.(props.value!, group.activeIds().has(props.value!))
 
     const inputType = computed(() => (group?.multi?.() === false ? 'radio' : 'checkbox'))
-    const isChecked = computed(() => group?.isSelected?.(props.value) ?? props.model())
+    const isChecked = computed(() => group?.isSelected?.(props.value!) ?? props.model())
     const inputClass = useMapper(inputType, {
         radio() {
             const [base] = this.base()
@@ -40,7 +40,7 @@ export const Checkbox = OriginComponent<CheckboxProps, HTMLInputElement, boolean
                 {...extendsBaseFormItemProp(props)}
                 {...extendsEvent(props)}
                 oninput={(e) => {
-                    group?.changeSelected?.(props.value, e.target.checked)
+                    group?.changeSelected?.(props.value!, e.target.checked)
                     props.model(e.target.checked)
                 }}
             />

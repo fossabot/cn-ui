@@ -14,6 +14,7 @@ import { FormDatePicker, FormDateRangePicker } from '../datePicker'
 import { ColumnDef } from '@tanstack/solid-table'
 import { MagicForm } from './MagicForm'
 import { FormCascader } from '../cascader'
+import { FormSwitch } from '../switch'
 
 const meta = {
     title: 'From/FormCore',
@@ -32,6 +33,7 @@ FormCoreRegister.register('date-range', FormDateRangePicker, { allowSameRegister
 FormCoreRegister.register('radio', FormRadio, { allowSameRegister: true })
 FormCoreRegister.register('checkbox', FormCheckBox, { allowSameRegister: true })
 FormCoreRegister.register('cascader', FormCascader, { allowSameRegister: true })
+FormCoreRegister.register('switch', FormSwitch, { allowSameRegister: true })
 const mustFill = {
     required: true,
     message: '此项必填'
@@ -58,7 +60,15 @@ const configs = [
                 value: 'tom',
                 label: 'Tom'
             }
-        ]
+        ],
+        span: 12
+    },
+    {
+        header: 'switch',
+        accessorKey: 'switch',
+        type: 'switch',
+
+        span: 12
     },
     {
         header: 'checkbox',
@@ -78,7 +88,7 @@ const configs = [
                 label: 'Tom'
             }
         ],
-        span: 24
+        span: 12
     },
     {
         header: 'radio',
@@ -99,7 +109,7 @@ const configs = [
             }
         ],
         rules: [mustFill],
-        span: 24
+        span: 12
     },
     {
         header: 'cascader',
