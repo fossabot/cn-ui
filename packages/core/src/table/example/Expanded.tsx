@@ -118,7 +118,8 @@ export const Expanded = () => {
             ]
         }
     ] satisfies ColumnDef<Person>[]
-    const data = makeData(100, 5, 3)
+    const data = makeData(20, 5, 3)
+    console.log(data)
     return (
         <>
             <MagicTable data={data} columns={columns} expandable selection></MagicTable>

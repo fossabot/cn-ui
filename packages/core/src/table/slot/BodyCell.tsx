@@ -1,5 +1,5 @@
 import { Cell, CellContext, flexRender } from '@tanstack/solid-table'
-import { MagicTableCtx } from '../MagicTableCtx'
+import { MagicTableCtx, MagicVirtualTableCtx } from '../MagicTableCtx'
 import { Atom, atom, classNames, createCtx, toCSSPx } from '@cn-ui/reactive'
 import { createMemo, onMount } from 'solid-js'
 import { checkEllipsis } from '../hook/useCheckEllipsis'
@@ -17,7 +17,8 @@ export interface BodyCellProps<T, D> {
     paddingLeft?: number
 }
 export function BodyCell<T, D>(props: BodyCellProps<T, D>) {
-    const { estimateHeight, columnVirtualizer, defaultCell: defaultCellTemplate } = MagicTableCtx.use()
+    const { columnVirtualizer } = MagicVirtualTableCtx.use()
+    const { estimateHeight, defaultCell: defaultCellTemplate } = MagicTableCtx.use()
 
     const ctx = createMemo(() => props.cell.getContext())
     /** 默认的 cell */
@@ -28,7 +29,11 @@ export function BodyCell<T, D>(props: BodyCellProps<T, D>) {
     return (
         <MagicTableCellCtx.Provider value={{ contain }}>
             <td
-                class={classNames(props.absolute !== false && 'absolute', 'cn-table-body-cell block transition-colors border-b border-r')}
+                class={classNames(
+                    props.absolute !== false && 'absolute',
+                    props.cell.column.getIsPinned() && 'sticky',
+                    'cn-table-body-cell block transition-colors border-b border-r'
+                )}
                 data-index={props.item.index}
                 ref={(el) => {
                     contain(el)

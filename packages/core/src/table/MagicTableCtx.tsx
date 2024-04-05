@@ -6,7 +6,7 @@ import { Accessor } from 'solid-js'
 import { MagicTableProps } from './interface'
 import { JSX } from 'solid-js'
 
-export interface MagicTableCtxType<T = unknown> extends ReturnType<typeof useVirtual<T>> {
+export interface MagicTableCtxType<T = unknown> {
     tableProps: MagicTableProps<T>
     table: Table<T>
     rowSelection: Atom<RowSelectionState>
@@ -18,3 +18,5 @@ export interface MagicTableCtxType<T = unknown> extends ReturnType<typeof useVir
 }
 
 export const MagicTableCtx = /* @__PURE__ */ createCtx<MagicTableCtxType>()
+
+export const MagicVirtualTableCtx = /* @__PURE__ */ createCtx<ReturnType<typeof useVirtual<unknown>>>()

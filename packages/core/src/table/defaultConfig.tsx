@@ -56,7 +56,7 @@ export const expandingConfig = {
         return (
             <div class="p-2 w-full text-center">
                 {
-                    <Icon onClick={ctx.row.getToggleExpandedHandler()}>
+                    <Icon onClick={ctx.row.getToggleExpandedHandler()} class="cursor-pointer">
                         {ctx.row.getCanExpand() ? (
                             ctx.row.getIsExpanded() ? (
                                 <AiOutlineCaretDown class="fill-primary-600"></AiOutlineCaretDown>

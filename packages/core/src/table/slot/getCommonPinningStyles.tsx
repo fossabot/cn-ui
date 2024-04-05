@@ -3,7 +3,7 @@ import { Column } from '@tanstack/solid-table'
 import { JSX } from 'solid-js'
 import { MagicTableCtx, MagicTableCtxType } from '../MagicTableCtx'
 
-export function getCommonPinningStyles<T, D>(column: Column<T, D>, paddingLeft: number): JSX.CSSProperties {
+export function getCommonPinningStyles<T, D>(column: Column<T, D>, paddingLeft: number, isHeader = false): JSX.CSSProperties {
     const isPinned = column.getIsPinned()
     if (!isPinned) return {}
     const { tableScroll } = MagicTableCtx.use<MagicTableCtxType<T>>()
@@ -15,8 +15,14 @@ export function getCommonPinningStyles<T, D>(column: Column<T, D>, paddingLeft: 
     if (tableScroll.arrivedState.right) isFirstRightPinnedColumn = false
     return {
         'box-shadow': isLastLeftPinnedColumn ? '#00000014 4px 0px 4px 0px ' : isFirstRightPinnedColumn ? '#00000014 -4px 0px 4px 0px ' : undefined,
-        left: isPinned ? toCSSPx((isPinned === 'left' ? 0 : paddingLeft) + column.getStart(isPinned)) : undefined,
-        'z-index': isPinned ? 1 : 0,
-        position: 'sticky'
+        left: isHeader
+            ? isPinned === 'left'
+                ? toCSSPx(column.getStart('left'))
+                : undefined
+            : isPinned
+              ? toCSSPx((isPinned === 'left' ? 0 : paddingLeft) + column.getStart(isPinned))
+              : undefined,
+        right: isPinned === 'right' ? toCSSPx(column.getAfter('right')) : undefined,
+        'z-index': isPinned ? 1 : 0
     }
 }

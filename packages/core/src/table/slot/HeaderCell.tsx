@@ -1,6 +1,6 @@
 import { classNames, toCSSPx } from '@cn-ui/reactive'
 import { Header, flexRender } from '@tanstack/solid-table'
-import { MagicTableCtx } from '../MagicTableCtx'
+import { MagicTableCtx, MagicVirtualTableCtx } from '../MagicTableCtx'
 import { AiOutlineSwapRight } from 'solid-icons/ai'
 import { VirtualItem } from '@tanstack/solid-virtual'
 import { Show, createMemo } from 'solid-js'
@@ -14,20 +14,22 @@ export function HeaderCell<T, D>(props: {
     level?: number
     useHeaderStart?: boolean
 }) {
-    const { estimateHeight, table, paddingLeft } = MagicTableCtx.use()
+    const { paddingLeft } = MagicVirtualTableCtx.use()
+    const { estimateHeight, table } = MagicTableCtx.use()
     const header = createMemo(() => props.header)
     const column = createMemo(() => header().column)
+
     return (
         <th
             class={classNames(
-                props.absolute && 'absolute',
+                column().getIsPinned() ? 'sticky' : props.absolute !== false && 'absolute',
                 'pointer-events-auto block bg-gray-100 py-2 text-sm border-b border-r border-solid border-gray-300/80 '
             )}
             style={{
                 width: toCSSPx(header().getSize()),
                 height: toCSSPx(estimateHeight(), '48px'),
                 left: props.useHeaderStart ? toCSSPx(props.paddingLeft + header().getStart() + paddingLeft()) : toCSSPx(props.paddingLeft + props.item.start),
-                ...getCommonPinningStyles(column(), props.paddingLeft)
+                ...getCommonPinningStyles(column(), props.paddingLeft, true)
             }}
         >
             <div class={column().getCanSort() ? ' select-none' : ' '}>

@@ -1,19 +1,25 @@
 import { toCSSPx } from '@cn-ui/reactive'
-import { MagicTableCtx, MagicTableCtxType } from './MagicTableCtx'
+import { MagicTableCtx, MagicTableCtxType, MagicVirtualTableCtx } from './MagicTableCtx'
 import { HeaderRow } from './slot/HeaderRow'
 import { Key } from '@solid-primitives/keyed'
 import { Show } from 'solid-js'
 
 export function MagicTableHeader<T>(props: { rowAbsolute: boolean }) {
-    const { table, tableWidth } = MagicTableCtx.use<MagicTableCtxType<T>>()
+    const { tableWidth } = MagicVirtualTableCtx.use()
+    const { table } = MagicTableCtx.use<MagicTableCtxType<T>>()
 
     return (
         <thead
             class="sticky top-0 z-10 block border-x border-b border-gray-200"
-            style={{
-                width: toCSSPx(props.rowAbsolute ? tableWidth() : 'fit-content')
-            }}
+            style={
+                props.rowAbsolute
+                    ? {
+                          width: toCSSPx(props.rowAbsolute ? tableWidth() : 'fit-content')
+                      }
+                    : undefined
+            }
         >
+            {/* 左侧 fixed */}
             <Show when={table.getLeftLeafColumns().length}>
                 <Key by="id" each={table.getLeftHeaderGroups()}>
                     {(group, index) => {
@@ -29,6 +35,7 @@ export function MagicTableHeader<T>(props: { rowAbsolute: boolean }) {
                     }}
                 </Key>
             </Show>
+
             <Key by="id" each={table.getCenterHeaderGroups()}>
                 {(group, index) => {
                     return (
@@ -42,6 +49,7 @@ export function MagicTableHeader<T>(props: { rowAbsolute: boolean }) {
                     )
                 }}
             </Key>
+            {/* 右侧 fixed */}
             <Show when={table.getRightLeafColumns().length}>
                 <Key by="id" each={table.getRightHeaderGroups()}>
                     {(group, index) => {

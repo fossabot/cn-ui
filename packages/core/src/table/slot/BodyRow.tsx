@@ -1,8 +1,8 @@
 import { JSXElement, Show, createMemo } from 'solid-js'
-import { MagicTableCtx, MagicTableCtxType } from '../MagicTableCtx'
+import { MagicTableCtx, MagicTableCtxType, MagicVirtualTableCtx } from '../MagicTableCtx'
 import { BodyCell } from './BodyCell'
 import { classNames, toCSSPx } from '@cn-ui/reactive'
-import { Cell } from '@tanstack/solid-table'
+import { Cell, Row } from '@tanstack/solid-table'
 import { VirtualItem } from '@tanstack/solid-virtual'
 import { Key } from '@solid-primitives/keyed'
 import './bodyRow.css'
@@ -12,11 +12,12 @@ export function BodyRow<T, _D>(props: {
     cells?: Cell<T, unknown>[]
     columnsFilter?: (items: VirtualItem[]) => VirtualItem[]
     children?: (item: VirtualItem) => JSXElement
-    virtualRow: VirtualItem
+    virtualRow: VirtualItem | Row<unknown>
     hideWhenEmpty?: boolean
     absolute: boolean
 }) {
-    const { columnVirtualizer, rows, width, paddingRight, rowVirtualizer, estimateHeight } = MagicTableCtx.use<MagicTableCtxType<T>>()
+    const { columnVirtualizer, rows, paddingRight, rowVirtualizer } = MagicVirtualTableCtx.use()
+    const { width, estimateHeight } = MagicTableCtx.use<MagicTableCtxType<T>>()
 
     const row = createMemo(() => rows()[props.virtualRow.index])
     const rowVisibleCells = createMemo(() => {
@@ -44,10 +45,14 @@ export function BodyRow<T, _D>(props: {
                     'cn-table-body-row  flex w-full duration-300 transition-colors border-b',
                     row().getIsSelected() && 'cn-selected'
                 )}
-                style={{
-                    top: toCSSPx(props.virtualRow.start),
-                    height: toCSSPx(estimateHeight(), '48px')
-                }}
+                style={
+                    props.absolute
+                        ? {
+                              top: toCSSPx((props.virtualRow as VirtualItem).start),
+                              height: toCSSPx(estimateHeight(), '48px')
+                          }
+                        : undefined
+                }
                 // rowClick Selection
                 // onClick={() => {
                 //     selection() && row().toggleSelected()

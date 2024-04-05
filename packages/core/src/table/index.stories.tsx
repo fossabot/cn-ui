@@ -38,7 +38,11 @@ export const Primary: Story = {
     decorators: [
         (Story) => (
             <>
-                <Story />
+                <div class="p-12 overflow-hidden h-full">
+                    <div class="overflow-auto h-full">
+                        <Story />
+                    </div>
+                </div>
                 <style>
                     {`html,body,#storybook-root {
                 height:100%
@@ -52,7 +56,7 @@ export const Primary: Story = {
         const cols = makeColumns(1000)
         const data = makeData(1000, cols)
         console.timeEnd('createData')
-        return <MagicTable columns={cols} data={data}></MagicTable>
+        // return <MagicTable columns={cols} data={data}></MagicTable>
     },
     args: {}
 }

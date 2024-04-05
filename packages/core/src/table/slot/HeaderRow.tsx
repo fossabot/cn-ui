@@ -1,4 +1,4 @@
-import { MagicTableCtx, MagicTableCtxType } from '../MagicTableCtx'
+import { MagicTableCtx, MagicTableCtxType, MagicVirtualTableCtx } from '../MagicTableCtx'
 import { Show, createMemo } from 'solid-js'
 import { HeaderCell } from './HeaderCell'
 import { Header } from '@tanstack/solid-table'
@@ -15,14 +15,16 @@ export function HeaderRow<T>(props: {
     isLastRow?: boolean
     position: 'center' | 'left' | 'right'
 }) {
-    const { columnVirtualizer, estimateHeight, width, paddingRight } = MagicTableCtx.use<MagicTableCtxType<T>>()
+    const { columnVirtualizer, paddingRight, paddingLeft } = MagicVirtualTableCtx.use()
+    const { estimateHeight, width } = MagicTableCtx.use<MagicTableCtxType<T>>()
     const columns = createMemo(() => {
         if (['left', 'right'].includes(props.position))
             return props.headers.map((_, index) => {
                 return { index } as VirtualItem
             })
-        if (props.columnsFilter) return props.columnsFilter(columnVirtualizer.getVirtualItems())
-        return columnVirtualizer.getVirtualItems()
+        const cols = columnVirtualizer.getVirtualItems()
+        if (props.columnsFilter) return props.columnsFilter(cols)
+        return cols
     })
     const rightSideLeft = createMemo(() => {
         return width() - paddingRight()
@@ -32,7 +34,11 @@ export function HeaderRow<T>(props: {
         <Show when={!props.hideWhenEmpty || columns().length}>
             <tr
                 data-level={props.level}
-                class={classNames(props.position !== 'center' ? 'absolute pointer-events-none cn-fixed-table-header' : 'relative', ' flex border-b w-full')}
+                class={classNames(
+                    props.position !== 'center' ? 'absolute pointer-events-none cn-fixed-table-header z-1' : 'relative',
+                    ' flex border-b w-full',
+                    props.position === 'right' && 'justify-end'
+                )}
                 style={
                     props.absolute
                         ? {
@@ -42,6 +48,8 @@ export function HeaderRow<T>(props: {
                         : {}
                 }
             >
+                {/* 左侧静态间隔 */}
+                {!props.absolute && <td style={{ width: toCSSPx(paddingLeft()) }}></td>}
                 <Key by="key" each={columns()}>
                     {(item) => {
                         const header = createMemo(() => props.headers[item().index])
@@ -59,6 +67,8 @@ export function HeaderRow<T>(props: {
                         )
                     }}
                 </Key>
+                {/* 右侧静态间隔 */}
+                {!props.absolute && <td style={{ width: toCSSPx(paddingRight()) }}></td>}
             </tr>
         </Show>
     )
