@@ -4,38 +4,29 @@ import path from 'path'
 import fs from 'fs'
 import multi from 'rollup-plugin-multi-input'
 import analyze from 'rollup-plugin-analyzer'
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 const ignoreDeps = ['solid-js', 'solid-js/web', 'solid-js/store']
 const buildConfig = (entry) => {
     const collection = new Map()
     return defineConfig({
         mode: 'production',
+        css: {
+
+        },
         plugins: [
             {
                 name: 'external',
                 resolveId: {
                     order: 'pre',
                     handler(source, importer, options) {
-                        const shortString = (i = 'null') => i.split('packages')?.[1] ?? i
-                        if (source.startsWith('.') && importer) {
-                            collection.set(shortString(importer), shortString(path.resolve(path.dirname(importer), source)))
-                        } else {
-                            collection.set(shortString(importer), shortString(source))
-                        }
                         if (ignoreDeps.includes(source)) {
                             return { id: source, external: true }
                         }
                     }
                 },
-                async generateBundle(outputOptions, bundle) {
-                    // fs.writeFileSync(`./dist/${path.basename(entry)}_relationShip.json`, JSON.stringify([...collection.entries()]))
-                }
             },
-
+            cssInjectedByJsPlugin(),
             solid()
-            // analyze({
-            //     stdout: false,
-            //     summaryOnly: true
-            // })
         ],
         esbuild: {
             minifyWhitespace: true,
@@ -47,13 +38,6 @@ const buildConfig = (entry) => {
             outDir: 'dist',
             emptyOutDir: false,
             reportCompressedSize: false,
-            // lib: {
-            //     entry,
-            //     formats: ['es'],
-            //     fileName(format, entryName) {
-            //         return entryName + '.js'
-            //     },
-            // },
             rollupOptions: {
                 input: entry
             },

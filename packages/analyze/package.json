@@ -18,6 +18,7 @@
         "p-limit": "^5.0.0"
     },
     "devDependencies": {
-        "rollup-plugin-analyzer": "^4.0.0"
+        "rollup-plugin-analyzer": "^4.0.0",
+        "vite-plugin-css-injected-by-js": "^3.5.0"
     }
 }
