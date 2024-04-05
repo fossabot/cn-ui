@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/solid-table'
-import { MagicTable, MagicTableExpose } from '../Table'
+import { MagicTable, MagicTableExpose } from '..'
 import Mock from 'mockjs-ts'
 import { NullAtom } from '@cn-ui/reactive'
 import { Show } from 'solid-js'

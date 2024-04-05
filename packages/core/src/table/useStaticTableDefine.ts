@@ -1,0 +1,91 @@
+import { atom } from '@cn-ui/reactive'
+import {
+    getSortedRowModel,
+    getCoreRowModel,
+    createSolidTable,
+    RowSelectionState,
+    SortingState,
+    ColumnOrderState,
+    OnChangeFn,
+    ColumnSizingState,
+    VisibilityState,
+    getExpandedRowModel,
+    ExpandedState,
+    ColumnDef
+} from '@tanstack/solid-table'
+import { expandingConfig, indexConfig, selectionConfig } from './defaultConfig'
+import { createMemo } from 'solid-js'
+import { MagicTableProps } from './interface'
+
+export const useStaticTableDefine = <T>(props: MagicTableProps<T>) => {
+    const [rowSelection, onRowSelectionChange] = createStateLinker<RowSelectionState>({})
+    const [sorting, onSortingChange] = createStateLinker<SortingState>([])
+    const [columnVisibility, onColumnVisibilityChange] = createStateLinker<VisibilityState>({})
+    const [columnSizing, onColumnSizingChange] = createStateLinker<ColumnSizingState>({})
+    const [expanded, onExpandedChange] = createStateLinker<ExpandedState>({})
+    const [columnOrder, onColumnOrderChange] = createStateLinker<ColumnOrderState>([])
+    const composedColumns = createMemo<ColumnDef<T>[]>(() =>
+        /** @ts-ignore */
+        [props.selection && selectionConfig, props.index && indexConfig, props.expandable && expandingConfig, ...props.columns].filter((i) => i)
+    )
+
+    const table = createSolidTable<T>({
+        get data() {
+            return props.data
+        },
+        get columns() {
+            return composedColumns()
+        },
+        state: {
+            get columnSizing() {
+                return columnSizing()
+            },
+            get rowSelection() {
+                return rowSelection()
+            },
+            get sorting() {
+                return sorting()
+            },
+            get columnVisibility() {
+                return columnVisibility()
+            },
+            get columnOrder() {
+                return columnOrder()
+            },
+            get expanded() {
+                return expanded()
+            }
+        },
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getExpandedRowModel: getExpandedRowModel(),
+
+        onColumnSizingChange,
+        columnResizeMode: 'onEnd',
+        columnResizeDirection: 'ltr',
+
+        onExpandedChange,
+        getSubRows: (row) => (row as any).subRows,
+        onColumnVisibilityChange,
+        onColumnOrderChange,
+        enableExpanding: !!props.expandable,
+        enableRowSelection: !!props.selection,
+        onRowSelectionChange,
+        onSortingChange,
+        meta: {
+            updateData: props.onUpdateData
+        },
+        debugTable: true
+    })
+    return { table, composedColumns, rowSelection, sorting, columnVisibility, columnSizing, expanded, columnOrder }
+}
+/** 构建 tanstack 和 solidjs 变量的转换函数 */
+function createStateLinker<T>(init: T) {
+    const state = atom(init)
+    return [
+        state,
+        function (updateOrValue) {
+            state((selection) => (typeof updateOrValue === 'function' ? (updateOrValue as (a: T) => T)(selection) : updateOrValue))
+        } as OnChangeFn<T>
+    ] as const
+}

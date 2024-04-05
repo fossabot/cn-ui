@@ -3,9 +3,11 @@ import { CellContext, RowSelectionState, Table } from '@tanstack/solid-table'
 import { useVirtual } from './useVirtual'
 import { useScroll } from 'solidjs-use'
 import { Accessor } from 'solid-js'
-import { MagicTableProps } from '.'
+import { MagicTableProps } from './interface'
 import { JSX } from 'solid-js'
-export type MagicTableCtxType<T = unknown> = {
+
+export interface MagicTableCtxType<T = unknown> extends ReturnType<typeof useVirtual<T>> {
+    tableProps: MagicTableProps<T>
     table: Table<T>
     rowSelection: Atom<RowSelectionState>
     tableScroll: ReturnType<typeof useScroll>
@@ -13,6 +15,6 @@ export type MagicTableCtxType<T = unknown> = {
     estimateHeight: Accessor<number | undefined>
     width: Accessor<number>
     defaultCell?: <T, D>(props: CellContext<T, D>) => JSX.Element
-} & ReturnType<typeof useVirtual<T>>
+}
 
 export const MagicTableCtx = /* @__PURE__ */ createCtx<MagicTableCtxType>()
