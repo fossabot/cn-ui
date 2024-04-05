@@ -9,8 +9,7 @@ pnpm i @cn-ui/core
 
 ```js
 // entry
-import '@cn-ui/core/dist/cn-uno.css'
-import '@cn-ui/core/dist/esm/style.css'
+import '@cn-ui/core/dist/cn-uno.css' // if you don't use UnoCSS
 ```
 
 ```tsx

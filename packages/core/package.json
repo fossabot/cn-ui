@@ -1,8 +1,8 @@
 {
     "name": "@cn-ui/core",
-    "version": "2.3.0",
+    "version": "2.4.0",
     "type": "module",
-    "main": "./dist/ssr/index.js",
+    "main": "./dist/lib/index.js",
     "types": "./dist/index.d.ts",
     "files": [
         "dist"
@@ -33,13 +33,12 @@
         "registry": "https://registry.npmjs.org/"
     },
     "sideEffects": [
-        "*.css"
+        "**/*.css"
     ],
     "scripts": {
-        "build": "node ./script/clean-dist.mjs && pnpm build:ssr && vite build -c vite.config.lib.ts && node ./script/build-entry.mjs && pnpm build:css && pnpm docgen",
-        "build:css": "unocss \"src/**/*.{ts,tsx,css}\" --out-file dist/cn-uno.css -m --preflights",
+        "build": "node ./script/clean-dist.mjs && node ./script/build-entry.mjs && tsc && pnpm build:css && pnpm docgen",
+        "build:css": "node ./script/copy-css-to-dist.mjs && unocss \"src/**/*.{ts,tsx,css}\" --out-file dist/cn-uno.css -m --preflights && unocss \"dist/lib/**/*.css\" --write-transformed -m --out-file dist/cn-uno.not.css",
         "docgen": "node ./script/docgen.mjs",
-        "build:ssr": "tsc && node ./script/clean-import.mjs",
         "storybook": "storybook dev -p 6006",
         "type-check": "tsc -p tsconfig.node.json",
         "prettier": "prettier --write src/**/*",
