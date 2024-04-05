@@ -1,4 +1,4 @@
-import { OriginComponent, OriginDiv, atom, classNames } from '@cn-ui/reactive'
+import { OriginComponent, OriginDiv, classNames } from '@cn-ui/reactive'
 import { For, Show } from 'solid-js'
 import { CommonGroupListConfig } from '../groupList'
 import { Dynamic } from 'solid-js/web'
