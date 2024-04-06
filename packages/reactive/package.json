@@ -1,13 +1,13 @@
 {
     "name": "@cn-ui/reactive",
-    "version": "3.4.0",
+    "version": "4.0.0",
     "description": "",
     "main": "./src/index.ts",
     "files": [
         "dist"
     ],
     "scripts": {
-        "build": "vite build && tsc",
+        "build": "tsc -p tsconfig.node.json",
         "test": "vitest run",
         "test-watch": "vitest",
         "test-ui": "vitest --ui",

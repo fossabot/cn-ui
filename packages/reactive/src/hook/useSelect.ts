@@ -1,6 +1,6 @@
 import { atomization } from '../utils'
-import { atom, Atom, computed, SetAtom } from '../atom/index'
-import { createEffect, createMemo, untrack } from 'solid-js'
+import { atom, Atom, computed } from '../atom/index'
+import { createEffect, untrack } from 'solid-js'
 
 /**
  * @zh 多选状态管理

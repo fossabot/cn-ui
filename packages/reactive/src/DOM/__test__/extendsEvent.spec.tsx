@@ -1,8 +1,7 @@
 import { fireEvent, render } from '@solidjs/testing-library'
-import { describe } from 'vitest'
+import { describe, expect, it, test } from 'vitest'
 import { OriginComponent } from '../OriginComponent'
 import { atom, extendsEvent, sleep } from '../..'
-import { JSXElement } from 'solid-js'
 
 describe('extendsEvent', () => {
     it('should extract event keys from props', () => {
