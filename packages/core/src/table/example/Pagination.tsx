@@ -2,8 +2,9 @@ import { createColumnHelper } from '@tanstack/solid-table'
 import { MagicTable } from '../Table'
 import { Container, Footer, Header, Main } from '../../container'
 import { Pagination } from '../../pagination'
-import { atom, genArray, usePagination } from '@cn-ui/reactive'
+import { atom, usePagination } from '@cn-ui/reactive'
 import { newPerson } from './Expanded'
+import Mock from 'mockjs-ts'
 
 type Person = {
     firstName: string
@@ -65,7 +66,7 @@ export const PaginationExample = () => {
         async (_, max, count) => {
             max(100)
             count(pageSize() * 100)
-            return genArray(pageSize()).map(newPerson)
+            return Mock.mock<{ data: Person[] }>({ ['data|' + pageSize]: newPerson() }).data
         },
         { initValue: [] }
     )

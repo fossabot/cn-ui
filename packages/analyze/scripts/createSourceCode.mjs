@@ -2,29 +2,29 @@ import fs from 'fs'
 
 export const createSourceCode = (imports, options) => {
     fs.writeFileSync(`./temp/${imports[0]}.ts`, `import { ${imports.join(', ')} } from '@cn-ui/core';\n console.log(${imports.join(', ')})`)
-}
+};
 
 // 将需要分析的组件放置在这里
-;[
+[
     ['Avatar'],
     ['Button'],
     ['Checkbox'],
-    ['CheckboxGroup'], // TODO
-    ['Collapse'], // TODO
+    ['CheckboxGroup'],
+    ['Collapse'],
     ['Flex'],
     ['Container', 'Main', 'Header', 'Aside', 'Footer', 'Center'],
-    ['DatePicker'], // TODO
+    ['DatePicker'],
     ['Dialog'],
     // Extra
     ['SortableList'],
 
     ['FloatingButton'],
     ['MagicForm'],
-    ['GroupList'], // TODO
+    ['GroupList'],
     ['Icon'],
     ['Image'],
     ['BaseInput'],
-    ['InputNumber'], // TODO
+    ['InputNumber'],
     ['LazyLoad'],
     ['Loading'],
     ['Message'],
@@ -33,11 +33,11 @@ export const createSourceCode = (imports, options) => {
     ['Pagination'],
     ['PickerColumn'],
     ['AddressPicker'],
-    ['Popover'], // TODO
+    ['Popover'],
     ['Row', 'Col'],
-    ['Select'], // TODO
+    ['Select'],
     ['Splitter'],
-    ['MagicTable'], // TODO
+    ['MagicTable'],
     ['Tabs', 'Tab'],
     ['Tag', 'TagGroup'],
     ['TOC'],
