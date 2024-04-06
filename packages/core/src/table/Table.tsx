@@ -1,23 +1,21 @@
 import { atom, OriginComponent, OriginComponentInputType, toCSSPx } from '@cn-ui/reactive'
 import { MagicTableCtx, MagicTableCtxType, MagicVirtualTableCtx } from './MagicTableCtx'
-import { useVirtual } from './useVirtual'
 import { MagicTableHeader } from './MagicTableHeader'
 import { MagicTableBody } from './MagicTableBody'
 import { useScroll } from 'solidjs-use'
 import { useAutoResize } from './hook/useAutoResize'
 import { MagicTableProps, MagicTableExpose } from './interface'
 import { useStaticTableDefine } from './useStaticTableDefine'
-import { createMemo, mergeProps } from 'solid-js'
+import { createMemo } from 'solid-js'
 
 export const MagicTable = OriginComponent(function <T>(props: OriginComponentInputType<MagicTableProps<T>>) {
-    props = mergeProps({ virtual: true }, props)
     const tableContainerRef = atom<HTMLDivElement | null>(null)
 
     // 静态 table 的各项属性
     const { table, rowSelection, composedColumns, paddingLeft, paddingRight } = useStaticTableDefine(props)
     // 虚拟 table 的各项属性
     const virtualSettings = props.virtual
-        ? useVirtual<T>(table, tableContainerRef, { paddingLeft, paddingRight, composedColumns, estimateHeight: () => props.estimateHeight })
+        ? props.virtual<T>(table, tableContainerRef, { paddingLeft, paddingRight, composedColumns, estimateHeight: () => props.estimateHeight })
         : undefined
 
     const { height, width } = useAutoResize(tableContainerRef)

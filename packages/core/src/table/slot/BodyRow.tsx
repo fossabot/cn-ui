@@ -30,6 +30,7 @@ export function BodyRow<T, _D>(props: {
     const visibleCells = createMemo(() => props.cells ?? row()?.getCenterVisibleCells() ?? [])
 
     const columns = createMemo<(VirtualItem | Column<T, unknown>)[]>(() => {
+        if (!props.absolute) return { length: 1 } as any
         if (props.columnsFilter) return props.columnsFilter(vTable.columnVirtualizer.getVirtualItems())
         return vTable.columnVirtualizer.getVirtualItems()
     })

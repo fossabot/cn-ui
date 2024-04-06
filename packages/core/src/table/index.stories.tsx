@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-solidjs'
-import { MagicTable, MagicTableExpose } from './index'
-import Mock, { GlobalSeedAtom, random } from 'mockjs-ts'
+import { MagicTable, MagicTableExpose, useVirtual } from './index'
+import { GlobalSeedAtom, random } from 'mockjs-ts'
 import { NullAtom } from '@cn-ui/reactive'
 import { ColumnGroups } from './example/ColumnGroups'
 import { ColumnOrdering } from './example/ColumnOrdering'
@@ -58,7 +58,7 @@ export const Primary: Story = {
         const cols = makeColumns(1000)
         const data = makeData(1000, cols)
         console.timeEnd('createData')
-        return <MagicTable virtual={true} columns={cols} data={data}></MagicTable>
+        return <MagicTable virtual={useVirtual} columns={cols} data={data}></MagicTable>
     },
     args: {}
 }
