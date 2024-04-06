@@ -169,6 +169,9 @@ importers:
       rollup-plugin-analyzer:
         specifier: ^4.0.0
         version: 4.0.0
+      rollup-plugin-visualizer:
+        specifier: ^5.12.0
+        version: 5.12.0(rollup@4.14.0)
       vite-plugin-css-injected-by-js:
         specifier: ^3.5.0
         version: 3.5.0(vite@5.2.4)
@@ -6771,7 +6774,6 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
-    dev: false
 
   /clone-deep@4.0.1:
     resolution: {integrity: sha512-neHB9xuzh/wk0dIHweyAXv2aPGZIVk3pLMe+/RNzINf17fe0OG96QroktYAUm7SM1PBnzTabaLboqqxDyMU+SQ==}
@@ -8119,7 +8121,6 @@ packages:
   /get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
-    dev: false
 
   /get-east-asian-width@1.2.0:
     resolution: {integrity: sha512-2nk+7SIVb14QrgXFHcm84tD4bKQz0RxPuMT8Ag5KPOq7J5fEmAg0UbXdTOSHqNuHSU28k55qnceesxXRZGzKWA==}
@@ -11736,7 +11737,6 @@ packages:
   /require-directory@2.1.1:
     resolution: {integrity: sha1-jGStX9MNqxyXbiNE/+f3kqam30I=}
     engines: {node: '>=0.10.0'}
-    dev: false
 
   /requires-port@1.0.0:
     resolution: {integrity: sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=}
@@ -11875,6 +11875,23 @@ packages:
     engines: {node: '>=16'}
     dependencies:
       fast-glob: 3.2.12
+    dev: true
+
+  /rollup-plugin-visualizer@5.12.0(rollup@4.14.0):
+    resolution: {integrity: sha512-8/NU9jXcHRs7Nnj07PF2o4gjxmm9lXIrZ8r175bT9dK8qoLlvKTwRMArRCMgpMGlq8CTLugRvEmyMeMXIU2pNQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+    peerDependencies:
+      rollup: 2.x || 3.x || 4.x
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      open: 8.4.2
+      picomatch: 2.3.1
+      rollup: 4.14.0
+      source-map: 0.7.4
+      yargs: 17.7.2
     dev: true
 
   /rollup-plugin-webpack-stats@0.2.4(rollup@4.14.0):
@@ -13961,7 +13978,6 @@ packages:
   /y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
     engines: {node: '>=10'}
-    dev: false
 
   /yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
@@ -13984,7 +14000,6 @@ packages:
       string-width: 4.2.3
       y18n: 5.0.8
       yargs-parser: 21.1.1
-    dev: false
 
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}

@@ -5,6 +5,7 @@ import fs from 'fs'
 import multi from 'rollup-plugin-multi-input'
 import analyze from 'rollup-plugin-analyzer'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import { visualizer } from "rollup-plugin-visualizer";
 const ignoreDeps = ['solid-js', 'solid-js/web', 'solid-js/store']
 const buildConfig = (entry) => {
     const collection = new Map()
@@ -26,7 +27,11 @@ const buildConfig = (entry) => {
                 },
             },
             cssInjectedByJsPlugin(),
-            solid()
+            solid(),
+            visualizer({
+                emitFile: true,
+                filename: "dist/" + entry + ".html",
+            }),
         ],
         esbuild: {
             minifyWhitespace: true,

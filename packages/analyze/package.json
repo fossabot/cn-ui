@@ -19,6 +19,7 @@
     },
     "devDependencies": {
         "rollup-plugin-analyzer": "^4.0.0",
+        "rollup-plugin-visualizer": "^5.12.0",
         "vite-plugin-css-injected-by-js": "^3.5.0"
     }
 }
