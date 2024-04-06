@@ -19,6 +19,7 @@ export interface SortableListProps<T extends { id: string }> {
     options?: Options
     disabled?: Atom<boolean>
     setData?: (data: DataTransfer, el: HTMLElement) => void
+    onSorted?: (data: T[]) => void
 }
 
 export type SortableListType = <
@@ -80,8 +81,8 @@ export const SortableList = OriginComponent(function <T extends { id: string }>(
         setData: props.setData,
         onSort() {
             props.options?.onSort?.apply(this, arguments as any)
-            // console.log(sortable);
             RefreshData()
+            props.onSorted?.(each())
         }
     })
     const resort = () => {
