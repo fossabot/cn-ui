@@ -1,11 +1,11 @@
 import { createEvent, fireEvent, getByTitle, render, screen } from '@solidjs/testing-library'
-import { describe } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { OriginComponent } from '../OriginComponent'
 import { atom, sleep } from '../..'
 
 describe('OriginComponent', () => {
     test('should add style correctly', () => {
-        const WrappedComp = OriginComponent((props) => <div style={props.style}>hello</div>)
+        const WrappedComp = OriginComponent((props) => <div style={props.style()}>hello</div>)
 
         const { getByText } = render(() => (
             <WrappedComp

@@ -1,99 +1,158 @@
 import { atomization } from '../utils'
-import { ArrayAtom, atom, Atom, SetAtom } from '../atom/index'
-import { createEffect } from 'solid-js'
+import { atom, Atom, computed, SetAtom } from '../atom/index'
+import { createEffect, createMemo, untrack } from 'solid-js'
 
 /**
  * @zh 多选状态管理
  * */
-export const useSelect = function (
-    props: {
-        activeIds?: Atom<string[]>
+export function useSelect<T>(
+    options: Atom<T[]>,
+    config: {
+        getId?: (item: T) => string
         /** 默认多选，但是可以取消 */
         multi?: Atom<boolean> | boolean
+        // 当数据中出现不符合规定的数据时，是否保留
+        keepUndefinedOption?: boolean
     } = {}
 ) {
-    const activeIdsArray = ArrayAtom(props.activeIds ?? atom<string[]>([]))
+    const multi = atomization(config.multi ?? true)
 
-    const multi = atomization(props.multi ?? true)
-    const activeIdsSet = SetAtom(activeIdsArray())
+    /** @ts-ignore 未想到适合的类型挂载 */
+    const getId = config.getId ?? ((item) => item.value)
+    const optionsIdMap = computed(() => new Map<string, T>(options().map((i) => [getId(i), i])))
+    const selectedMap = atom(new Map<string, T>(), { equals: false })
+    const disabledMap = atom(new Map<string, T>(), { equals: false })
 
-    const disabledSet = SetAtom<string>([])
-
-    // 自动强制单选，防止上流 activeIds 强制多选的行为
+    // 自动强制单选，防止多选转单选发生数据错乱
     createEffect(() => {
-        !multi() && activeIdsArray((i) => i.slice(0, 1))
-        activeIdsSet(() => new Set(activeIdsArray()))
+        // 单选模式，限制选定数据为一个
+        !multi() &&
+            untrack(selectedMap).size >= 1 &&
+            selectedMap((i) => {
+                const onlyOneSelected = new Map<string, T>()
+                for (const entry of i.entries()) {
+                    if (optionsIdMap().has(entry[0])) {
+                        onlyOneSelected.set(entry[0], entry[1])
+                        // 如果需要保留未知 option 需要全部遍历
+                        if (config.keepUndefinedOption) {
+                            continue
+                        } else {
+                            break
+                        }
+                    } else if (config.keepUndefinedOption) {
+                        onlyOneSelected.set(entry[0], entry[1])
+                    }
+                }
+                return onlyOneSelected
+            })
     })
-
-    /** 曾注册过的状态 */
-    const allRegistered = atom(new Set<string>(), { equals: false })
 
     /** 更改相应 id 的状态 */
     const changeSelected = (id: string, state?: boolean) => {
-        if (disabledSet().has(id)) return false
+        if (disabledMap().has(id)) return false
         // 默认自动置反
-        if (state === undefined) state = !activeIdsSet().has(id)
+        if (state === undefined) state = !selectedMap().has(id)
 
-        if (state === true && !activeIdsSet().has(id)) {
-            activeIdsArray((i) => {
+        if (state === true && !selectedMap().has(id)) {
+            selectedMap((i) => {
+                const item = optionsIdMap().get(id)
+                if (!item) throw new Error('useSelect | changeSelected error: id ' + id + ' not found in options')
                 if (multi()) {
-                    return [...i, id]
+                    i.set(id, item)
+                    return i
                 } else {
-                    return [id]
+                    return new Map([[id, item]])
                 }
             })
         } else if (state === false) {
-            activeIdsArray.removeAll(id)
+            selectedMap().delete(id)
         }
         return state
     }
+    const multiSelectedState = computed(() => {
+        let hasOneSelected = false
+        let hasOneUnSelected = false
+        for (const id of optionsIdMap().keys()) {
+            if (selectedMap().has(id)) {
+                hasOneSelected = true
+            } else {
+                hasOneUnSelected = true
+            }
+        }
+        const isPartial = hasOneSelected && hasOneUnSelected
+        const isAll = hasOneSelected && !hasOneUnSelected
+        // 特殊情况，如果没有 options 那么应该是 isNone
+        const isNone = (!hasOneSelected && hasOneUnSelected) || optionsIdMap().size === 0
+        return { isAll, isNone, isPartial }
+    })
     return {
         multi,
-        activeIdsArray,
-        /** 更改状态 */
-        changeSelected,
+        selected: () => {
+            return selectedMap().values()
+        },
+        selectedMap,
+        toggle: (item: T, state?: boolean) => changeSelected(getId(item), state),
+        select: (item: T) => changeSelected(getId(item), true),
+        unselect: (item: T) => changeSelected(getId(item), false),
+
+        toggleById: changeSelected,
+        selectById: (item: string) => changeSelected(item, true),
+        unselectById: (item: string) => changeSelected(item, false),
         /** 清空选中 */
         clearAll() {
-            activeIdsArray([])
+            if (config.keepUndefinedOption) {
+                selectedMap((i) => {
+                    for (const id of optionsIdMap().keys()) {
+                        i.delete(id)
+                    }
+                    return i
+                })
+            } else {
+                selectedMap(new Map())
+            }
         },
         /** 选中所有 */
         selectAll() {
             if (multi()) {
-                activeIdsArray([...allRegistered()])
+                selectedMap((i) => {
+                    for (const item of optionsIdMap()) {
+                        i.set(...item)
+                    }
+                    return i
+                })
             } else {
-                throw new Error('单选不能进行全选')
+                throw new Error('useSelect | multi: false | can not trigger selectAll')
             }
-        },
-        /** 注册键，可以在任何时候进行注册 */
-        register(id: string, state = false) {
-            allRegistered((i) => {
-                i.add(id)
-                return i
-            })
-            changeSelected(id, state)
         },
         /** 所有选中 */
         isAllSelected() {
-            return allRegistered().size === activeIdsSet().size
+            return multiSelectedState().isAll
+        },
+        /** 所有未选中 */
+        isNoneSelected() {
+            return multiSelectedState().isNone
         },
         /** 是否选中有 */
         isIndeterminate() {
-            return allRegistered().size !== activeIdsSet().size && activeIdsSet().size > 0
+            return multiSelectedState().isPartial
         },
-        /** 取消整个键的采用 */
-        deregister(id: string) {
-            activeIdsArray.removeAll(id)
-            allRegistered((i) => (i.delete(id), i))
-        },
-        /** 所有注册过的键 */
-        allRegistered,
-        /** 被选中的键的 Set Atom */
-        activeIds: activeIdsSet,
         /** 检查一个键是否被选中 */
         isSelected: (id: string) => {
-            return activeIdsSet().has(id)
+            return selectedMap().has(id)
         },
         /** 禁用 */
-        disabledSet
+        disabledMap,
+        isDisabled(item: T) {
+            return disabledMap().has(getId(item))
+        },
+        isDisabledById(id: string) {
+            return disabledMap().has(id)
+        },
+        disable: (item: T) => {
+            disabledMap((i) => (i.set(getId(item), item), i))
+        },
+        disableById: (id: string) => {
+            disabledMap((i) => (i.set(id, optionsIdMap().get(id)!), i))
+        }
     }
 }
