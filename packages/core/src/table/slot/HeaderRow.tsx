@@ -2,7 +2,7 @@ import { MagicTableCtx, MagicTableCtxType, MagicVirtualTableCtx } from '../Magic
 import { Show, createMemo } from 'solid-js'
 import { HeaderCell } from './HeaderCell'
 import { Header } from '@tanstack/solid-table'
-import { VirtualItem } from '@tanstack/solid-virtual'
+import { VirtualItem } from '../virtual'
 import { classNames, toCSSPx } from '@cn-ui/reactive'
 import { Key } from '@solid-primitives/keyed'
 
@@ -15,16 +15,20 @@ export function HeaderRow<T>(props: {
     isLastRow?: boolean
     position: 'center' | 'left' | 'right'
 }) {
-    const { columnVirtualizer, paddingRight, paddingLeft } = MagicVirtualTableCtx.use()
-    const { estimateHeight, width } = MagicTableCtx.use<MagicTableCtxType<T>>()
-    const columns = createMemo(() => {
+    const vTable = MagicVirtualTableCtx.use()
+    const { estimateHeight, width, paddingRight, paddingLeft } = MagicTableCtx.use<MagicTableCtxType<T>>()
+    const columns = createMemo<(VirtualItem | Header<T, unknown>)[]>(() => {
         if (['left', 'right'].includes(props.position))
             return props.headers.map((_, index) => {
                 return { index } as VirtualItem
             })
-        const cols = columnVirtualizer.getVirtualItems()
-        if (props.columnsFilter) return props.columnsFilter(cols)
-        return cols
+        if (props.absolute) {
+            const cols = vTable.columnVirtualizer.getVirtualItems()
+            if (props.columnsFilter) return props.columnsFilter(cols)
+            return cols
+        } else {
+            return props.headers
+        }
     })
     const rightSideLeft = createMemo(() => {
         return width() - paddingRight()
@@ -50,17 +54,16 @@ export function HeaderRow<T>(props: {
             >
                 {/* 左侧静态间隔 */}
                 {!props.absolute && <td style={{ width: toCSSPx(paddingLeft()) }}></td>}
-                <Key by="key" each={columns()}>
+                <Key by="id" each={columns()}>
                     {(item) => {
                         const header = createMemo(() => props.headers[item().index])
-
                         return (
                             <Show when={header()}>
                                 <HeaderCell
                                     paddingLeft={props.position === 'right' ? rightSideLeft() : 0}
                                     absolute={props.absolute}
                                     header={header()}
-                                    item={item()}
+                                    item={item() as VirtualItem}
                                     useHeaderStart={!props.isLastRow}
                                 ></HeaderCell>
                             </Show>

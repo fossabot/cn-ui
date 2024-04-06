@@ -5,8 +5,9 @@ import { useScroll } from 'solidjs-use'
 import { Accessor } from 'solid-js'
 import { MagicTableProps } from './interface'
 import { JSX } from 'solid-js'
+import { useSticky } from './useSticky'
 
-export interface MagicTableCtxType<T = unknown> {
+export interface MagicTableCtxType<T = unknown> extends ReturnType<typeof useSticky> {
     tableProps: MagicTableProps<T>
     table: Table<T>
     rowSelection: Atom<RowSelectionState>
@@ -19,4 +20,4 @@ export interface MagicTableCtxType<T = unknown> {
 
 export const MagicTableCtx = /* @__PURE__ */ createCtx<MagicTableCtxType>()
 
-export const MagicVirtualTableCtx = /* @__PURE__ */ createCtx<ReturnType<typeof useVirtual<unknown>>>()
+export const MagicVirtualTableCtx = /* @__PURE__ */ createCtx<ReturnType<typeof useVirtual<unknown>>>(undefined, true)

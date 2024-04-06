@@ -1,4 +1,4 @@
-import { atom, classNames, toCSSPx } from '@cn-ui/reactive'
+import { atom, OriginComponent, OriginComponentInputType, toCSSPx } from '@cn-ui/reactive'
 import { MagicTableCtx, MagicTableCtxType, MagicVirtualTableCtx } from './MagicTableCtx'
 import { useVirtual } from './useVirtual'
 import { MagicTableHeader } from './MagicTableHeader'
@@ -7,15 +7,18 @@ import { useScroll } from 'solidjs-use'
 import { useAutoResize } from './hook/useAutoResize'
 import { MagicTableProps, MagicTableExpose } from './interface'
 import { useStaticTableDefine } from './useStaticTableDefine'
-import { createMemo } from 'solid-js'
+import { createMemo, mergeProps } from 'solid-js'
 
-export function MagicTable<T>(props: MagicTableProps<T>) {
+export const MagicTable = OriginComponent(function <T>(props: OriginComponentInputType<MagicTableProps<T>>) {
+    props = mergeProps({ virtual: true }, props)
     const tableContainerRef = atom<HTMLDivElement | null>(null)
 
     // 静态 table 的各项属性
-    const { table, rowSelection, composedColumns } = useStaticTableDefine(props)
+    const { table, rowSelection, composedColumns, paddingLeft, paddingRight } = useStaticTableDefine(props)
     // 虚拟 table 的各项属性
-    const virtualSettings = useVirtual<T>(table, tableContainerRef, { composedColumns, estimateHeight: () => props.estimateHeight })
+    const virtualSettings = props.virtual
+        ? useVirtual<T>(table, tableContainerRef, { paddingLeft, paddingRight, composedColumns, estimateHeight: () => props.estimateHeight })
+        : undefined
 
     const { height, width } = useAutoResize(tableContainerRef)
     const tableScroll = useScroll(() => (props.virtual ? tableContainerRef() : tableContainerRef()?.parentElement))
@@ -28,7 +31,9 @@ export function MagicTable<T>(props: MagicTableProps<T>) {
         defaultCell: props.defaultCell,
         tableScroll,
         selection: () => props.selection,
-        estimateHeight: () => props.estimateHeight
+        estimateHeight: () => props.estimateHeight,
+        paddingLeft,
+        paddingRight
     }))
     const expose: MagicTableExpose<T> = {
         ...context(),
@@ -53,16 +58,17 @@ export function MagicTable<T>(props: MagicTableProps<T>) {
         <MagicTableCtx.Provider value={context() as unknown as MagicTableCtxType}>
             <MagicVirtualTableCtx.Provider value={virtualSettings}>
                 <table
-                    class={classNames(props.virtual && 'block ', 'relative overflow-auto border border-gray-200')}
+                    class={props.class(props.virtual && 'block ', 'relative overflow-auto border border-gray-200')}
                     style={
                         props.virtual
                             ? {
-                                  width: toCSSPx(Math.min(width(), virtualSettings.tableWidth() + 5), '400px'),
-                                  height: toCSSPx(props.height ?? height(), '400px')
+                                  width: toCSSPx(Math.min(width(), virtualSettings!.tableWidth() + 5), '400px'),
+                                  height: toCSSPx(props.height ?? height(), '400px'),
+                                  ...props.style()
                               }
-                            : undefined
+                            : props.style()
                     }
-                    ref={tableContainerRef}
+                    ref={(el) => (tableContainerRef(el), props.ref?.(el))}
                 >
                     <MagicTableHeader rowAbsolute={!!props.virtual}></MagicTableHeader>
                     <MagicTableBody rowAbsolute={!!props.virtual}></MagicTableBody>
@@ -70,4 +76,4 @@ export function MagicTable<T>(props: MagicTableProps<T>) {
             </MagicVirtualTableCtx.Provider>
         </MagicTableCtx.Provider>
     )
-}
+})

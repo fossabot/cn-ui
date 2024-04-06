@@ -2,35 +2,13 @@ import { ColumnDef, Table } from '@tanstack/solid-table'
 import { Atom } from '@cn-ui/reactive'
 import { createVirtualizer } from './virtual/createVirtualizer'
 import { Accessor, createMemo } from 'solid-js'
-
-function useVirtualSticky<T>(table: Table<T>) {
-    const paddingLeft = createMemo(() => {
-        const last = table.getLeftLeafColumns().at(-1)
-        if (!last) return 0
-        return last.getSize() + last.getStart('left')
-    })
-    const paddingRight = createMemo(() => {
-        const last = table.getRightLeafColumns().at(-1)
-        if (!last) return 0
-        return last.getSize() + last.getStart('right')
-    })
-    // 添加初始化 fixed 特性
-    table.getLeafHeaders().forEach((i) => {
-        const position = i.column.columnDef.fixed
-        if (position) i.column.pin(position)
-    })
-    return {
-        paddingLeft,
-        paddingRight
-    }
-}
+import { useSticky } from './useSticky'
 
 export function useVirtual<T>(
     table: Table<T>,
     tableContainerRef: Atom<HTMLDivElement | null>,
-    data: { composedColumns: Accessor<ColumnDef<T>[]>; estimateHeight: Accessor<number | undefined> }
+    data: { composedColumns: Accessor<ColumnDef<T>[]>; estimateHeight: Accessor<number | undefined> } & ReturnType<typeof useSticky>
 ) {
-    const { paddingLeft, paddingRight } = useVirtualSticky(table)
     const columnVirtualizer = createVirtualizer({
         get count() {
             const count = table.getCenterVisibleLeafColumns().length
@@ -43,10 +21,10 @@ export function useVirtual<T>(
         horizontal: true,
         overscan: 12,
         get paddingStart() {
-            return paddingLeft()
+            return data.paddingLeft()
         },
         get paddingEnd() {
-            return paddingRight()
+            return data.paddingRight()
         }
     })
 
@@ -68,8 +46,6 @@ export function useVirtual<T>(
         tableWidth() {
             return columnVirtualizer.getTotalSize()
         },
-        paddingLeft,
-        paddingRight,
         rows
     }
 }

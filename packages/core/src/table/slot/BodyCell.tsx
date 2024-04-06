@@ -3,7 +3,7 @@ import { MagicTableCtx, MagicVirtualTableCtx } from '../MagicTableCtx'
 import { Atom, atom, classNames, createCtx, toCSSPx } from '@cn-ui/reactive'
 import { createMemo, onMount } from 'solid-js'
 import { checkEllipsis } from '../hook/useCheckEllipsis'
-import { VirtualItem } from '@tanstack/solid-virtual'
+import { VirtualItem } from '../virtual'
 import { getCommonPinningStyles } from './getCommonPinningStyles'
 export const MagicTableCellCtx = /* @__PURE__ */ createCtx<{
     contain: Atom<HTMLElement | null>
@@ -17,7 +17,7 @@ export interface BodyCellProps<T, D> {
     paddingLeft?: number
 }
 export function BodyCell<T, D>(props: BodyCellProps<T, D>) {
-    const { columnVirtualizer } = MagicVirtualTableCtx.use()
+    const vTable = MagicVirtualTableCtx.use()
     const { estimateHeight, defaultCell: defaultCellTemplate } = MagicTableCtx.use()
 
     const ctx = createMemo(() => props.cell.getContext())
@@ -37,7 +37,7 @@ export function BodyCell<T, D>(props: BodyCellProps<T, D>) {
                 data-index={props.item.index}
                 ref={(el) => {
                     contain(el)
-                    if (props.absolute && !props.position) queueMicrotask(() => columnVirtualizer.measureElement(el))
+                    if (props.absolute && !props.position) queueMicrotask(() => vTable.columnVirtualizer.measureElement(el))
                 }}
                 style={{
                     width: toCSSPx(props.cell.column.getSize()),

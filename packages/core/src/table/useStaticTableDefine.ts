@@ -16,6 +16,7 @@ import {
 import { expandingConfig, indexConfig, selectionConfig } from './defaultConfig'
 import { createMemo } from 'solid-js'
 import { MagicTableProps } from './interface'
+import { useSticky } from './useSticky'
 
 export const useStaticTableDefine = <T>(props: MagicTableProps<T>) => {
     const [rowSelection, onRowSelectionChange] = createStateLinker<RowSelectionState>({})
@@ -77,7 +78,8 @@ export const useStaticTableDefine = <T>(props: MagicTableProps<T>) => {
         },
         debugTable: true
     })
-    return { table, composedColumns, rowSelection, sorting, columnVisibility, columnSizing, expanded, columnOrder }
+
+    return { table, composedColumns, rowSelection, sorting, columnVisibility, columnSizing, expanded, columnOrder, ...useSticky(table) }
 }
 /** 构建 tanstack 和 solidjs 变量的转换函数 */
 function createStateLinker<T>(init: T) {

@@ -5,7 +5,7 @@ import { Key } from '@solid-primitives/keyed'
 import { Show } from 'solid-js'
 
 export function MagicTableHeader<T>(props: { rowAbsolute: boolean }) {
-    const { tableWidth } = MagicVirtualTableCtx.use()
+    const vTable = MagicVirtualTableCtx.use()
     const { table } = MagicTableCtx.use<MagicTableCtxType<T>>()
 
     return (
@@ -14,7 +14,7 @@ export function MagicTableHeader<T>(props: { rowAbsolute: boolean }) {
             style={
                 props.rowAbsolute
                     ? {
-                          width: toCSSPx(props.rowAbsolute ? tableWidth() : 'fit-content')
+                          width: toCSSPx(props.rowAbsolute ? vTable.tableWidth() : 'fit-content')
                       }
                     : undefined
             }

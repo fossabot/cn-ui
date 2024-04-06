@@ -2,8 +2,8 @@ import { JSXElement, Show, createMemo } from 'solid-js'
 import { MagicTableCtx, MagicTableCtxType, MagicVirtualTableCtx } from '../MagicTableCtx'
 import { BodyCell } from './BodyCell'
 import { classNames, toCSSPx } from '@cn-ui/reactive'
-import { Cell, Row } from '@tanstack/solid-table'
-import { VirtualItem } from '@tanstack/solid-virtual'
+import { Cell, Column, Row } from '@tanstack/solid-table'
+import { VirtualItem } from '../virtual'
 import { Key } from '@solid-primitives/keyed'
 import './bodyRow.css'
 export function BodyRow<T, _D>(props: {
@@ -16,19 +16,22 @@ export function BodyRow<T, _D>(props: {
     hideWhenEmpty?: boolean
     absolute: boolean
 }) {
-    const { columnVirtualizer, rows, paddingRight, rowVirtualizer } = MagicVirtualTableCtx.use()
-    const { width, estimateHeight } = MagicTableCtx.use<MagicTableCtxType<T>>()
+    const vTable = MagicVirtualTableCtx.use()
+    const { width, estimateHeight, paddingRight } = MagicTableCtx.use<MagicTableCtxType<T>>()
 
-    const row = createMemo(() => rows()[props.virtualRow.index])
-    const rowVisibleCells = createMemo(() => {
-        return row()?.getCenterVisibleCells() ?? []
+    const row = createMemo(() => {
+        if (props.absolute) {
+            return vTable.rows()[props.virtualRow.index]
+        } else {
+            return props.virtualRow as Row<unknown>
+        }
     })
 
-    const visibleCells = createMemo(() => props.cells ?? rowVisibleCells())
+    const visibleCells = createMemo(() => props.cells ?? row()?.getCenterVisibleCells() ?? [])
 
-    const columns = createMemo(() => {
-        if (props.columnsFilter) return props.columnsFilter(columnVirtualizer.getVirtualItems())
-        return columnVirtualizer.getVirtualItems()
+    const columns = createMemo<(VirtualItem | Column<T, unknown>)[]>(() => {
+        if (props.columnsFilter) return props.columnsFilter(vTable.columnVirtualizer.getVirtualItems())
+        return vTable.columnVirtualizer.getVirtualItems()
     })
     const rightSideLeft = createMemo(() => {
         return width() - paddingRight()
@@ -38,7 +41,7 @@ export function BodyRow<T, _D>(props: {
             <tr
                 data-index={props.virtualRow.index} //needed for dynamic row height measurement
                 ref={(node) => {
-                    if (props.bindScroll !== false && props.absolute) queueMicrotask(() => rowVirtualizer.measureElement(node))
+                    if (props.bindScroll !== false && props.absolute) queueMicrotask(() => vTable.rowVirtualizer.measureElement(node))
                 }} //measure dynamic row height
                 class={classNames(
                     props.absolute && 'absolute',
@@ -72,16 +75,32 @@ export function BodyRow<T, _D>(props: {
                         )
                     }}
                 </Key>
-                <Key by="key" each={columns()}>
-                    {(item) => {
-                        const cell = createMemo(() => visibleCells()[item().index])
-                        return (
-                            <Show when={cell()}>
-                                <BodyCell absolute={props.absolute} cell={cell()} item={item()}></BodyCell>
-                            </Show>
-                        )
-                    }}
-                </Key>
+                {props.absolute ? (
+                    <Key by="key" each={columns() as VirtualItem[]}>
+                        {(item) => {
+                            const cell = createMemo(() => visibleCells()[item().index])
+                            return (
+                                <Show when={cell()}>
+                                    <BodyCell absolute={props.absolute} cell={cell() as Cell<T, unknown>} item={item()}></BodyCell>
+                                </Show>
+                            )
+                        }}
+                    </Key>
+                ) : (
+                    <Key by="id" each={row().getCenterVisibleCells()}>
+                        {(cell, index) => {
+                            return (
+                                <Show when={cell()}>
+                                    <BodyCell
+                                        absolute={props.absolute}
+                                        cell={cell()}
+                                        item={{ index: index(), start: cell().column.getStart() } as any}
+                                    ></BodyCell>
+                                </Show>
+                            )
+                        }}
+                    </Key>
+                )}
                 <Key by="id" each={row().getRightVisibleCells()}>
                     {(cell, index) => {
                         return (

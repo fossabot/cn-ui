@@ -1,8 +1,8 @@
 import { classNames, toCSSPx } from '@cn-ui/reactive'
 import { Header, flexRender } from '@tanstack/solid-table'
-import { MagicTableCtx, MagicVirtualTableCtx } from '../MagicTableCtx'
+import { MagicTableCtx } from '../MagicTableCtx'
 import { AiOutlineSwapRight } from 'solid-icons/ai'
-import { VirtualItem } from '@tanstack/solid-virtual'
+import { VirtualItem } from '../virtual'
 import { Show, createMemo } from 'solid-js'
 import { getCommonPinningStyles } from './getCommonPinningStyles'
 
@@ -14,11 +14,9 @@ export function HeaderCell<T, D>(props: {
     level?: number
     useHeaderStart?: boolean
 }) {
-    const { paddingLeft } = MagicVirtualTableCtx.use()
-    const { estimateHeight, table } = MagicTableCtx.use()
+    const { estimateHeight, table, paddingLeft } = MagicTableCtx.use()
     const header = createMemo(() => props.header)
     const column = createMemo(() => header().column)
-
     return (
         <th
             class={classNames(

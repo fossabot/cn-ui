@@ -30,6 +30,7 @@ type Key = number | string
 
 export interface VirtualItem {
     key: Key
+    id: number | string
     index: number
     start: number
     end: number
@@ -480,6 +481,7 @@ export class Virtualizer<TScrollElement extends Element | Window, TItemElement e
 
                 measurements[i] = {
                     index: i,
+                    id: key,
                     start,
                     size,
                     end,

@@ -75,18 +75,23 @@
 .cn-typography h4,
 .cn-typography h5,
 .cn-typography h6 {
-    --at-apply: mb-[0.6em] mt-[1.2em] font-normal leading-snug;
+    --at-apply: mb-[0.6em] mt-[0.75em] leading-snug pb-4;
 }
-
+.cn-typography h1,
+.cn-typography h2,
+.cn-typography h3,
+.cn-typography h4 {
+    --at-apply: font-bold;
+}
 .cn-typography h1 {
     --at-apply: text-3xl;
 }
 .cn-typography h2 {
-    --at-apply: text-2xl;
+    --at-apply: text-2xl border-b;
 }
 
 .cn-typography h3 {
-    --at-apply: text-xl;
+    --at-apply: text-xl mt-[1.5em] pb-2;
 }
 
 .cn-typography h4 {
@@ -159,7 +164,7 @@
     max-width: 100%;
 }
 .cn-typography > p {
-    --at-apply: whitespace-pre-wrap indent-[2em] leading-7;
+    --at-apply: whitespace-pre-wrap indent-[2em];
 }
 .cn-typography a {
     --at-apply: text-primary-500 hover: text-primary-400;
