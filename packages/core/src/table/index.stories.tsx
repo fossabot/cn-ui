@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-solidjs'
 import { MagicTable, MagicTableExpose } from './index'
-import { random } from 'lodash-es'
+import { random } from 'mockjs-ts'
 import { NullAtom } from '@cn-ui/reactive'
 import { ColumnGroups } from './example/ColumnGroups'
 import { ColumnOrdering } from './example/ColumnOrdering'

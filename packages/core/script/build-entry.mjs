@@ -4,7 +4,7 @@ import fs from 'fs-extra'
 
 // 生成 src/index.ts
 const e = await glob([`./src/*/index.ts`])
-const jsFile = e
+const jsFile = e.sort()
     .map((i) => {
         return `export * from './${path.relative('./src/', i).replace('.ts', '')}'`
     })
