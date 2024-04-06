@@ -12,7 +12,8 @@ export const MagicTable = OriginComponent(function <T>(props: OriginComponentInp
     const tableContainerRef = atom<HTMLDivElement | null>(null)
 
     // 静态 table 的各项属性
-    const { table, rowSelection, composedColumns, paddingLeft, paddingRight } = useStaticTableDefine(props)
+    const staticTable = useStaticTableDefine(props)
+    const { table, composedColumns, paddingLeft, paddingRight } = staticTable
     // 虚拟 table 的各项属性
     const virtualSettings = props.virtual
         ? props.virtual<T>(table, tableContainerRef, { paddingLeft, paddingRight, composedColumns, estimateHeight: () => props.estimateHeight })
@@ -22,16 +23,14 @@ export const MagicTable = OriginComponent(function <T>(props: OriginComponentInp
     const tableScroll = useScroll(() => (props.virtual ? tableContainerRef() : tableContainerRef()?.parentElement))
 
     const context = createMemo<MagicTableCtxType<T>>(() => ({
+        ...staticTable,
         tableProps: props,
-        rowSelection,
-        table,
+
         width,
         defaultCell: props.defaultCell,
         tableScroll,
         selection: () => props.selection,
-        estimateHeight: () => props.estimateHeight,
-        paddingLeft,
-        paddingRight
+        estimateHeight: () => props.estimateHeight
     }))
     const expose: MagicTableExpose<T> = {
         ...context(),

@@ -11,32 +11,25 @@ export type Person = {
     status: 'relationship' | 'complicated' | 'single'
     subRows?: Person[]
 }
-
-const range = (len: number) => {
-    const arr: number[] = []
-    for (let i = 0; i < len; i++) {
-        arr.push(i)
-    }
-    return arr
-}
-
-export const newPerson = (): Person => {
-    return Mock.mock({
+export const newPerson = () => {
+    return {
         firstName: '@first',
         lastName: '@last',
         age: '@integer(20, 60)',
         visits: '@integer(500, 1500)',
         progress: '@integer(0, 100)',
-        status: '@pick(["relationship", "complicated", "single"])'
-    })
+        'status|1': ['relationship', 'complicated', 'single']
+    }
 }
 
-function makeData(...lens: number[]) {
+export function makeData(...lens: number[]) {
     const makeDataLevel = (depth = 0): Person[] => {
         const len = lens[depth]!
-        return range(len).map((_): Person => {
+        return Mock.mock<{ data: Person[] }>({
+            ['data|' + len]: [newPerson()]
+        }).data.map((p) => {
             return {
-                ...newPerson(),
+                ...p,
                 subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined
             }
         })

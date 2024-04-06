@@ -1,8 +1,10 @@
 import { ColumnDef } from '@tanstack/solid-table'
 import { MagicTable, MagicTableExpose } from '..'
 import Mock from 'mockjs-ts'
-import { NullAtom } from '@cn-ui/reactive'
+import { NullAtom, computed } from '@cn-ui/reactive'
 import { Show } from 'solid-js'
+import { SortableList } from '@cn-ui/sortable'
+import { Checkbox } from '../../checkbox'
 
 export type Person = {
     firstName: string
@@ -14,32 +16,25 @@ export type Person = {
     subRows?: Person[]
 }
 
-const range = (len: number) => {
-    const arr: number[] = []
-    for (let i = 0; i < len; i++) {
-        arr.push(i)
-    }
-    return arr
-}
-
 const newPerson = (): Person => {
-    const statusOptions = ['relationship', 'complicated', 'single']
-    return {
-        firstName: Mock.mock('@first'),
-        lastName: Mock.mock('@last'),
-        age: Mock.mock('@integer(20, 60)'),
-        visits: Mock.mock('@integer(0, 1000)'),
-        progress: Mock.mock('@integer(0, 100)'),
-        status: Mock.Random.pick(statusOptions)
-    }
+    return Mock.mock({
+        firstName: '@first',
+        lastName: '@last',
+        age: '@integer(20, 60)',
+        visits: '@integer(0, 1000)',
+        progress: '@integer(0, 100)',
+        'status|+1': ['relationship', 'complicated', 'single']
+    })
 }
 
 export function makeData(...lens: number[]) {
     const makeDataLevel = (depth = 0): Person[] => {
         const len = lens[depth]!
-        return range(len).map((): Person => {
+        return Mock.mock<{ data: Person[] }>({
+            ['data|' + len]: [newPerson()]
+        }).data.map((p) => {
             return {
-                ...newPerson(),
+                ...p,
                 subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined
             }
         })
@@ -102,24 +97,19 @@ const defaultColumns: ColumnDef<Person>[] = [
 
 export const ColumnOrdering = () => {
     const tableExpose = NullAtom<MagicTableExpose<unknown>>(null)
+    const cols = computed(() => tableExpose()?.table.getAllLeafColumns() ?? [])
     return (
         <>
             <Show when={tableExpose()}>
                 <div class="px-1 border-b border-black">
-                    <label>
-                        <input
-                            {...{
-                                type: 'checkbox',
-                                checked: tableExpose()!.table.getIsAllColumnsVisible(),
-                                onChange: tableExpose()!.table.getToggleAllColumnsVisibilityHandler()
-                            }}
-                        />{' '}
-                        Toggle All
-                    </label>
+                    <Checkbox
+                        label="Toggle All"
+                        v-model={() => tableExpose()!.table.getIsAllColumnsVisible()}
+                        onChange={tableExpose()!.table.getToggleAllColumnsVisibilityHandler()}
+                    ></Checkbox>
                 </div>
-                {tableExpose()!
-                    .table.getAllLeafColumns()
-                    .map((column) => {
+                <SortableList v-model={cols} class="flex " onSorted={() => tableExpose()?.columnOrder(cols().map((c) => c.id))}>
+                    {(column) => {
                         return (
                             <div class="px-1">
                                 <label>
@@ -134,7 +124,8 @@ export const ColumnOrdering = () => {
                                 </label>
                             </div>
                         )
-                    })}
+                    }}
+                </SortableList>
             </Show>
 
             <MagicTable data={makeData(20)} height={400} columns={defaultColumns} expose={tableExpose}></MagicTable>

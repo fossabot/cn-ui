@@ -6,8 +6,9 @@ import { Accessor } from 'solid-js'
 import { MagicTableProps } from './interface'
 import { JSX } from 'solid-js'
 import { useSticky } from './useSticky'
+import { useStaticTableDefine } from './useStaticTableDefine'
 
-export interface MagicTableCtxType<T = unknown> extends ReturnType<typeof useSticky> {
+export interface MagicTableCtxType<T = unknown> extends ReturnType<typeof useSticky>, ReturnType<typeof useStaticTableDefine<T>> {
     tableProps: MagicTableProps<T>
     table: Table<T>
     rowSelection: Atom<RowSelectionState>

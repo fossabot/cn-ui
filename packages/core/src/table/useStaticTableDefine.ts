@@ -66,7 +66,7 @@ export const useStaticTableDefine = <T>(props: MagicTableProps<T>) => {
         columnResizeDirection: 'ltr',
 
         onExpandedChange,
-        getSubRows: (row) => (row as any).subRows,
+        getSubRows: (row, index) => props.getSubRows?.(row, index) ?? (row as any).subRows,
         onColumnVisibilityChange,
         onColumnOrderChange,
         enableExpanding: !!props.expandable,

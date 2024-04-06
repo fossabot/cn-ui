@@ -11,6 +11,7 @@ export interface MagicTableProps<T> {
     index?: boolean
     estimateHeight?: number
     expandable?: boolean
+    getSubRows?: (item: T, index: number) => T[]
     defaultCell?: <T, D>(props: CellContext<T, D>) => JSX.Element
     expose?: (expose: MagicTableExpose<T>) => void
     onUpdateData?: (rowIndex: number, columnId: string, value: any) => void
