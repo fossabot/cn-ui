@@ -32,6 +32,7 @@ export interface BaseInputProps extends Omit<CountProps, 'model'>, BaseFormItemT
     expose?: (expose: InputExpose) => void
     autoSize?: boolean
     resize?: boolean
+    wrapperRef?: (el: HTMLSpanElement) => void
 }
 
 export const BaseInput = OriginComponent<BaseInputProps, HTMLInputElement, string>((props) => {
@@ -43,7 +44,7 @@ export const BaseInput = OriginComponent<BaseInputProps, HTMLInputElement, strin
         props
     )
     const inputEl = NullAtom<HTMLInputElement>(null)
-    const inputWrapper = NullAtom<HTMLInputElement>(null)
+    const inputWrapper = NullAtom<HTMLSpanElement>(null)
     const inputType = atomization(props.type ?? 'text')
     const isHovering = useElementHover(inputWrapper)
     const expose: InputExpose = {
@@ -79,7 +80,7 @@ export const BaseInput = OriginComponent<BaseInputProps, HTMLInputElement, strin
     const isTextarea = createMemo(() => props.type === 'textarea')
     return (
         <span
-            ref={inputWrapper}
+            ref={(el) => (inputWrapper(el), props.wrapperRef?.(el))}
             class={props.class(
                 'cn-base-input transition inline-flex border  py-1 px-3 text-sm',
                 isTextarea() && props.autoSize && 'cn-textarea-auto-size',

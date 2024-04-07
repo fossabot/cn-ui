@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-solidjs'
 import { MagicTable, MagicTableExpose, useVirtual } from './index'
-import { GlobalSeedAtom, random } from 'mockjs-ts'
+import { random } from 'mockjs-ts'
 import { NullAtom } from '@cn-ui/reactive'
 import { ColumnGroups } from './example/ColumnGroups'
 import { ColumnOrdering } from './example/ColumnOrdering'
@@ -17,8 +17,6 @@ const meta = {
 
 export default meta
 type Story = StoryObj<typeof meta>
-
-GlobalSeedAtom('1000')
 
 const makeColumns = (num: number) =>
     [...Array(num)].map((_, i) => {

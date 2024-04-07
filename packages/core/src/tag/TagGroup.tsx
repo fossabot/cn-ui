@@ -2,10 +2,8 @@ import { ArrayAtom, JSXSlot, OriginComponent, ensureFunctionResult } from '@cn-u
 import { createMemo } from 'solid-js'
 import { Tag } from './Tag'
 import { Key } from '@solid-primitives/keyed'
-export interface TagGroupOptions {
-    id?: string
-
-    label: JSXSlot
+import { SelectItemsType } from '../select'
+export interface TagGroupOptions extends SelectItemsType {
     icon?: JSXSlot
     color?: string
 }
@@ -30,14 +28,14 @@ export const TagGroup = OriginComponent<TagGroupProps, HTMLDivElement, TagGroupO
             return [
                 ...showing,
                 {
-                    id: '$index',
+                    value: '$index',
                     label: group().length - props.maxSize! + '+'
                 }
             ]
         return showing
     })
     return (
-        <Key by={(i) => i.id ?? i.label} each={visibleItems()}>
+        <Key by={(i) => i.value ?? i.label} each={visibleItems()}>
             {(item) => {
                 return (
                     <Tag
@@ -47,7 +45,7 @@ export const TagGroup = OriginComponent<TagGroupProps, HTMLDivElement, TagGroupO
                             group.remove(item())
                             props.onClose?.(item())
                         }}
-                        closeable={props.closeable && item().id !== '$index'}
+                        closeable={props.closeable && item().value !== '$index'}
                     >
                         {ensureFunctionResult(item().label)}
                     </Tag>

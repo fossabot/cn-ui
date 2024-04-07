@@ -15,7 +15,7 @@ import '../animation/cn-list.css'
 import { TransitionGroup } from 'solid-transition-group'
 import { BaseFormItemType, extendsBaseFormItemProp } from '../form/BaseFormItemType'
 
-export const SelectCtx = /* @__PURE__ */ createCtx<ReturnType<typeof useSelect>>()
+export const SelectCtx = /* @__PURE__ */ createCtx<ReturnType<typeof useSelect<SelectItemsType>>>()
 export interface SelectProps extends BaseFormItemType {
     /** TODO 异步态监控 */
     options: SelectItemsType[]
@@ -28,30 +28,26 @@ export interface SelectProps extends BaseFormItemType {
 
 export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
     (props) => {
-        /** value 值转为 原始对象的数据 */
-        const valueToOptionCache = new Map<string | number, SelectItemsType>()
-
-        const selectSystem = useSelect({
-            activeIds: props.model,
-            multi: !!props.multiple
+        const selectSystem = useSelect(() => props.options, {
+            multi: () => !!props.multiple
         })
         createEffect(() => {
-            selectSystem.disabledSet(() => new Set(props.disabledOptions))
+            props.model(() => selectSystem.selected().map((i) => selectSystem.getId(i)))
         })
         createEffect(() => {
-            valueToOptionCache.clear()
-            selectSystem.allRegistered(() => {
-                const set = new Set<string>()
-                props.options.forEach((item) => {
-                    set.add(item.value.toString())
-                    valueToOptionCache.set(item.value, item)
+            props.disabledOptions &&
+                props.disabledOptions.forEach((id) => {
+                    selectSystem.disableById(id)
                 })
-                return set
-            })
         })
         const input = NullAtom<HTMLDivElement>(null)
         const inputText = computed(() =>
-            !!props.multiple ? '' : getLabelFromOptions(valueToOptionCache.get(props.model()?.[0]) ?? { value: props.model()?.[0] ?? '' })
+            !!props.multiple
+                ? ''
+                : selectSystem
+                      .selected()
+                      .map((i) => i.label)
+                      .join('/')
         )
         const readableInputText = inputText.toSignal()[0]
         const filteredOptions = computed(
@@ -64,22 +60,63 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
         let keepState = inputText()
         const PopoverOpen = atom(false)
         const multipleTags = ThrottleAtom(
-            computed(() =>
-                selectSystem.activeIdsArray().map((i) => {
-                    return {
-                        label: valueToOptionCache.get(i)?.label ?? i
-                    }
-                })
-            ),
+            computed(() => selectSystem.selected()),
             500
         )
+        const wrapper = NullAtom<HTMLSpanElement>(null)
         return (
             <SelectCtx.Provider value={selectSystem}>
+                <BaseInput
+                    id={props.id}
+                    v-model={readableInputText}
+                    ref={input}
+                    wrapperRef={wrapper}
+                    {...extendsBaseFormItemProp(props)}
+                    {...extendsEvent(props)}
+                    oninput={() => {
+                        filteredOptions.recomputed()
+                        props.onInput?.(inputText())
+                    }}
+                    onfocus={() => {
+                        keepState = inputText()
+                    }}
+                    onblur={() => {
+                        inputText(() => keepState)
+                    }}
+                    prefixIcon={() => {
+                        if (!props.multiple) return
+
+                        return (
+                            <Flex class=" flex-nowrap gap-2" justify="start">
+                                <TransitionGroup name="cn-list">
+                                    <TagGroup
+                                        color="#a8a8a8"
+                                        v-model={multipleTags}
+                                        maxSize={2}
+                                        closeable
+                                        onClose={(item) => {
+                                            if (item.id) selectSystem.unselectById(item.id)
+                                        }}
+                                    ></TagGroup>
+                                </TransitionGroup>
+                            </Flex>
+                        )
+                    }}
+                    suffixIcon={(expose) => {
+                        return (
+                            <>
+                                <Icon>{!props.disabled && <ClearControl {...expose} onClear={() => selectSystem.clearAll()}></ClearControl>}</Icon>
+                                <Icon>{PopoverOpen() ? <AiOutlineSearch color="#777"></AiOutlineSearch> : <AiOutlineDown color="#777"></AiOutlineDown>}</Icon>
+                            </>
+                        )
+                    }}
+                ></BaseInput>
                 <Popover
+                    popoverTarget={wrapper()!}
                     disabled={props.disabled}
                     v-model={PopoverOpen}
                     sameWidth
-                    trigger="none"
+                    trigger="focus"
                     content={() => (
                         <nav class={classNames('max-h-32 w-full ', props.options.length <= 100 && 'overflow-y-auto')}>
                             <SelectPanel
@@ -92,54 +129,7 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                             ></SelectPanel>
                         </nav>
                     )}
-                >
-                    <BaseInput
-                        id={props.id}
-                        v-model={readableInputText}
-                        ref={input}
-                        {...extendsBaseFormItemProp(props)}
-                        {...extendsEvent(props)}
-                        oninput={() => {
-                            filteredOptions.recomputed()
-                            props.onInput?.(inputText())
-                        }}
-                        onfocus={() => {
-                            keepState = inputText()
-                        }}
-                        onblur={() => {
-                            inputText(() => keepState)
-                        }}
-                        prefixIcon={() => {
-                            if (!props.multiple) return
-
-                            return (
-                                <Flex class=" flex-nowrap gap-2" justify="start">
-                                    <TransitionGroup name="cn-list">
-                                        <TagGroup
-                                            color="#a8a8a8"
-                                            v-model={multipleTags}
-                                            maxSize={2}
-                                            closeable
-                                            onClose={(item) => {
-                                                selectSystem.changeSelected(item.label as string, false)
-                                            }}
-                                        ></TagGroup>
-                                    </TransitionGroup>
-                                </Flex>
-                            )
-                        }}
-                        suffixIcon={(expose) => {
-                            return (
-                                <>
-                                    <Icon>{!props.disabled && <ClearControl {...expose} onClear={() => selectSystem.clearAll()}></ClearControl>}</Icon>
-                                    <Icon>
-                                        {PopoverOpen() ? <AiOutlineSearch color="#777"></AiOutlineSearch> : <AiOutlineDown color="#777"></AiOutlineDown>}
-                                    </Icon>
-                                </>
-                            )
-                        }}
-                    ></BaseInput>
-                </Popover>
+                ></Popover>
             </SelectCtx.Provider>
         )
     },
@@ -156,29 +146,28 @@ export const SelectPanel = (props: { options: SelectItemsType[]; multiple?: bool
     const selectSystem = SelectCtx.use()
     const innerContent = (item: SelectItemsType) => (
         <>
-            <Icon class="col-span-4">{selectSystem.isSelected(item.value.toString()) && <AiOutlineCheck></AiOutlineCheck>}</Icon>
+            <Icon class="col-span-4">{selectSystem.isSelected(item) && <AiOutlineCheck></AiOutlineCheck>}</Icon>
             <span class="col-span-8">{item.label ?? item.value}</span>
         </>
     )
     const VoidSlot = () => <span>无数据</span>
     const parentClass = 'cn-select-option grid grid-cols-12 items-center transition-colors select-none px-2 rounded-md'
-
-    const normalClass = 'hover:bg-design-hover'
+    const normalClass = 'hover:bg-design-hover cursor-pointer'
     const selectedClass = 'cn-selected bg-primary-500 text-white hover:bg-primary-600 cursor-pointer'
     const disabledClass = 'text-gray-400 cursor-not-allowed'
     const createClass = (item: SelectItemsType) => {
-        const isSelected = selectSystem.isSelected(item.value.toString())
-        const isDisabled = selectSystem.disabledSet().has(item.value.toString())
+        const isSelected = selectSystem.isSelected(item)
+        const isDisabled = selectSystem.isDisabled(item)
         return classNames(parentClass, isSelected && selectedClass, isDisabled && disabledClass, !isSelected && !isDisabled && normalClass)
     }
     const selectItem = (item: SelectItemsType) => {
-        const state = selectSystem.changeSelected(item.value.toString())
+        const state = selectSystem.toggle(item)
         props.onSelect?.(item, state)
     }
     return (
         <>
             {props.options.length > 100 ? (
-                <VirtualList each={props.options} estimateSize={24} fallback={VoidSlot}>
+                <VirtualList containerHeight={128} each={props.options} estimateSize={24} fallback={VoidSlot}>
                     {(item, _, { itemClass, itemRef }) => {
                         createEffect(() => {
                             itemClass(createClass(item))

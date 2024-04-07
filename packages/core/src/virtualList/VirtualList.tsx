@@ -77,7 +77,7 @@ export function VirtualList<T>(props: VirtualListProps<T>) {
                 width: '100%',
                 overflow: 'auto',
                 position: 'relative',
-                height: toCSSPx(height() || props.containerHeight, '400px') //should be a fixed height
+                height: toCSSPx(props.containerHeight ?? height(), '400px') //should be a fixed height
             }}
         >
             <div

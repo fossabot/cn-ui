@@ -1,5 +1,5 @@
 import { Atom } from '@cn-ui/reactive'
-import { onCleanup, onMount } from 'solid-js'
+import { createEffect, onCleanup, onMount } from 'solid-js'
 import type { Instance } from '@popperjs/core/lib/popper-lite'
 import { createPopper } from './createPopper'
 import { PopoverProps } from './Popper'
@@ -43,6 +43,9 @@ export function usePopper(
             ]
         })
     })
+    // createEffect(() => {
+    //     if (props.popoverTarget instanceof HTMLElement) popperInstance.state.elements.reference = props.popoverTarget
+    // })
 
     const updatingOptions = () => {
         return [{ name: 'sameWidth', enabled: !!getOptions().sameWidth }]

@@ -1,21 +1,21 @@
 import { atomization } from '../utils'
 import { atom, Atom, computed } from '../atom/index'
-import { createEffect, untrack } from 'solid-js'
+import { Accessor, createEffect, untrack } from 'solid-js'
 
 /**
  * @zh 多选状态管理
  * */
 export function useSelect<T>(
-    options: Atom<T[]>,
+    options: Accessor<T[]>,
     config: {
         getId?: (item: T) => string
         /** 默认多选，但是可以取消 */
-        multi?: Atom<boolean> | boolean
+        multi?: Accessor<boolean>
         // 当数据中出现不符合规定的数据时，是否保留
         keepUndefinedOption?: boolean
     } = {}
 ) {
-    const multi = atomization(config.multi ?? true)
+    const multi = config.multi ?? (() => true)
 
     /** @ts-ignore 未想到适合的类型挂载 */
     const getId = config.getId ?? ((item) => item.value)
@@ -65,7 +65,10 @@ export function useSelect<T>(
                 }
             })
         } else if (state === false) {
-            selectedMap().delete(id)
+            selectedMap((i) => {
+                i.delete(id)
+                return i
+            })
         }
         return state
     }
@@ -88,8 +91,9 @@ export function useSelect<T>(
     return {
         multi,
         selected: () => {
-            return selectedMap().values()
+            return [...selectedMap().values()]
         },
+        getId,
         selectedMap,
         toggle: (item: T, state?: boolean) => changeSelected(getId(item), state),
         select: (item: T) => changeSelected(getId(item), true),
@@ -136,8 +140,11 @@ export function useSelect<T>(
         isIndeterminate() {
             return multiSelectedState().isPartial
         },
+        isSelected: (item: T) => {
+            return selectedMap().has(getId(item))
+        },
         /** 检查一个键是否被选中 */
-        isSelected: (id: string) => {
+        isSelectedById: (id: string) => {
             return selectedMap().has(id)
         },
         /** 禁用 */
