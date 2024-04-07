@@ -2,7 +2,7 @@ import { AC, ArrayFolder, DebounceAtom, atom, computed, resource } from '@cn-ui/
 import { BaseInput } from '../input'
 import Fuse from 'fuse.js'
 
-import { Tabs, Tab } from '../tabs'
+import { Tabs } from '../tabs'
 import { Dynamic } from 'solid-js/web'
 import { Component, Show } from 'solid-js'
 import { watch } from 'solidjs-use'
@@ -53,23 +53,18 @@ export const IconSearch = () => {
         <div class="h-[90vh]">
             <BaseInput v-model={searchText} suffixIcon={`${result().length} / ${totalAvailable().length}`}></BaseInput>
             <BaseInput v-model={size} suffixIcon={`${result().length} / ${totalAvailable().length}`}></BaseInput>
-            <Tabs class="h-full" wrapperClass="h-full" v-model={watchingTab}>
-                {Object.keys(loader).map((key) => {
+            <Tabs class="h-full" wrapperClass="h-full" v-model={watchingTab}></Tabs>
+            {/* <Tab name={key} class="h-full"> */}
+            <AC resource={pack}>
+                {() => {
                     return (
-                        <Tab name={key} class="h-full">
-                            <AC resource={pack}>
-                                {() => {
-                                    return (
-                                        <Show when={key === watchingTab()}>
-                                            <IconGallery comps={pack()} result={result()} size={size()}></IconGallery>
-                                        </Show>
-                                    )
-                                }}
-                            </AC>
-                        </Tab>
+                        <Show when={key === watchingTab()}>
+                            <IconGallery comps={pack()} result={result()} size={size()}></IconGallery>
+                        </Show>
                     )
-                })}
-            </Tabs>
+                }}
+            </AC>
+            {/* </Tab> */}
         </div>
     )
 }

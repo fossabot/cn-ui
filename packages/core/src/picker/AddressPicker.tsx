@@ -2,7 +2,7 @@ import { For } from 'solid-js'
 import { Flex } from '../container'
 import { PickerColumn } from './PickerColumn'
 import { OriginComponent, computed } from '@cn-ui/reactive'
-import { SelectItemsType } from '../select/Select'
+import { SelectOptionsType } from '@cn-ui/reactive'
 
 export interface AddressPickerProps {
     options: {
@@ -11,7 +11,7 @@ export interface AddressPickerProps {
     }[][]
 }
 
-export const AddressPicker = OriginComponent<AddressPickerProps, HTMLDivElement, SelectItemsType[]>((props) => {
+export const AddressPicker = OriginComponent<AddressPickerProps, HTMLDivElement, SelectOptionsType[]>((props) => {
     const data = props.model
 
     const rebuildOptions = () => {

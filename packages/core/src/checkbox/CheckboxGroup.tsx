@@ -2,9 +2,9 @@ import { Atom, OriginComponent, computed, useSelect } from '@cn-ui/reactive'
 import { For, createEffect } from 'solid-js'
 import { CheckboxProps, CheckboxGroupCtx, Checkbox } from './Checkbox'
 import { BaseFormItemType, extendsBaseFormItemProp } from '../form/BaseFormItemType'
-import { SelectItemsType } from '../select'
+import { SelectOptionsType } from '@cn-ui/reactive'
 
-export interface CheckboxGroupExpose extends ReturnType<typeof useSelect<SelectItemsType>> {}
+export interface CheckboxGroupExpose extends ReturnType<typeof useSelect<SelectOptionsType>> {}
 export interface CheckboxGroupProps extends BaseFormItemType {
     options: CheckboxProps[]
     expose?: (expose: CheckboxGroupExpose) => void
@@ -13,7 +13,7 @@ export interface CheckboxGroupProps extends BaseFormItemType {
 
 export const CheckboxGroup = OriginComponent<CheckboxGroupProps, HTMLElement, string[]>((props) => {
     !Array.isArray(props.model()) && props.model([])
-    const selectSetting = useSelect<SelectItemsType>(() => props.options, {
+    const selectSetting = useSelect<SelectOptionsType>(() => props.options, {
         multi: () => props.multiple ?? true
     })
     createEffect(() => {

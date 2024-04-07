@@ -13,12 +13,12 @@ export default meta
 type Story = StoryObj<typeof meta>
 import '@vant/touch-emulator'
 import { atom, computed, genArray } from '@cn-ui/reactive'
-import { SelectItemsType } from '../select'
+import { SelectOptionsType } from '../select'
 import { Flex } from '../container'
 import { For } from 'solid-js'
 
 const mockData = () =>
-    Mock.mock<{ data: SelectItemsType[] }>({
+    Mock.mock<{ data: SelectOptionsType[] }>({
         'data|10': [
             {
                 label: '@cname',
@@ -29,7 +29,7 @@ const mockData = () =>
 
 export const Primary: Story = {
     render() {
-        const data = atom<SelectItemsType | null>(null)
+        const data = atom<SelectOptionsType | null>(null)
         const options = mockData()
         return (
             <div>
@@ -44,7 +44,7 @@ export const Primary: Story = {
 }
 export const Picker: Story = {
     render() {
-        const data = genArray(3).map((i) => atom<SelectItemsType | null>(null))
+        const data = genArray(3).map((i) => atom<SelectOptionsType | null>(null))
 
         const options = [mockData(), mockData(), mockData()]
         return (
@@ -65,7 +65,7 @@ export const Picker: Story = {
 import { getChinaAddressOptions } from '@cn-ui/area-data'
 export const _AddressPicker: Story = {
     render() {
-        const data = atom<SelectItemsType[]>([])
+        const data = atom<SelectOptionsType[]>([])
         const options = getChinaAddressOptions()
         return (
             <>

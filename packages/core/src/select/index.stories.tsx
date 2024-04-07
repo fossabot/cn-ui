@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-solidjs'
 
-import { Select, SelectItemsType } from './index'
+import { Select, SelectOptionsType } from './index'
 import { genArray, resource } from '@cn-ui/reactive'
 import Mock from 'mockjs-ts'
 const meta = {
@@ -46,7 +46,7 @@ export const Multi: Story = {
     render() {
         const res = resource(
             async () =>
-                Mock.mock<{ data: SelectItemsType[] }>({
+                Mock.mock<{ data: SelectOptionsType[] }>({
                     'data|10': [
                         {
                             value: '@name',
@@ -70,7 +70,7 @@ export const Search: Story = {
     render() {
         const res = resource(
             async () =>
-                Mock.mock<{ data: SelectItemsType[] }>({
+                Mock.mock<{ data: SelectOptionsType[] }>({
                     'data|10': [
                         {
                             value: '@name',

@@ -1,4 +1,4 @@
-import { SelectItemsType } from '../select'
+import { SelectOptionsType } from '@cn-ui/reactive'
 import { RuleItem } from 'async-validator'
 
 declare module '@tanstack/solid-table' {
@@ -9,7 +9,7 @@ declare module '@tanstack/solid-table' {
         /** 可编辑表格使用的类型 */
         type?: 'text' | 'number' | 'date' | 'date-range' | 'select' | 'checkbox' | 'switch' | 'radio' | 'cascader' | 'switch'
         fixed?: 'left' | 'right'
-        options?: SelectItemsType[]
+        options?: SelectOptionsType[]
         span?: number
         rules?: RuleItem[] | RuleItem
         required?: boolean

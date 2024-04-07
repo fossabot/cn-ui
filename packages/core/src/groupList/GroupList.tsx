@@ -5,9 +5,9 @@ import { Flex } from '../container'
 import { Icon } from '../icon/Icon'
 import { AiOutlineRight } from 'solid-icons/ai'
 import { Popover, PopoverProps } from '../popover'
-import { SelectItemsType } from '../select'
+import { SelectOptionsType } from '@cn-ui/reactive'
 
-export interface CommonGroupListConfig extends SelectItemsType {
+export interface CommonGroupListConfig extends SelectOptionsType {
     /** @private */
     level?: number
     /** 在此之后显示分隔符号 */

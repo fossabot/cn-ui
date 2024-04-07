@@ -1,11 +1,11 @@
 /**
- * 模仿自 Vant 项目 Picker 进行了 Solidjs 适配
+ * 模仿自 Vant 项目 Picker 进行了 solid-js 适配
  */
 import { useEventListener } from 'solidjs-use'
 import { useTouch } from './useTouch'
 import { NullAtom, OriginComponent, OriginDiv, atom, computed, toCSSPx } from '@cn-ui/reactive'
 import { For, createEffect, mergeProps } from 'solid-js'
-import { SelectItemsType } from '../select'
+import { SelectOptionsType } from '@cn-ui/reactive'
 
 /** clamps number within the inclusive lower and upper bounds */
 export const clamp = (num: number, min: number, max: number): number => Math.min(Math.max(num, min), max)
@@ -32,7 +32,7 @@ const MOMENTUM_TIME = 300
 const MOMENTUM_DISTANCE = 15
 
 export interface PickerColumnProps {
-    options: SelectItemsType[]
+    options: SelectOptionsType[]
     readonly?: boolean
     /** 单个选项高度 */
     optionHeight?: number
@@ -198,7 +198,7 @@ export const PickerColumn = OriginComponent<PickerColumnProps, HTMLDivElement, P
             moving = false
         }, 0)
     }
-    const getLabelFromOptions = (option: SelectItemsType) => {
+    const getLabelFromOptions = (option: SelectOptionsType) => {
         return option.label ?? option.value
     }
 

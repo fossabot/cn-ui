@@ -14,11 +14,12 @@ import { Flex } from '../container'
 import '../animation/cn-list.css'
 import { TransitionGroup } from 'solid-transition-group'
 import { BaseFormItemType, extendsBaseFormItemProp } from '../form/BaseFormItemType'
+import { SelectOptionsType } from '@cn-ui/reactive'
 
-export const SelectCtx = /* @__PURE__ */ createCtx<ReturnType<typeof useSelect<SelectItemsType>>>()
+export const SelectCtx = /* @__PURE__ */ createCtx<ReturnType<typeof useSelect<SelectOptionsType>>>()
 export interface SelectProps extends BaseFormItemType {
     /** TODO 异步态监控 */
-    options: SelectItemsType[]
+    options: SelectOptionsType[]
     multiple?: boolean
     disabled?: boolean
     disabledOptions?: string[]
@@ -136,15 +137,9 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
     { modelValue: [] }
 )
 
-export interface SelectItemsType {
-    label?: string | number
-    value: string | number
-    disabled?: boolean
-}
-
-export const SelectPanel = (props: { options: SelectItemsType[]; multiple?: boolean; onSelect?: (item: SelectItemsType, state: boolean) => void }) => {
+export const SelectPanel = (props: { options: SelectOptionsType[]; multiple?: boolean; onSelect?: (item: SelectOptionsType, state: boolean) => void }) => {
     const selectSystem = SelectCtx.use()
-    const innerContent = (item: SelectItemsType) => (
+    const innerContent = (item: SelectOptionsType) => (
         <>
             <Icon class="col-span-4">{selectSystem.isSelected(item) && <AiOutlineCheck></AiOutlineCheck>}</Icon>
             <span class="col-span-8">{item.label ?? item.value}</span>
@@ -155,12 +150,12 @@ export const SelectPanel = (props: { options: SelectItemsType[]; multiple?: bool
     const normalClass = 'hover:bg-design-hover cursor-pointer'
     const selectedClass = 'cn-selected bg-primary-500 text-white hover:bg-primary-600 cursor-pointer'
     const disabledClass = 'text-gray-400 cursor-not-allowed'
-    const createClass = (item: SelectItemsType) => {
+    const createClass = (item: SelectOptionsType) => {
         const isSelected = selectSystem.isSelected(item)
         const isDisabled = selectSystem.isDisabled(item)
         return classNames(parentClass, isSelected && selectedClass, isDisabled && disabledClass, !isSelected && !isDisabled && normalClass)
     }
-    const selectItem = (item: SelectItemsType) => {
+    const selectItem = (item: SelectOptionsType) => {
         const state = selectSystem.toggle(item)
         props.onSelect?.(item, state)
     }

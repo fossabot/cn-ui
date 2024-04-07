@@ -2,8 +2,8 @@ import { ArrayAtom, JSXSlot, OriginComponent, ensureFunctionResult } from '@cn-u
 import { createMemo } from 'solid-js'
 import { Tag } from './Tag'
 import { Key } from '@solid-primitives/keyed'
-import { SelectItemsType } from '../select'
-export interface TagGroupOptions extends SelectItemsType {
+import { SelectOptionsType } from '@cn-ui/reactive'
+export interface TagGroupOptions extends SelectOptionsType {
     icon?: JSXSlot
     color?: string
 }

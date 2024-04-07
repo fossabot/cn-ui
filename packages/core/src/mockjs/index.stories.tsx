@@ -3,8 +3,6 @@ import { JSON2Mockjs, JSON2TypeAlias } from 'mock-type/src/index'
 import { Container, Flex, Header, Main } from '../container'
 import { atom, computed } from '@cn-ui/reactive'
 import { Col, Row } from '../RowAndCol'
-import { Tabs } from '../tabs/Tabs'
-import { Tab } from '../tabs/Tab'
 import Mock from 'mockjs-ts'
 import { AiOutlineCopy } from 'solid-icons/ai'
 import { Icon } from '../icon/Icon'
@@ -53,7 +51,7 @@ export const Primary: Story = {
                             <textarea class="w-full h-full bg-gray-100" value={input()} oninput={(i) => input(i.target.value)}></textarea>
                         </Col>
                         <Col span={12}>
-                            <Tabs v-model={atom('Mockjs')} fill>
+                            {/* <Tabs v-model={atom('Mockjs')} fill>
                                 <Tab name="Mockjs" class="flex gap-2">
                                     <EditPanel title="Types Alias" value={mockedType()}></EditPanel>
                                     <EditPanel title="Mockjs Template" value={JSON.stringify(output().root, null, 4)}></EditPanel>
@@ -61,7 +59,7 @@ export const Primary: Story = {
                                 <Tab name="Result">
                                     <EditPanel title="JSON Result" value={JSON.stringify(mocked().root, null, 4)}></EditPanel>
                                 </Tab>
-                            </Tabs>
+                            </Tabs> */}
                         </Col>
                     </Row>
                 </Main>
