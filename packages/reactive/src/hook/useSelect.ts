@@ -1,6 +1,13 @@
 import { atom, computed } from '../atom/index'
 import { Accessor, createEffect, untrack } from 'solid-js'
 
+export type SelectSystem<T> = ReturnType<typeof useSelect<T>>
+export interface SelectOptionsType {
+    label?: string | number
+    value: string | number
+    disabled?: boolean
+}
+
 /**
  * @zh 多选状态管理
  * */
@@ -89,6 +96,7 @@ export function useSelect<T>(
     })
     return {
         multi,
+        options,
         selected: () => {
             return [...selectedMap().values()]
         },
