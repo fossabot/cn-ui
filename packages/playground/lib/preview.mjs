@@ -11,6 +11,7 @@ window.addEventListener('message', ({ data }) => {
         window.dispose = undefined
         console.clear()
         await import('./index.mjs')
+
         Eval.evaluate(value).then((res) => {
             if (finisher) finisher()
             finisher = undefined
