@@ -95,7 +95,7 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                                         maxSize={2}
                                         closeable
                                         onClose={(item) => {
-                                            if (item.id) selectSystem.unselectById(item.id)
+                                            if (item.value) selectSystem.unselect(item)
                                         }}
                                     ></TagGroup>
                                 </TransitionGroup>

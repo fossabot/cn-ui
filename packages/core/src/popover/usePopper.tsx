@@ -1,5 +1,5 @@
 import { Atom } from '@cn-ui/reactive'
-import { createEffect, onCleanup, onMount } from 'solid-js'
+import { onCleanup, onMount } from 'solid-js'
 import type { Instance } from '@popperjs/core/lib/popper-lite'
 import { createPopper } from './createPopper'
 import { PopoverProps } from './Popper'

@@ -1,20 +1,17 @@
 import { OriginComponent, classNames, computed, createCtx, extendsEvent, useMapper, useSelect } from '@cn-ui/reactive'
 import { BaseFormItemType, extendsBaseFormItemProp } from '../form/BaseFormItemType'
+import { SelectItemsType } from '../select'
 
-export type CheckboxGroupCtxType = ReturnType<typeof useSelect> & {}
+export type CheckboxGroupCtxType = ReturnType<typeof useSelect<SelectItemsType>>
 export const CheckboxGroupCtx = /* @__PURE__ */ createCtx<CheckboxGroupCtxType>({} as any)
 
-export interface CheckboxProps extends BaseFormItemType {
-    label?: string
-    value?: string
+export interface CheckboxProps extends BaseFormItemType, SelectItemsType {
     indeterminate?: boolean
 }
 export const Checkbox = OriginComponent<CheckboxProps, HTMLInputElement, boolean>((props) => {
     const group = CheckboxGroupCtx.use()
-    group?.register?.(props.value!, group.activeIds().has(props.value!))
-
     const inputType = computed(() => (group?.multi?.() === false ? 'radio' : 'checkbox'))
-    const isChecked = computed(() => group?.isSelected?.(props.value!) ?? props.model())
+    const isChecked = computed(() => group?.isSelectedById?.(props.value.toString()) ?? props.model())
     const inputClass = useMapper(inputType, {
         radio() {
             const [base] = this.base()
@@ -40,7 +37,7 @@ export const Checkbox = OriginComponent<CheckboxProps, HTMLInputElement, boolean
                 {...extendsBaseFormItemProp(props)}
                 {...extendsEvent(props)}
                 oninput={(e) => {
-                    group?.changeSelected?.(props.value!, e.target.checked)
+                    group?.toggleById?.(props.value.toString(), e.target.checked)
                     props.model(e.target.checked)
                 }}
             />

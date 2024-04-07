@@ -1,5 +1,4 @@
-import { atomization } from '../utils'
-import { atom, Atom, computed } from '../atom/index'
+import { atom, computed } from '../atom/index'
 import { Accessor, createEffect, untrack } from 'solid-js'
 
 /**
