@@ -1,9 +1,10 @@
 import { Atom } from '@cn-ui/reactive'
-import { onCleanup, onMount } from 'solid-js'
+import { Accessor, onCleanup } from 'solid-js'
 import type { Instance } from '@popperjs/core/lib/popper-lite'
 import { createPopper } from './createPopper'
 import { PopoverProps } from './Popper'
 import { isServer } from 'solid-js/web'
+import { useLazyMount } from '@cn-ui/reactive'
 
 /** 对于 Popper js 的封装 */
 export function usePopper(
@@ -11,46 +12,50 @@ export function usePopper(
     popoverContent: Atom<HTMLElement | null>,
     arrow: Atom<HTMLElement | null>,
     getOptions: () => Partial<PopoverProps>,
-    props: PopoverProps
+    isLazyReady: Accessor<boolean>
 ) {
     let popperInstance: Instance
-    onMount(() => {
-        if (isServer) return
-        if (props.popoverTarget) {
-            const el = (typeof props.popoverTarget === 'string' ? document.querySelector(props.popoverTarget)! : props.popoverTarget) as HTMLElement
-            if (el) {
-                target(el)
-            } else {
-                throw new Error("Popover | can't find element " + props.popoverTarget)
-            }
-        }
-        popperInstance = createPopper(target() as Element, popoverContent() as HTMLElement, {
-            ...getOptions(),
-            modifiers: [
-                {
-                    name: 'arrow',
-                    options: {
-                        element: arrow(),
-                        padding: 20
-                    }
-                },
-                {
-                    name: 'offset',
-                    options: {
-                        offset: [0, 10]
-                    }
+    useLazyMount(
+        () => {
+            if (isServer) return
+            if (getOptions().popoverTarget) {
+                const popoverTarget = getOptions().popoverTarget!
+                const el = (typeof popoverTarget === 'string' ? document.querySelector(popoverTarget)! : popoverTarget) as HTMLElement
+                if (el) {
+                    target(el)
+                } else {
+                    throw new Error("Popover | can't find element " + popoverTarget)
                 }
-            ]
-        })
-    })
-    // createEffect(() => {
-    //     if (props.popoverTarget instanceof HTMLElement) popperInstance.state.elements.reference = props.popoverTarget
-    // })
+            }
+            // console.log('init', target())
+            popperInstance = createPopper(target() as Element, popoverContent() as HTMLElement, {
+                ...getOptions(),
+                modifiers: [
+                    {
+                        name: 'arrow',
+                        options: {
+                            element: arrow(),
+                            padding: 20
+                        }
+                    },
+                    {
+                        name: 'offset',
+                        options: {
+                            offset: [0, 10]
+                        }
+                    }
+                ]
+            })
+        },
+        isLazyReady,
+        { onMountInit: !getOptions().lazy }
+    )
 
     const updatingOptions = () => {
         return [{ name: 'sameWidth', enabled: !!getOptions().sameWidth }]
     }
     function show() {
+        if (!popperInstance) return
         if (getOptions().disabled) return
 
         // Enable the event listeners
@@ -64,6 +69,7 @@ export function usePopper(
     }
 
     function hide() {
+        if (!popperInstance) return
         if (getOptions().disabled) return
 
         // Disable the event listeners

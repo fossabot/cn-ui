@@ -1,5 +1,5 @@
 import { Atom, JSXSlot, NullAtom, OriginComponent, computed, ensureFunctionResult, splitOneChild } from '@cn-ui/reactive'
-import { createEffect, createMemo, onMount } from 'solid-js'
+import { createEffect, createMemo, mergeProps, onMount } from 'solid-js'
 import './index.css'
 import { usePopoverHover } from './composable/usePopoverHover'
 import { onClickOutside, useEventListener } from 'solidjs-use'
@@ -9,9 +9,16 @@ import { useFocusIn } from './composable/useFocusIn'
 import { usePopper } from './usePopper'
 import { zIndexManager } from './zIndexManager'
 
+export interface FloatingComponentProp {
+    zIndex?: number
+    lazy?: boolean
+    portalled?: boolean
+    unmountOnExit?: boolean
+}
+
 export interface PopoverExpose extends ReturnType<typeof usePopper> {}
 
-export interface PopoverProps {
+export interface PopoverProps extends FloatingComponentProp {
     content: JSXSlot<{ model: Atom<boolean> }>
     /**
      * click: 点击触发
@@ -27,11 +34,12 @@ export interface PopoverProps {
     clickOutsideClose?: boolean
     /** 支持通过 CSS 选择器直接虚拟链接对象, */
     popoverTarget?: string | Element
-    zIndex?: number
 }
 
 export const Popover = OriginComponent<PopoverProps, HTMLElement, boolean>(
     (props) => {
+        props = mergeProps({ lazy: true }, props)
+
         const [child, otherChildren] = splitOneChild(() => props.children)
 
         const popoverContent = NullAtom<HTMLElement>(null)
@@ -44,8 +52,8 @@ export const Popover = OriginComponent<PopoverProps, HTMLElement, boolean>(
             popoverContent,
             arrow,
             // 单独构建 atom 给配置，用于单独引用
-            createMemo(() => pick(props, 'placement', 'disabled', 'sameWidth')),
-            props
+            createMemo(() => pick(props, 'placement', 'disabled', 'sameWidth', 'lazy', 'popoverTarget')),
+            () => props.model()
         )
         onMount(() => {
             props.expose?.({ show, hide, update })
@@ -83,6 +91,7 @@ export const Popover = OriginComponent<PopoverProps, HTMLElement, boolean>(
             <>
                 {child()}
                 {otherChildren()}
+
                 <div
                     ref={(el) => {
                         popoverContent(el)
