@@ -10,6 +10,7 @@ export interface CascaderProps extends CascaderPanelProps {}
 export const Cascader = OriginComponent<CascaderProps, HTMLDivElement, CommonGroupListConfig[]>((props) => {
     const show = atom(false)
     const input = NullAtom<HTMLInputElement>(null)
+    const inputWrapper = NullAtom<HTMLSpanElement>(null)
     /** readonly input text */
     const inputText = createMemo(() =>
         props
@@ -22,13 +23,14 @@ export const Cascader = OriginComponent<CascaderProps, HTMLDivElement, CommonGro
     watch(props.model, () => popoverInstance()?.update())
     return (
         <OriginDiv prop={props}>
-            <BaseInput ref={input} v-model={inputText}></BaseInput>
+            <BaseInput ref={input} wrapperRef={inputWrapper} v-model={inputText}></BaseInput>
             <Popover
                 placement="bottom-start"
                 class="p-none"
                 v-model={show}
+                trigger="focus"
                 expose={popoverInstance}
-                popoverTarget={input()!}
+                popoverTarget={inputWrapper()!}
                 content={<CascaderPanel options={props.options} v-model={props.model} onSelected={props.onSelected}></CascaderPanel>}
             ></Popover>
         </OriginDiv>

@@ -29,34 +29,34 @@ const options = [
         label: 'Tom',
         options: [
             {
-                value: 'tom',
+                value: 'tom1',
                 label: 'Tom1',
                 options: [
                     {
-                        value: 'jack',
+                        value: 'jack2',
                         label: 'Jack'
                     },
                     {
-                        value: 'lucy',
+                        value: 'lucy2',
                         label: 'Lucy',
                         withSeparate: true
                     },
                     {
-                        value: 'tom',
+                        value: 'tom2',
                         label: 'Tom2'
                     },
                     {
-                        value: 'tom',
+                        value: 'tom3',
                         label: 'Tom3'
                     }
                 ]
             },
             {
-                value: 'tom',
+                value: 'tom1-1',
                 label: 'Tom2'
             },
             {
-                value: 'tom',
+                value: 'tom2-2',
                 label: 'Tom3'
             }
         ]

@@ -1,11 +1,9 @@
-import { NullAtom, OriginComponent, ThrottleAtom, atom, classNames, computed, createCtx, extendsEvent, useSelect } from '@cn-ui/reactive'
+import { NullAtom, OriginComponent, ThrottleAtom, atom, computed, createCtx, extendsEvent, useSelect } from '@cn-ui/reactive'
 import { BaseInput } from '../input/BaseInput'
 import { Popover } from '../popover'
-import { useEventListener } from 'solidjs-use'
-import { For, createEffect } from 'solid-js'
-import { VirtualList } from '../virtualList'
+import { createEffect } from 'solid-js'
 import { Icon } from '../icon/Icon'
-import { AiOutlineCheck, AiOutlineDown, AiOutlineSearch } from 'solid-icons/ai'
+import { AiOutlineDown, AiOutlineSearch } from 'solid-icons/ai'
 import { ClearControl } from '../input/utils'
 import { getLabelFromOptions } from './getLabelFromOptions'
 import './index.css'
@@ -15,6 +13,7 @@ import '../animation/cn-list.css'
 import { TransitionGroup } from 'solid-transition-group'
 import { BaseFormItemType, extendsBaseFormItemProp } from '../form/BaseFormItemType'
 import { SelectOptionsType } from '@cn-ui/reactive'
+import { SelectPanel } from './SelectPanel'
 
 export const SelectCtx = /* @__PURE__ */ createCtx<ReturnType<typeof useSelect<SelectOptionsType>>>()
 export interface SelectProps extends BaseFormItemType {
@@ -119,16 +118,13 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                     sameWidth
                     trigger="focus"
                     content={() => (
-                        <nav class={classNames('max-h-32 w-full ', props.options.length <= 100 && 'overflow-y-auto')}>
-                            <SelectPanel
-                                onSelect={(item, state) => {
-                                    !props.multiple && inputText(state ? getLabelFromOptions(item) : '')
-                                    input()?.focus()
-                                }}
-                                options={filteredOptions()}
-                                multiple={props.multiple}
-                            ></SelectPanel>
-                        </nav>
+                        <SelectPanel
+                            onSelect={(item, state) => {
+                                !props.multiple && inputText(state ? getLabelFromOptions(item) : '')
+                                input()?.focus()
+                            }}
+                            options={filteredOptions()}
+                        ></SelectPanel>
                     )}
                 ></Popover>
             </SelectCtx.Provider>
@@ -136,60 +132,3 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
     },
     { modelValue: [] }
 )
-
-export const SelectPanel = (props: { options: SelectOptionsType[]; multiple?: boolean; onSelect?: (item: SelectOptionsType, state: boolean) => void }) => {
-    const selectSystem = SelectCtx.use()
-    const innerContent = (item: SelectOptionsType) => (
-        <>
-            <Icon class="col-span-4">{selectSystem.isSelected(item) && <AiOutlineCheck></AiOutlineCheck>}</Icon>
-            <span class="col-span-8">{item.label ?? item.value}</span>
-        </>
-    )
-    const VoidSlot = () => <span>无数据</span>
-    const parentClass = 'cn-select-option grid grid-cols-12 items-center transition-colors select-none px-2 rounded-md'
-    const normalClass = 'hover:bg-design-hover cursor-pointer'
-    const selectedClass = 'cn-selected bg-primary-500 text-white hover:bg-primary-600 cursor-pointer'
-    const disabledClass = 'text-gray-400 cursor-not-allowed'
-    const createClass = (item: SelectOptionsType) => {
-        const isSelected = selectSystem.isSelected(item)
-        const isDisabled = selectSystem.isDisabled(item)
-        return classNames(parentClass, isSelected && selectedClass, isDisabled && disabledClass, !isSelected && !isDisabled && normalClass)
-    }
-    const selectItem = (item: SelectOptionsType) => {
-        const state = selectSystem.toggle(item)
-        props.onSelect?.(item, state)
-    }
-    return (
-        <>
-            {props.options.length > 100 ? (
-                <VirtualList containerHeight={128} each={props.options} estimateSize={24} fallback={VoidSlot}>
-                    {(item, _, { itemClass, itemRef }) => {
-                        createEffect(() => {
-                            itemClass(createClass(item))
-                            useEventListener(itemRef, 'click', () => {
-                                selectItem(item)
-                            })
-                        })
-                        return <>{innerContent(item)}</>
-                    }}
-                </VirtualList>
-            ) : (
-                <For each={props.options} fallback={VoidSlot()}>
-                    {(item) => {
-                        return (
-                            <div
-                                role="option"
-                                class={createClass(item)}
-                                onClick={() => {
-                                    selectItem(item)
-                                }}
-                            >
-                                {innerContent(item)}
-                            </div>
-                        )
-                    }}
-                </For>
-            )}
-        </>
-    )
-}

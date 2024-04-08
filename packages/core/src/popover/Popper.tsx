@@ -25,10 +25,10 @@ export interface PopoverExpose extends ReturnType<typeof usePopper> {}
 export interface PopoverProps extends FloatingComponentProp {
     content: JSXSlot<{ model: Atom<boolean> }>
     /**
-     * click: 点击触发
-     * hover: 鼠标移入触发
-     * focus: 聚焦触发（未实现）
-     * none: 完全受控模式
+     * - click: 点击触发
+     * - hover: 鼠标移入触发
+     * - focus: 聚焦触发
+     * - none: 完全受控模式
      */
     trigger?: 'click' | 'hover' | 'focus' | 'none'
     expose?: (expose: PopoverExpose) => void
@@ -71,15 +71,19 @@ export const Popover = OriginComponent<PopoverProps, HTMLElement, boolean>(
         )
         onMount(() => {
             props.expose?.({ show, hide, update })
+            const pTarget = props.popoverTarget!
+            const el = (typeof pTarget === 'string' ? document.querySelector(pTarget)! : pTarget) as HTMLElement
+            if (el) popoverTarget(el)
         })
 
         // hover
         const { hovering, hoveringState } = usePopoverHover([popoverTarget, popoverContent])
         const contentHovering = hoveringState[1]
         const [focused] = useFocusIn(popoverTarget)
+
         // click
         useEventListener(popoverTarget, 'pointerdown', () => (props.trigger === 'click' || !props.trigger) && props.model((i) => !i))
-        onClickOutside(popoverContent, () => props.model() && props.clickOutsideClose !== false && props.trigger !== 'none' && props.model(false), {
+        onClickOutside(popoverContent, () => props.model() && props.clickOutsideClose !== false && props.trigger === 'click' && props.model(false), {
             ignore: [popoverTarget]
         })
         // 此处进行对 model 动态数据的统一
