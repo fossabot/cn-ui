@@ -1,8 +1,7 @@
-import { OriginComponent, OriginDiv, classNames, useSelect } from '@cn-ui/reactive'
-import { For, Show } from 'solid-js'
+import { OriginComponent, OriginDiv, useSelect } from '@cn-ui/reactive'
+import { For, Match, Switch } from 'solid-js'
 import { CommonGroupListConfig } from '../groupList'
-import { Dynamic } from 'solid-js/web'
-import { AiOutlineRight } from 'solid-icons/ai'
+import { AiOutlineCheck, AiOutlineRight } from 'solid-icons/ai'
 import { Icon } from '../icon'
 import { SelectPanel } from '../select/SelectPanel'
 import { SelectCtx } from '../select'
@@ -15,7 +14,7 @@ export interface CascaderPanelProps {
 }
 export const CascaderPanel = OriginComponent<CascaderPanelProps, HTMLDivElement, CommonGroupListConfig[]>((props) => {
     return (
-        <OriginDiv prop={props} class="border rounded-md flex select-none">
+        <OriginDiv prop={props} class="border rounded-lg flex select-none">
             <For each={[null, ...props.model()]}>
                 {(item, index) => {
                     const options = item === null ? props.options : item.options
@@ -26,7 +25,7 @@ export const CascaderPanel = OriginComponent<CascaderPanelProps, HTMLDivElement,
                     return (
                         <SelectCtx.Provider value={selectSystem}>
                             <SelectPanel
-                                class="p-2 border-r"
+                                class="p-1 border-r"
                                 disallowCancelClick
                                 options={options!}
                                 onSelected={(item) => {
@@ -37,11 +36,16 @@ export const CascaderPanel = OriginComponent<CascaderPanelProps, HTMLDivElement,
                                         return newArr
                                     })
                                 }}
-                                rightSlot={(item: CommonGroupListConfig | undefined) => (
-                                    <Icon class="w-6 px-1 flex-none">
-                                        <Show when={item?.options}>
-                                            <AiOutlineRight></AiOutlineRight>
-                                        </Show>
+                                selectedIconSlot={(item: CommonGroupListConfig | undefined) => (
+                                    <Icon class="w-6 px-1 flex-none text-primary-400">
+                                        <Switch>
+                                            <Match when={item?.options}>
+                                                <AiOutlineRight class={selectSystem.isSelected(item!) ? '' : 'text-gray-400'}></AiOutlineRight>
+                                            </Match>
+                                            <Match when={selectSystem.isSelected(item!)}>
+                                                <AiOutlineCheck></AiOutlineCheck>
+                                            </Match>
+                                        </Switch>
                                     </Icon>
                                 )}
                             ></SelectPanel>

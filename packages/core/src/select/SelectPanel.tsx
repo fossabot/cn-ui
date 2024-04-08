@@ -1,9 +1,7 @@
-import { JSXSlot, OriginComponent, classNames, ensureFunctionResult, extendsEvent, firstClass } from '@cn-ui/reactive'
+import { JSXSlot, OriginComponent, ensureFunctionResult, extendsEvent, firstClass } from '@cn-ui/reactive'
 import { useEventListener } from 'solidjs-use'
 import { For, createEffect, createMemo } from 'solid-js'
 import { VirtualList } from '../virtualList'
-import { Icon } from '../icon/Icon'
-import { AiOutlineCheck } from 'solid-icons/ai'
 import { SelectOptionsType } from '@cn-ui/reactive'
 import { SelectCtx } from './Select'
 
@@ -14,7 +12,7 @@ export const SelectPanel = OriginComponent<
         disallowCancelClick?: boolean
         options: SelectOptionsType[]
         onSelected?: (item: SelectOptionsType, state: boolean) => void
-        rightSlot?: JSXSlot<SelectOptionsType>
+        selectedIconSlot?: JSXSlot<SelectOptionsType>
     },
     HTMLDivElement,
     null
@@ -22,18 +20,15 @@ export const SelectPanel = OriginComponent<
     const selectSystem = SelectCtx.use()
     const innerContent = (item: SelectOptionsType) => (
         <>
-            <Icon class="w-6 flex-none px-1">{selectSystem.isSelected(item) && <AiOutlineCheck></AiOutlineCheck>}</Icon>
             <span class="flex-1">{item.label ?? item.value}</span>
-            {ensureFunctionResult(props.rightSlot, [item])}
+            {ensureFunctionResult(props.selectedIconSlot, [item])}
         </>
     )
 
     const createClass = (item: SelectOptionsType) => {
-        const isSelected = selectSystem.isSelected(item)
-        const isDisabled = selectSystem.isDisabled(item)
-        return firstClass.base('cn-select-option flex items-center transition-colors select-none px-2 rounded-md')(
-            isSelected && 'cn-selected bg-primary-500 text-white hover:bg-primary-600 cursor-pointer',
-            isDisabled && 'text-gray-400 cursor-not-allowed',
+        return firstClass.base('cn-select-option flex items-center transition-colors select-none pl-4 pr-2 py-1 rounded-md')(
+            selectSystem.isSelected(item) && 'cn-selected bg-primary-50  cursor-pointer',
+            selectSystem.isDisabled(item) && 'text-gray-400 cursor-not-allowed',
             'hover:bg-design-hover cursor-pointer'
         )
     }
@@ -45,7 +40,7 @@ export const SelectPanel = OriginComponent<
         props.onSelected?.(item, state)
     }
     const isVirtual = createMemo(() => props.options.length > 100)
-    const VoidSlot = () => <span>无数据</span>
+    const VoidSlot = () => <div class="text-center text-gray-600">无数据</div>
     return (
         <div class={props.class('max-h-32 w-full ', isVirtual() ? 'h-32' : 'overflow-y-auto')} style={props.style()} {...extendsEvent(props)}>
             {isVirtual() ? (
