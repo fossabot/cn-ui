@@ -5,6 +5,7 @@ import { createPopper } from './createPopper'
 import { PopoverProps } from './Popper'
 import { isServer } from 'solid-js/web'
 import { useLazyMount } from '@cn-ui/reactive'
+import { nextTick } from 'solidjs-use'
 
 /** 对于 Popper js 的封装 */
 export function usePopper(
@@ -12,40 +13,50 @@ export function usePopper(
     popoverContent: Atom<HTMLElement | null>,
     arrow: Atom<HTMLElement | null>,
     getOptions: () => Partial<PopoverProps>,
-    isLazyReady: Accessor<boolean>
+    isLazyReady: Accessor<boolean>,
+    events: {
+        beforeMount: () => void
+        mounted: () => void
+    }
 ) {
     let popperInstance: Instance
+    /** init 事件需要延迟执行，避免 DOM 未渲染的现象 */
+    const init = () => {
+        if (isServer) return
+        if (getOptions().popoverTarget) {
+            const popoverTarget = getOptions().popoverTarget!
+            const el = (typeof popoverTarget === 'string' ? document.querySelector(popoverTarget)! : popoverTarget) as HTMLElement
+            if (el) {
+                target(el)
+            } else {
+                throw new Error("Popover | can't find element " + popoverTarget)
+            }
+        }
+        // console.log('init', target())
+        popperInstance = createPopper(target() as Element, popoverContent() as HTMLElement, {
+            ...getOptions(),
+            modifiers: [
+                {
+                    name: 'arrow',
+                    options: {
+                        element: arrow(),
+                        padding: 20
+                    }
+                },
+                {
+                    name: 'offset',
+                    options: {
+                        offset: [0, 10]
+                    }
+                }
+            ]
+        })
+    }
     useLazyMount(
         () => {
-            if (isServer) return
-            if (getOptions().popoverTarget) {
-                const popoverTarget = getOptions().popoverTarget!
-                const el = (typeof popoverTarget === 'string' ? document.querySelector(popoverTarget)! : popoverTarget) as HTMLElement
-                if (el) {
-                    target(el)
-                } else {
-                    throw new Error("Popover | can't find element " + popoverTarget)
-                }
-            }
-            // console.log('init', target())
-            popperInstance = createPopper(target() as Element, popoverContent() as HTMLElement, {
-                ...getOptions(),
-                modifiers: [
-                    {
-                        name: 'arrow',
-                        options: {
-                            element: arrow(),
-                            padding: 20
-                        }
-                    },
-                    {
-                        name: 'offset',
-                        options: {
-                            offset: [0, 10]
-                        }
-                    }
-                ]
-            })
+            events.beforeMount()
+            nextTick(init)
+            events.mounted()
         },
         isLazyReady,
         { onMountInit: !getOptions().lazy }

@@ -1,19 +1,23 @@
-import { Atom, JSXSlot, NullAtom, OriginComponent, computed, ensureFunctionResult, splitOneChild } from '@cn-ui/reactive'
-import { createEffect, createMemo, mergeProps, onMount } from 'solid-js'
+import { Atom, JSXSlot, NullAtom, OriginComponent, atom, computed, ensureFunctionResult, splitOneChild } from '@cn-ui/reactive'
+import { Show, createEffect, createMemo, mergeProps, onMount } from 'solid-js'
 import './index.css'
 import { usePopoverHover } from './composable/usePopoverHover'
-import { onClickOutside, useEventListener } from 'solidjs-use'
+import { nextTick, onClickOutside, useEventListener } from 'solidjs-use'
 import type { Placement } from '@popperjs/core'
 import { pick } from 'lodash-es'
 import { useFocusIn } from './composable/useFocusIn'
 import { usePopper } from './usePopper'
 import { zIndexManager } from './zIndexManager'
+import { PortalEasy } from '@cn-ui/reactive'
 
 export interface FloatingComponentProp {
     zIndex?: number
     lazy?: boolean
+    /** 挂载到全局上 */
     portalled?: boolean
-    unmountOnExit?: boolean
+    // unmountOnExit 应该是附加到 PopoverContent, 暂时未实现
+    // unmountOnExit?: boolean
+    onMounted?: () => void
 }
 
 export interface PopoverExpose extends ReturnType<typeof usePopper> {}
@@ -47,13 +51,23 @@ export const Popover = OriginComponent<PopoverProps, HTMLElement, boolean>(
         const popoverTarget = computed(() => child() as HTMLElement)
 
         const arrow = NullAtom<HTMLElement>(null)
+        const readyToRenderDom = atom(false)
         const { show, hide, update } = usePopper(
             popoverTarget,
             popoverContent,
             arrow,
             // 单独构建 atom 给配置，用于单独引用
             createMemo(() => pick(props, 'placement', 'disabled', 'sameWidth', 'lazy', 'popoverTarget')),
-            () => props.model()
+            () => props.model(),
+            {
+                beforeMount() {
+                    readyToRenderDom(true)
+                },
+                mounted() {
+                    props.onMounted?.()
+                    nextTick(visibleChange) // 初始化完成，立即推迟进行一次渲染，爆炸状态正确
+                }
+            }
         )
         onMount(() => {
             props.expose?.({ show, hide, update })
@@ -79,31 +93,34 @@ export const Popover = OriginComponent<PopoverProps, HTMLElement, boolean>(
                     return
             }
         })
-        createEffect(() => (props.model() ? show() : hide()))
+        const visibleChange = () => (props.model() ? show() : hide())
+        createEffect(visibleChange)
 
         const zIndex = computed(() => props.zIndex ?? zIndexManager.getIndex())
         createEffect(() => props.model() && zIndex(zIndexManager.getIndex()))
 
         // TODO 希望在水合之前隐藏，在水合之后显示
         const isHidden = computed(() => !props.model())
-
         return (
             <>
                 {child()}
                 {otherChildren()}
-
-                <div
-                    ref={(el) => {
-                        popoverContent(el)
-                        props.ref?.(el)
-                    }}
-                    class={props.class(isHidden() && 'hidden', 'absolute popover__content bg-design-pure p-1 rounded-md')}
-                    style={{ ...props.style(), 'z-index': zIndex() }}
-                    role="tooltip"
-                >
-                    <div class="popover__arrow" ref={arrow}></div>
-                    {ensureFunctionResult(props.content, [{ model: props.model }])}
-                </div>
+                <PortalEasy portalled={props.portalled}>
+                    <Show when={readyToRenderDom()}>
+                        <div
+                            ref={(el) => {
+                                popoverContent(el)
+                                props.ref?.(el)
+                            }}
+                            class={props.class(isHidden() && 'hidden', 'absolute popover__content bg-design-pure p-1 rounded-md')}
+                            style={{ ...props.style(), 'z-index': zIndex() }}
+                            role="tooltip"
+                        >
+                            <div class="popover__arrow" ref={arrow}></div>
+                            {ensureFunctionResult(props.content, [{ model: props.model }])}
+                        </div>
+                    </Show>
+                </PortalEasy>
             </>
         )
     },

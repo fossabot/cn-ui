@@ -39,7 +39,11 @@ export const Primary: Story = {
             <Row gutter={20}>
                 <Col span={24}>
                     <Flex gap={'12px'}>
-                        <CheckboxGroup options={['click', 'hover', 'focus']} v-model={trigger} multiple={false}></CheckboxGroup>
+                        <CheckboxGroup
+                            options={['click', 'hover', 'focus'].map((i) => ({ label: i, value: i }))}
+                            v-model={trigger}
+                            multiple={false}
+                        ></CheckboxGroup>
                     </Flex>
                 </Col>
 
@@ -104,7 +108,7 @@ export const AppendMode: Story = {
                     popoverTarget="#my-btn"
                     sameWidth
                     v-model={show}
-                    trigger="hover"
+                    trigger="click"
                     content={(context) => {
                         const { model } = context!
                         return (
