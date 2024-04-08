@@ -26,9 +26,10 @@ export const CascaderPanel = OriginComponent<CascaderPanelProps, HTMLDivElement,
                     return (
                         <SelectCtx.Provider value={selectSystem}>
                             <SelectPanel
+                                class="p-2 border-r"
                                 disallowCancelClick
                                 options={options!}
-                                onSelect={(item) => {
+                                onSelected={(item) => {
                                     props.model((i) => {
                                         const newArr = i.slice(0, index())
                                         newArr[index()] = item
@@ -36,6 +37,13 @@ export const CascaderPanel = OriginComponent<CascaderPanelProps, HTMLDivElement,
                                         return newArr
                                     })
                                 }}
+                                rightSlot={(item: CommonGroupListConfig | undefined) => (
+                                    <Icon class="w-6 px-1 flex-none">
+                                        <Show when={item?.options}>
+                                            <AiOutlineRight></AiOutlineRight>
+                                        </Show>
+                                    </Icon>
+                                )}
                             ></SelectPanel>
                         </SelectCtx.Provider>
                     )

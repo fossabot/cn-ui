@@ -119,7 +119,7 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                     trigger="focus"
                     content={() => (
                         <SelectPanel
-                            onSelect={(item, state) => {
+                            onSelected={(item, state) => {
                                 !props.multiple && inputText(state ? getLabelFromOptions(item) : '')
                                 input()?.focus()
                             }}
