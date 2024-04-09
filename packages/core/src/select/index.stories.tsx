@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from 'storybook-solidjs'
 
-import { Select, SelectOptionsType } from './index'
-import { genArray, resource } from '@cn-ui/reactive'
+import { Select } from './index'
+import { SelectOptionsType, atom, computed, genArray, resource } from '@cn-ui/reactive'
 import Mock from 'mockjs-ts'
+import { JSONViewer } from '../dataViewer'
 const meta = {
     title: 'Controls/Select 选择器',
     component: Select,
@@ -56,10 +57,16 @@ export const Multi: Story = {
                 }).data,
             { initValue: [] }
         )
+        const selected = atom([])
+        const options = computed(() => [{ label: 'Jack', value: 'jack' }, ...res()])
         return (
-            <div class="flex gap-4">
-                <Select disabledOptions={['jack']} multiple options={[{ label: 'Jack', value: 'jack' }, ...res()]}></Select>
-            </div>
+            <>
+                <JSONViewer data={selected()}></JSONViewer>
+                <div class="flex gap-4">
+                    <Select v-model={selected} disabledOptions={['jack']} multiple options={options()}></Select>
+                    <Select v-model={selected} disabledOptions={['jack']} multiple options={options()}></Select>
+                </div>
+            </>
         )
     },
     args: {}

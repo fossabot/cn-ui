@@ -1,7 +1,7 @@
 import { Atom, NullAtom, OriginComponent, ThrottleAtom, atom, computed, createCtx, debounce, extendsEvent, useSelect } from '@cn-ui/reactive'
 import { BaseInput } from '../input/BaseInput'
 import { Popover } from '../popover'
-import { createEffect } from 'solid-js'
+import { createEffect, createMemo } from 'solid-js'
 import { Icon } from '../icon/Icon'
 import { AiOutlineCheck, AiOutlineDown, AiOutlineSearch } from 'solid-icons/ai'
 import { ClearControl } from '../input/utils'
@@ -16,6 +16,7 @@ import { SelectOptionsType } from '@cn-ui/reactive'
 import { SelectPanel } from './SelectPanel'
 import { watch } from 'solidjs-use'
 import { useFocusIn } from '../popover/composable/useFocusIn'
+import { createSync } from '../../../reactive/src/atom/createSync'
 
 export const SelectCtx = /* @__PURE__ */ createCtx<ReturnType<typeof useSelect<SelectOptionsType>>>()
 export interface SelectProps extends BaseFormItemType {
@@ -41,9 +42,10 @@ const useInputSearch = (inputRef: Atom<HTMLInputElement | null>) => {
         inputRef()!.value = inputRef()!.placeholder
         inputRef()!.placeholder = placeholder
     }
+
     watch(
         isFocusing,
-        debounce((val) => (val() ? whenFocus() : whenBlur()), 100)
+        debounce((val: boolean) => (val ? whenFocus() : whenBlur()), 100)
     )
     return { isFocusing }
 }
@@ -53,9 +55,18 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
         const selectSystem = useSelect(() => props.options, {
             multi: () => !!props.multiple
         })
-        createEffect(() => {
-            props.model(() => selectSystem.selected().map((i) => selectSystem.getId(i)))
-        })
+        // 同步 model 与选择系统的数据
+        createSync(
+            props.model,
+            selectSystem.selectedMap,
+            (modelValue) => {
+                const idMap = selectSystem.optionsIdMap()
+                return new Map(modelValue.map((i) => [i, idMap.get(i)!]))
+            },
+            (selectedMap) => {
+                return [...selectedMap.keys()]
+            }
+        )
         createEffect(() => {
             props.disabledOptions &&
                 props.disabledOptions.forEach((id) => {
@@ -82,7 +93,7 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
         })
         const PopoverOpen = atom(false)
         const multipleTags = ThrottleAtom(
-            computed(() => selectSystem.selected()),
+            createMemo(() => selectSystem.selected()),
             500
         )
         const wrapper = NullAtom<HTMLSpanElement>(null)
