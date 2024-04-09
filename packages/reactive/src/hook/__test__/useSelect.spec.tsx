@@ -6,35 +6,35 @@ import { atom } from '../../atom'
 
 test('单选方案', async () => {
     const {
-        result: { toggleById, isSelected }
-    } = renderHook(() => useSelect(atom(genArray(10).map((i) => ({ value: i.toString() }))), { multi: false }))
+        result: { toggleById, isSelectedById }
+    } = renderHook(() => useSelect(atom(genArray(10).map((i) => ({ value: i.toString() }))), { multi: () => false }))
 
     const select = (key: string) => {
-        expect(isSelected(key)).toBe(false)
+        expect(isSelectedById(key)).toBe(false)
         toggleById(key)
-        expect(isSelected(key)).toBe(true)
+        expect(isSelectedById(key)).toBe(true)
     }
     const unselect = (key: string) => {
-        expect(isSelected(key)).toBe(true)
+        expect(isSelectedById(key)).toBe(true)
         toggleById(key)
-        expect(isSelected(key)).toBe(false)
+        expect(isSelectedById(key)).toBe(false)
     }
     select('2')
     select('3')
-    expect(isSelected('2')).toBe(false)
+    expect(isSelectedById('2')).toBe(true)
     unselect('3')
-    expect(isSelected('3')).toBe(false)
+    expect(isSelectedById('3')).toBe(false)
 })
 
 test('多选方案', async () => {
     const {
-        result: { isSelected, isAllSelected, isIndeterminate, isNoneSelected, selectAll, clearAll, select }
+        result: { isSelectedById, isAllSelected, isIndeterminate, isNoneSelected, selectAll, clearAll, select }
     } = renderHook(() => useSelect(atom(genArray(10).map((i) => ({ value: i.toString() })))))
 
     // 全选
     selectAll()
     genArray(10).forEach((i) => {
-        expect(isSelected(i.toString())).toBe(true)
+        expect(isSelectedById(i.toString())).toBe(true)
     })
     expect(isAllSelected()).toBe(true)
     expect(isIndeterminate()).toBe(false)
@@ -42,16 +42,16 @@ test('多选方案', async () => {
 
     clearAll()
     genArray(10).forEach((i) => {
-        expect(isSelected(i.toString())).toBe(false)
+        expect(isSelectedById(i.toString())).toBe(false)
     })
     expect(isAllSelected()).toBe(false)
     expect(isIndeterminate()).toBe(false)
     expect(isNoneSelected()).toBe(true)
 
     select({ value: '1' })
-    expect(isSelected('1')).toBe(true)
+    expect(isSelectedById('1')).toBe(true)
     ;[2, 3, 4, 5, 6, 7, 8, 9].forEach((i) => {
-        expect(isSelected(i.toString())).toBe(false)
+        expect(isSelectedById(i.toString())).toBe(false)
     })
     expect(isAllSelected()).toBe(false)
     expect(isIndeterminate()).toBe(true)

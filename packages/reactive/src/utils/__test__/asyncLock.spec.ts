@@ -1,5 +1,5 @@
 import { renderHook } from '@solidjs/testing-library'
-import { test, vi } from 'vitest'
+import { expect, test, vi } from 'vitest'
 import { asyncLock } from '../asyncLock'
 import { sleep } from '../sleep'
 

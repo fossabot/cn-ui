@@ -1,5 +1,6 @@
 import { atom, computed } from '../atom/index'
 import { Accessor, createEffect, untrack } from 'solid-js'
+import { updateMapAtom } from '../atom/updateMapAtom'
 
 export type SelectSystem<T> = ReturnType<typeof useSelect<T>>
 export interface SelectOptionsType {
@@ -26,8 +27,8 @@ export function useSelect<T>(
     /** @ts-ignore 未想到适合的类型挂载 */
     const getId = config.getId ?? ((item) => item.value)
     const optionsIdMap = computed(() => new Map<string, T>(options().map((i) => [getId(i), i])))
-    const selectedMap = atom(new Map<string, T>(), { equals: false })
-    const disabledMap = atom(new Map<string, T>(), { equals: false })
+    const selectedMap = atom(new Map<string, T>())
+    const disabledMap = atom(new Map<string, T>())
 
     // 自动强制单选，防止多选转单选发生数据错乱
     createEffect(() => {
@@ -60,20 +61,14 @@ export function useSelect<T>(
         if (state === undefined) state = !selectedMap().has(id)
 
         if (state === true && !selectedMap().has(id)) {
-            selectedMap((i) => {
+            updateMapAtom(selectedMap, (map) => {
                 const item = optionsIdMap().get(id)
                 if (!item) throw new Error('useSelect | changeSelected error: id ' + id + ' not found in options')
-                if (multi()) {
-                    i.set(id, item)
-                    return i
-                } else {
-                    return new Map([[id, item]])
-                }
+                map.set(id, item)
             })
         } else if (state === false) {
-            selectedMap((i) => {
-                i.delete(id)
-                return i
+            updateMapAtom(selectedMap, (map) => {
+                map.delete(id)
             })
         }
         return state
@@ -94,9 +89,11 @@ export function useSelect<T>(
         const isNone = (!hasOneSelected && hasOneUnSelected) || optionsIdMap().size === 0
         return { isAll, isNone, isPartial }
     })
+
     return {
         multi,
         options,
+        optionsIdMap,
         selected: () => {
             return [...selectedMap().values()]
         },
@@ -112,11 +109,10 @@ export function useSelect<T>(
         /** 清空选中 */
         clearAll() {
             if (config.keepUndefinedOption) {
-                selectedMap((i) => {
+                updateMapAtom(selectedMap, (newSelected) => {
                     for (const id of optionsIdMap().keys()) {
-                        i.delete(id)
+                        newSelected.delete(id)
                     }
-                    return i
                 })
             } else {
                 selectedMap(new Map())
@@ -125,11 +121,10 @@ export function useSelect<T>(
         /** 选中所有 */
         selectAll() {
             if (multi()) {
-                selectedMap((i) => {
+                updateMapAtom(selectedMap, (i) => {
                     for (const item of optionsIdMap()) {
                         i.set(...item)
                     }
-                    return i
                 })
             } else {
                 throw new Error('useSelect | multi: false | can not trigger selectAll')
@@ -163,10 +158,10 @@ export function useSelect<T>(
             return disabledMap().has(id)
         },
         disable: (item: T) => {
-            disabledMap((i) => (i.set(getId(item), item), i))
+            updateMapAtom(disabledMap, (i) => i.set(getId(item), item))
         },
         disableById: (id: string) => {
-            disabledMap((i) => (i.set(id, optionsIdMap().get(id)!), i))
+            updateMapAtom(disabledMap, (i) => i.set(id, optionsIdMap().get(id)!))
         }
     }
 }

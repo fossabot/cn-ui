@@ -1,5 +1,5 @@
-import { render, renderHook } from '@solidjs/testing-library'
-import { test, vi } from 'vitest'
+import { renderHook } from '@solidjs/testing-library'
+import { expect, test, vi } from 'vitest'
 import { usePaginationStack } from '../usePagination'
 import { sleep } from '../../utils'
 
