@@ -11,6 +11,7 @@ export interface SelectOptionsType {
 
 /**
  * @zh 多选状态管理
+ * TODO 子集化 Select 保持数据稳定
  * */
 export function useSelect<T>(
     options: Accessor<T[]>,
@@ -60,10 +61,11 @@ export function useSelect<T>(
         // 默认自动置反
         if (state === undefined) state = !selectedMap().has(id)
 
-        if (state === true && !selectedMap().has(id)) {
+        if (state === true) {
             updateMapAtom(selectedMap, (map) => {
                 const item = optionsIdMap().get(id)
                 if (!item) throw new Error('useSelect | changeSelected error: id ' + id + ' not found in options')
+                if (!multi()) map.clear()
                 map.set(id, item)
             })
         } else if (state === false) {
@@ -73,9 +75,13 @@ export function useSelect<T>(
         }
         return state
     }
+    /**
+     * 计算函数：用于确定多选的选中状态。
+     * 确定是全部选中、部分选中、还是全部未选中。
+     */
     const multiSelectedState = computed(() => {
-        let hasOneSelected = false
-        let hasOneUnSelected = false
+        let hasOneSelected = false // 是否有一个选项被选中
+        let hasOneUnSelected = false // 是否有一个选项未被选中
         for (const id of optionsIdMap().keys()) {
             if (selectedMap().has(id)) {
                 hasOneSelected = true
@@ -83,9 +89,12 @@ export function useSelect<T>(
                 hasOneUnSelected = true
             }
         }
+
+        // 确定选项的选中状态是部分、全部还是未全部选中
         const isPartial = hasOneSelected && hasOneUnSelected
         const isAll = hasOneSelected && !hasOneUnSelected
-        // 特殊情况，如果没有 options 那么应该是 isNone
+
+        // 特殊情况处理：如果没有选项或者所有选项都未被选中，则认为是全部未选中（isNone）
         const isNone = (!hasOneSelected && hasOneUnSelected) || optionsIdMap().size === 0
         return { isAll, isNone, isPartial }
     })
