@@ -14,7 +14,7 @@ import { TransitionGroup } from 'solid-transition-group'
 import { BaseFormItemType, extendsBaseFormItemProp } from '../form/BaseFormItemType'
 import { SelectOptionsType } from '@cn-ui/reactive'
 import { SelectPanel } from './SelectPanel'
-import { throttleFilter, useEventListener, watch } from 'solidjs-use'
+import { watch } from 'solidjs-use'
 import { useFocusIn } from '../popover/composable/useFocusIn'
 
 export const SelectCtx = /* @__PURE__ */ createCtx<ReturnType<typeof useSelect<SelectOptionsType>>>()
