@@ -19,7 +19,6 @@ export const Primary: Story = {
         const date = atom(dayjs())
         return (
             <>
-                {date().format('YYYY MM')}
                 <Calendar v-model={date}></Calendar>
             </>
         )

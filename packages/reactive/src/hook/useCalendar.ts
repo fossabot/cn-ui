@@ -1,10 +1,11 @@
 import dayjs, { Dayjs } from 'dayjs'
 import minMax from 'dayjs/plugin/minMax'
+import isBetween from 'dayjs/plugin/isBetween'
 import { Accessor, createMemo } from 'solid-js'
 import { genArray } from '../utils'
 import { Atom, atom } from '../atom'
 dayjs.extend(minMax)
-
+dayjs.extend(isBetween)
 export const useCalendar = () => {
     return
 }
@@ -23,24 +24,43 @@ export const useCalendarSelect = (
 ) => {
     const selectedDate = model
     const mode = createMemo(() => config.mode?.() ?? 'single')
+    const virtualEndTime = atom(dayjs())
+    const isSelectingEnd = () => {
+        return selectedDate().length === 1
+    }
     const isSelected = (d: Dayjs) => {
+        if (selectedDate().length === 0) return false
         if (['single', 'multiple'].includes(mode())) {
             return selectedDate().some((i) => d.isSame(i))
+        } else if (isSelectingEnd()) {
+            return isBetweenRange(d)
         } else {
-            return d.isAfter(selectedDate()[0]) && d.isBefore(selectedDate()[1])
+            return d.isBetween(selectedDate()[0], selectedDate()[1], null, '[]')
         }
+    }
+    const isBetweenRange = (d: Dayjs) => {
+        const minmax = [selectedDate()[0], virtualEndTime()]
+        return d.isBetween(dayjs.min(minmax), dayjs.max(minmax))
     }
     return {
         selectedDate,
         mode,
         isSelected,
         isStartDate(d: Dayjs) {
-            return d.isSame(selectedDate()[0])
+            if (mode() !== 'range') return false
+            if (selectedDate().length === 0) return false
+            return d.isSame(selectedDate()[0], 'd')
         },
         isEndDate(d: Dayjs) {
-            return d.isSame(selectedDate()[1])
+            if (mode() !== 'range') return false
+            if (!selectedDate()[1]) return false
+            if (d.isSame(selectedDate()[1], 'd')) return true
+            if (isSelectingEnd()) return d.isSame(virtualEndTime())
+            return false
         },
-        toggleSelect(d: Dayjs, state = isSelected(d)) {
+        isSelectingEnd,
+        virtualEndTime,
+        toggleSelect(d: Dayjs, state = !isSelected(d)) {
             switch (mode()) {
                 case 'single':
                     return state ? selectedDate([d]) : selectedDate([])
@@ -49,11 +69,24 @@ export const useCalendarSelect = (
                 case 'range':
                     return state
                         ? selectedDate((i) => {
+                              if (i.length === 0) {
+                                  return [d]
+                              } else if (i.length === 2) {
+                                  virtualEndTime(d)
+                                  return [d]
+                              }
+
                               const max = dayjs.max(...i, d)!
                               const min = dayjs.min(...i, d)!
+                              if (max.isSame(min)) return [min]
                               return [min, max]
                           })
-                        : selectedDate((i) => i.filter((selected) => !d.isSame(selected)))
+                        : selectedDate((i) => {
+                              if (i.length === 2) {
+                                  return [d]
+                              }
+                              return i.filter((selected) => !d.isSame(selected))
+                          })
             }
         }
     }
@@ -108,7 +141,7 @@ export const useDateCalendar = (targetDate: Accessor<Dayjs>, config: Accessor<Da
         extraStartWeek,
         extraEndWeek,
         weekHeader(locales?: string) {
-            const names = WeekTitleLocale(locales, { weekday: 'short' })
+            const names = WeekTitleLocale(locales, { weekday: 'narrow' })
             return genArray(7)
                 .map((i) => ((config().startOfWeek ?? 0) + i) % 7)
                 .map((i) => names[i])

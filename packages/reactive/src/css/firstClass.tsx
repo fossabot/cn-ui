@@ -12,6 +12,7 @@
 export const firstClass = (...args: (string | void | false)[]) => {
     return args.find((i) => i) as string | undefined
 }
-firstClass.base = (base: string) => {
+firstClass.base = (...classes: (string | void | false)[]) => {
+    const base = classes.filter((i) => i).join(' ')
     return (...args: (string | void | false)[]): string => base + ' ' + (firstClass(...args) || '')
 }
