@@ -26,9 +26,10 @@
         "utils"
     ],
     "dependencies": {
-        "solid-js": "^1.7.8",
+        "dayjs": "^1.11.10",
         "lodash-es": "^4.17.21",
         "mitt": "^3.0.0",
+        "solid-js": "^1.7.8",
         "solidjs-use": "^2.3.0"
     }
 }
