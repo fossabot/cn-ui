@@ -16,3 +16,5 @@ firstClass.base = (...classes: (string | void | false)[]) => {
     const base = classes.filter((i) => i).join(' ')
     return (...args: (string | void | false)[]): string => base + ' ' + (firstClass(...args) || '')
 }
+
+export { firstClass as classHelper }
