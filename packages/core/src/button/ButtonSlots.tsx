@@ -1,7 +1,9 @@
 import { AiOutlineLoading3Quarters } from 'solid-icons/ai'
 import { Icon } from '../icon/Icon'
 import '../animation/spin.css'
-export const ButtonStore = {
+import { ComponentSlots } from '@cn-ui/reactive'
+
+export const ButtonSlots = new ComponentSlots('Button', {
     loadingIcon: () => {
         return (
             <Icon class="pr-1">
@@ -9,7 +11,4 @@ export const ButtonStore = {
             </Icon>
         )
     }
-}
-export const DefineButton = (store: typeof ButtonStore) => {
-    Object.assign(ButtonStore, store)
-}
+})

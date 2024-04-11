@@ -1,7 +1,9 @@
-import { JSXSlot, OriginComponent, OriginComponentInputType, ensureFunctionResult, extendsEvent, useMapper } from '@cn-ui/reactive'
+import { JSXSlot, OriginComponent, ensureFunctionResult, extendsEvent } from '@cn-ui/reactive'
 import { Match, Switch } from 'solid-js'
-import { ButtonStore } from './ButtonStore'
-export interface ButtonProps {
+import { ButtonSlots } from './ButtonSlots'
+import { createTypeClass } from './style/createTypeClass'
+import { createDisabledClass } from './style/createDisabledClass'
+export interface ButtonProps extends ButtonSlots {
     /**
      * 按钮类型
      */
@@ -10,10 +12,7 @@ export interface ButtonProps {
      * 按钮的HTML类型
      */
     htmlType?: HTMLButtonElement['type']
-    /**
-     * 按钮的图标
-     */
-    icon?: JSXSlot
+
     /**
      * 按钮的形状
      */
@@ -43,9 +42,19 @@ export interface ButtonProps {
      */
     circle?: boolean
 }
+export interface ButtonSlots {
+    /**
+     * 按钮的图标
+     */
+    icon?: JSXSlot
+    loadingIcon?: JSXSlot
+}
+
+export interface ButtonEvent {}
+
 export const Button = OriginComponent<ButtonProps, HTMLButtonElement>((props) => {
-    const typeClass = createTypeClass(props)
-    const disabledClass = createDisabledClass(props)
+    const typeClass = createTypeClass(props as ButtonProps)
+    const disabledClass = createDisabledClass(props as ButtonProps)
 
     return (
         <button
@@ -69,56 +78,10 @@ export const Button = OriginComponent<ButtonProps, HTMLButtonElement>((props) =>
                 }
             >
                 <Match when={props.loading}>
-                    {ButtonStore.loadingIcon()}
+                    {ButtonSlots.renderSlotAsDefault('loadingIcon', props.loadingIcon)}
                     {'加载中'}
                 </Match>
             </Switch>
         </button>
     )
 })
-
-function createTypeClass(props: OriginComponentInputType<ButtonProps, HTMLButtonElement, string>) {
-    return useMapper(() => props.type ?? 'default', {
-        primary: () => {
-            const danger = props.danger ? 'bg-error-500 hover:bg-error-400' : 'bg-primary-500 hover:bg-primary-400'
-            return `${danger} text-design-text-light `
-        },
-        dashed() {
-            return this.default() + ' border-dashed'
-        },
-        link() {
-            const danger = props.danger ? 'text-error-500' : 'text-primary-500'
-            return this.default() + ` border-none ${danger}`
-        },
-        text() {
-            return 'hover:bg-gray-200'
-        },
-        default: () => {
-            const danger = props.danger
-                ? 'hover:border-error-400 hover:text-error-400 active:bg-error-50'
-                : 'hover:border-primary-400 hover:text-primary-400  active:bg-primary-50'
-            return `border-design-border border ${danger} bg-transparent`
-        }
-    })
-}
-function createDisabledClass(props: OriginComponentInputType<ButtonProps, HTMLButtonElement, string>) {
-    const common = 'opacity-50 cursor-not-allowed border-design-disabled'
-    return useMapper(() => props.type ?? 'default', {
-        primary() {
-            return common + ' bg-design-disabled'
-        },
-        dashed() {
-            return this.default() + ' border-dashed'
-        },
-        link() {
-            const danger = props.danger ? 'text-error-500' : 'text-primary-500'
-            return this.default() + ` border-none ${danger}`
-        },
-        text() {
-            return this.link()
-        },
-        default: () => {
-            return ` bg-transparent ` + common
-        }
-    })
-}
