@@ -33,12 +33,29 @@ export const CalendarMonthCell = (props: { date: Dayjs }) => {
     return (
         <div
             class={firstClass.base('transition-colors cursor-pointer m-2 h-6 flex justify-center items-center w-full rounded-md')(
-                (calendarSystem.isStartDate(props.date) || calendarSystem.isEndDate(props.date)) && 'bg-primary-50 text-primary-600 hover:text-primary-800',
-                calendarSystem.isSelected(props.date) && edgeDateClass,
+                (calendarSystem.isStartDate(props.date, 'month') || calendarSystem.isEndDate(props.date, 'month')) &&
+                    'bg-primary-50 text-primary-600 hover:text-primary-800',
+                calendarSystem.isSelected(props.date, 'month') && edgeDateClass,
                 'hover:bg-gray-100'
             )}
         >
             {calendarSystem.monthHeader()[props.date.month()]}
+        </div>
+    )
+}
+export const CalendarYearCell = (props: { date: Dayjs; year: number }) => {
+    const calendarSystem = CalenderCtx.use()
+    const edgeDateClass = 'bg-primary-50 text-primary-300 hover:text-primary-600'
+    return (
+        <div
+            class={firstClass.base('transition-colors cursor-pointer m-2 h-6 flex justify-center items-center w-full rounded-md')(
+                (calendarSystem.isStartDate(props.date, 'year') || calendarSystem.isEndDate(props.date, 'year')) &&
+                    'bg-primary-50 text-primary-600 hover:text-primary-800',
+                calendarSystem.isSelected(props.date, 'year') && edgeDateClass,
+                'hover:bg-gray-100'
+            )}
+        >
+            {props.year}
         </div>
     )
 }

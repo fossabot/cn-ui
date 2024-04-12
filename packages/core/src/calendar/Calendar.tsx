@@ -3,7 +3,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import { Match, Switch, createMemo, untrack } from 'solid-js'
 import { CalendarHeader } from './components/CalendarHeader'
 import { DateCalendarPanel } from './components/DateCalendarPanel'
-import { MonthCalenderPanel } from './components/MonthCalenderPanel'
+import { MonthCalenderPanel, YearCalenderPanel } from './components/MonthCalenderPanel'
 
 export interface CalendarProps extends DateCalendarConfig {
     Cell?: JSXSlot<{
@@ -15,7 +15,7 @@ export interface CalendarProps extends DateCalendarConfig {
 }
 
 export const CalenderCtx = createCtx<
-    { calendarShowingType: Atom<CalendarProps['type']> } & ReturnType<typeof useCalendarSelect> & ReturnType<typeof useDateCalendar>
+    { calendarShowingType: Atom<NonNullable<CalendarProps['type']>> } & ReturnType<typeof useCalendarSelect> & ReturnType<typeof useDateCalendar>
 >()
 
 export const Calendar = OriginComponent<CalendarProps, HTMLTableElement, Dayjs[]>((props) => {
@@ -32,6 +32,9 @@ export const Calendar = OriginComponent<CalendarProps, HTMLTableElement, Dayjs[]
             <div class="flex flex-col select-none w-fit min-w-[15rem]">
                 <CalendarHeader></CalendarHeader>
                 <Switch>
+                    <Match when={calendarShowingType() === 'year'}>
+                        <YearCalenderPanel></YearCalenderPanel>
+                    </Match>
                     <Match when={calendarShowingType() === 'month'}>
                         <MonthCalenderPanel></MonthCalenderPanel>
                     </Match>

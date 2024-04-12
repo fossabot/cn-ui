@@ -30,10 +30,10 @@ export const useCalendarSelect = (
     const isSelectingEnd = () => {
         return selectedDate().length === 1
     }
-    const isSelected = (d: Dayjs) => {
+    const isSelected = (d: Dayjs, u?: 'day' | 'month' | 'year') => {
         if (selectedDate().length === 0) return false
         if (['single', 'multiple'].includes(mode())) {
-            return selectedDate().some((i) => d.isSame(i, unit()))
+            return selectedDate().some((i) => d.isSame(i, u ?? unit()))
         } else if (isSelectingEnd()) {
             return isBetweenRange(d)
         } else {
@@ -47,16 +47,17 @@ export const useCalendarSelect = (
     return {
         selectedDate,
         mode,
+        calendarUnit: unit,
         isSelected,
-        isStartDate(d: Dayjs) {
+        isStartDate(d: Dayjs, u?: 'day' | 'month' | 'year') {
             if (mode() !== 'range') return false
             if (selectedDate().length === 0) return false
-            return d.isSame(selectedDate()[0], unit())
+            return d.isSame(selectedDate()[0], u ?? unit())
         },
-        isEndDate(d: Dayjs) {
+        isEndDate(d: Dayjs, u?: 'day' | 'month' | 'year') {
             if (mode() !== 'range') return false
-            if (isSelectingEnd()) return d.isSame(virtualEndTime(), unit())
-            if (d.isSame(selectedDate()[1], unit())) return true
+            if (isSelectingEnd()) return d.isSame(virtualEndTime(), u ?? unit())
+            if (d.isSame(selectedDate()[1], u ?? unit())) return true
             return false
         },
         isSelectingEnd,

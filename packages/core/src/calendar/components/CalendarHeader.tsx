@@ -19,9 +19,9 @@ export function CalendarHeader() {
                     when={calendarSystem.mode() === 'range'}
                     fallback={
                         <>
-                            <span onclick={() => calendarSystem.calendarShowingType('year')}>{calendarSystem.selectedDate()[0].year()}</span>
+                            <span onclick={() => calendarSystem.calendarShowingType('year')}>{calendarSystem.targetDate().year()}</span>
                             {calendarSystem.calendarShowingType() !== 'year' && (
-                                <span onclick={() => calendarSystem.calendarShowingType('month')}>{calendarSystem.selectedDate()[0].month()}</span>
+                                <span onclick={() => calendarSystem.calendarShowingType('month')}>{calendarSystem.targetDate().month() + 1}</span>
                             )}
                         </>
                     }

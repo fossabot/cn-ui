@@ -42,3 +42,17 @@ export const Second: Story = {
     },
     args: {}
 }
+export const Year: Story = {
+    name: '年份面板',
+    render() {
+        const date = atom([dayjs()])
+        return (
+            <Flex gap="20px">
+                <Calendar v-model={date} type="year"></Calendar>
+                <Calendar v-model={date} type="year" mode="multiple"></Calendar>
+                <Calendar v-model={date} type="year" mode="range"></Calendar>
+            </Flex>
+        )
+    },
+    args: {}
+}
