@@ -1,4 +1,4 @@
-import { classNames, ensureFunctionResult, firstClass, genArray } from '@cn-ui/reactive'
+import { classNames, ensureFunctionResult, firstClass } from '@cn-ui/reactive'
 import { debounce } from 'lodash-es'
 import { For, createMemo } from 'solid-js'
 import { CalendarDateCell } from './DefaultCalendarCell'

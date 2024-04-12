@@ -3,7 +3,8 @@ import dayjs, { Dayjs } from 'dayjs'
 import { Match, Switch, createMemo, untrack } from 'solid-js'
 import { CalendarHeader } from './components/CalendarHeader'
 import { DateCalendarPanel } from './components/DateCalendarPanel'
-import { MonthCalenderPanel, YearCalenderPanel } from './components/MonthCalenderPanel'
+import { MonthCalenderPanel } from './components/MonthCalenderPanel'
+import { YearCalenderPanel } from './components/YearCalenderPanel'
 
 export interface CalendarProps extends DateCalendarConfig {
     Cell?: JSXSlot<{
