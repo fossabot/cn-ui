@@ -2,10 +2,10 @@ import fs from 'fs'
 
 export const createSourceCode = (imports, options) => {
     fs.writeFileSync(`./temp/${imports[0]}.ts`, `import { ${imports.join(', ')} } from '@cn-ui/core';\n console.log(${imports.join(', ')})`)
-};
+}
 
 // 将需要分析的组件放置在这里
-[
+;[
     ['Avatar'],
     ['Button'],
     ['Checkbox'],

@@ -19,11 +19,13 @@ export const useCalendarSelect = (
          * - `multiple` - multiple dates can be selected
          * - `range` - a range of dates can be selected
          */
-        mode?: () => 'single' | 'multiple' | 'range' | undefined
+        mode: Accessor<'single' | 'multiple' | 'range'>
+        unit: Accessor<'day' | 'month' | 'year'>
     }
 ) => {
     const selectedDate = model
-    const mode = createMemo(() => config.mode?.() ?? 'single')
+    const mode = createMemo(() => config.mode())
+    const unit = createMemo(() => config.unit())
     const virtualEndTime = atom(dayjs())
     const isSelectingEnd = () => {
         return selectedDate().length === 1
@@ -31,7 +33,7 @@ export const useCalendarSelect = (
     const isSelected = (d: Dayjs) => {
         if (selectedDate().length === 0) return false
         if (['single', 'multiple'].includes(mode())) {
-            return selectedDate().some((i) => d.isSame(i))
+            return selectedDate().some((i) => d.isSame(i, unit()))
         } else if (isSelectingEnd()) {
             return isBetweenRange(d)
         } else {
@@ -49,13 +51,12 @@ export const useCalendarSelect = (
         isStartDate(d: Dayjs) {
             if (mode() !== 'range') return false
             if (selectedDate().length === 0) return false
-            return d.isSame(selectedDate()[0], 'd')
+            return d.isSame(selectedDate()[0], unit())
         },
         isEndDate(d: Dayjs) {
             if (mode() !== 'range') return false
-            if (!selectedDate()[1]) return false
-            if (d.isSame(selectedDate()[1], 'd')) return true
-            if (isSelectingEnd()) return d.isSame(virtualEndTime())
+            if (isSelectingEnd()) return d.isSame(virtualEndTime(), unit())
+            if (d.isSame(selectedDate()[1], unit())) return true
             return false
         },
         isSelectingEnd,
@@ -65,7 +66,7 @@ export const useCalendarSelect = (
                 case 'single':
                     return state ? selectedDate([d]) : selectedDate([])
                 case 'multiple':
-                    return state ? selectedDate((i) => [...i, d]) : selectedDate((i) => i.filter((selected) => !d.isSame(selected)))
+                    return state ? selectedDate((i) => [...i, d]) : selectedDate((i) => i.filter((selected) => !d.isSame(selected, unit())))
                 case 'range':
                     return state
                         ? selectedDate((i) => {
@@ -78,14 +79,14 @@ export const useCalendarSelect = (
 
                               const max = dayjs.max(...i, d)!
                               const min = dayjs.min(...i, d)!
-                              if (max.isSame(min)) return [min]
+                              if (max.isSame(min, unit())) return [min]
                               return [min, max]
                           })
                         : selectedDate((i) => {
                               if (i.length === 2) {
                                   return [d]
                               }
-                              return i.filter((selected) => !d.isSame(selected))
+                              return i.filter((selected) => !d.isSame(selected, unit()))
                           })
             }
         }
@@ -100,7 +101,7 @@ export interface DateCalendarConfig {
 }
 
 /** 经典日期日历 */
-export const useDateCalendar = (targetDate: Accessor<Dayjs>, config: Accessor<DateCalendarConfig>) => {
+export const useDateCalendar = (targetDate: Atom<Dayjs>, config: Accessor<DateCalendarConfig>) => {
     const allDateInMonth = createMemo(() => {
         const firstDateOfMonth = targetDate().startOf('month')
         const lastDateOfMonth = targetDate().endOf('month')
@@ -140,6 +141,9 @@ export const useDateCalendar = (targetDate: Accessor<Dayjs>, config: Accessor<Da
         allDateInMonth,
         extraStartWeek,
         extraEndWeek,
+        monthHeader(locales?: string) {
+            return MonthLocale(locales, { month: 'short', locale: locales })
+        },
         weekHeader(locales?: string) {
             const names = WeekTitleLocale(locales, { weekday: 'narrow' })
             return genArray(7)
@@ -160,6 +164,13 @@ export const WeekTitleLocale = (locales?: string, options?: Intl.DateTimeFormatO
     return weekdays.map((index) => {
         const date = today.day(index)
         return formatter.format(date.toDate())
+    })
+}
+export const MonthLocale = (locales?: string, options?: Intl.DateTimeFormatOptions) => {
+    const formatter = new Intl.DateTimeFormat(locales, options)
+    return genArray(12).map((i) => {
+        const date = new Date(Date.UTC(2000, i, 1))
+        return formatter.format(date)
     })
 }
 

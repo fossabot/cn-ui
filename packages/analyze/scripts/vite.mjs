@@ -5,15 +5,13 @@ import fs from 'fs'
 import multi from 'rollup-plugin-multi-input'
 import analyze from 'rollup-plugin-analyzer'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
-import { visualizer } from "rollup-plugin-visualizer";
+import { visualizer } from 'rollup-plugin-visualizer'
 const ignoreDeps = ['solid-js', 'solid-js/web', 'solid-js/store']
 const buildConfig = (entry) => {
     const collection = new Map()
     return defineConfig({
         mode: 'production',
-        css: {
-
-        },
+        css: {},
         plugins: [
             {
                 name: 'external',
@@ -24,14 +22,14 @@ const buildConfig = (entry) => {
                             return { id: source, external: true }
                         }
                     }
-                },
+                }
             },
             cssInjectedByJsPlugin(),
             solid(),
             visualizer({
                 emitFile: true,
-                filename: "dist/" + entry + ".html",
-            }),
+                filename: 'dist/' + entry + '.html'
+            })
         ],
         esbuild: {
             minifyWhitespace: true,

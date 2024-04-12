@@ -4,6 +4,6 @@ import fs from 'fs-extra'
 
 const files = await glob('./src/**/*.css')
 
-files.forEach(i => {
+files.forEach((i) => {
     fs.outputFileSync(i.replace('src', './dist/lib'), fs.readFileSync(i, 'utf-8'))
 })

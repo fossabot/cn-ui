@@ -15,7 +15,7 @@ export default defineConfig({
                 light: { colors: lightColors }
             }
         }),
-        presetCN,
+        presetCN
     ],
     transformers: [
         transformerDirectives({

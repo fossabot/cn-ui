@@ -39,16 +39,17 @@ export default defineConfig({
                 externalConditions: ['solid', 'module', 'import']
             }
         },
-        plugins: [{
-            name: "Add_example",
-            enforce: "pre",
-            transform(code, id) {
-                if (id.includes("example")) {
-                    console.log(id)
-                    return code + `\n\nexport const SourceCode = ${JSON.stringify(code)};`
+        plugins: [
+            {
+                name: 'Add_example',
+                enforce: 'pre',
+                transform(code, id) {
+                    if (id.includes('example')) {
+                        console.log(id)
+                        return code + `\n\nexport const SourceCode = ${JSON.stringify(code)};`
+                    }
                 }
-
             }
-        }]
+        ]
     }
 })
