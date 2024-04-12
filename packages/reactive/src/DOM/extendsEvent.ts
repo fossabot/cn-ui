@@ -10,12 +10,14 @@ export type ExtractOnKeys<T extends object> = {
  */
 export const extendsEvent = <T extends object>(props: T): ExtractOnKeys<T> => {
     const events = untrack(() => {
-        return Object.keys(props).filter((i) => i.startsWith('on'))
+        return Object.keys(props).filter((i) => i.startsWith('on') || i.startsWith('data-'))
     })
 
-    return events.reduce((col, cur) => {
-        /** @ts-ignore */
-        col[cur] = props[cur]
-        return col
-    }, {} as ExtractOnKeys<T>)
+    return Object.assign(
+        events.reduce((col, cur) => {
+            /** @ts-ignore */
+            col[cur] = props[cur]
+            return col
+        }, {} as ExtractOnKeys<T>)
+    )
 }

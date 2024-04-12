@@ -3,7 +3,7 @@ import solidjsDocgen from '@joshwooding/vite-plugin-react-docgen-typescript'
 const config: StorybookConfig = {
     stories: ['../packages/core/src/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)', '../packages/highlight/src/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)'],
 
-    addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions', '@storybook/addon-mdx-gfm'],
+    addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions', '@storybook/addon-mdx-gfm', '@storybook/addon-a11y'],
 
     framework: {
         name: 'storybook-solidjs-vite',

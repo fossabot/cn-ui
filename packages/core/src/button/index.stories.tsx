@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from 'storybook-solidjs'
 
-import { Button, ButtonProps } from './index'
+import { Button } from './index'
 import { Flex } from '../container/Flex'
 import { AiOutlineSearch } from 'solid-icons/ai'
 import { Icon } from '../icon/Icon'
 import { toggleTheme } from '../utils/toggleTheme'
-import { Component } from 'solid-js'
+import { expect, userEvent, waitFor, within } from '@storybook/test'
+
 const meta = {
     title: 'Common 通用/Button 按钮',
     component: Button,
@@ -16,14 +17,13 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-/**  */
 export const Primary: Story = {
     name: 'Normal 正常渲染',
     render() {
         return (
             <Flex vertical gap="4px">
                 <Flex gap="4px">
-                    <Button type="primary" onclick={toggleTheme}>
+                    <Button data-testid="btn" type="primary" onclick={toggleTheme}>
                         按钮
                     </Button>
                     <Button onclick={toggleTheme}>按钮</Button>
@@ -87,8 +87,25 @@ export const Primary: Story = {
             </Flex>
         )
     },
-    args: {}
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement)
+
+        await step('视觉测试', async () => {})
+
+        await step('事件测试', async () => {
+            await expectDarkTheme(false)
+            await userEvent.click(canvas.getByTestId('btn'))
+
+            await expectDarkTheme(true)
+        })
+    }
 }
+/** 判断 html 标签的 class 中包含 dark */
+const expectDarkTheme = (target = true) =>
+    waitFor(async () => {
+        expect(document.documentElement.classList.contains('dark')).toBe(target)
+    })
+
 export const IconBtn: Story = {
     name: 'Icon 模式',
     render() {
