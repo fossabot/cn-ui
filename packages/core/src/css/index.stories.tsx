@@ -4,7 +4,7 @@ import { classNames, resource } from "@cn-ui/reactive";
 import { Col, Row } from "../RowAndCol";
 const meta = {
     title: "Common 通用/Style 样式",
-    component: () => null,
+    component: Row,
 } satisfies Meta<null>;
 
 export default meta;

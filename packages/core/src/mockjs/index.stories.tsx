@@ -10,9 +10,9 @@ import { Icon } from "../icon/Icon";
 
 const meta = {
     title: "Utils 工具/Mockjs 转换工具",
-    component() {},
+    component: Container,
     argTypes: {},
-} satisfies Meta<unknown>;
+} satisfies Meta<typeof Container>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

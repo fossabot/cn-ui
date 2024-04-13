@@ -129,7 +129,7 @@ export const SortableList = OriginComponent(function <T extends { id: string }>(
         >
             <For each={[...each(), null]} fallback={props.fallback}>
                 {(item, index) => {
-                    if (item === null) return <div data-id={VoidId}></div>;
+                    if (item === null) return <div data-id={VoidId} />;
                     const dom = children(() => props.children(item, index))() as HTMLElement;
                     dom.dataset.id = getId(item);
                     return dom;

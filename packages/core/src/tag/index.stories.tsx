@@ -51,6 +51,7 @@ export const Sortable: Story = {
             }>({
                 "data|10": [
                     {
+                        id: "@id",
                         value: "@id",
                         text: "@cname",
                         color: "@color",
