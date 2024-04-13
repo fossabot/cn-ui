@@ -7,7 +7,7 @@ export const Icon = OriginComponent<{
 }>((props) => {
     return (
         <span
-            role="img"
+            aria-hidden="true"
             class={props.class(
                 props.spin && "animate-spin",
                 "inline-flex items-center text-center leading-[0]",

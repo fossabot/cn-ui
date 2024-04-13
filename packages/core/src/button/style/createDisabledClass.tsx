@@ -2,7 +2,7 @@ import { useMapper } from "@cn-ui/reactive";
 import type { ButtonProps } from "../Button";
 
 export function createDisabledClass(props: Partial<Pick<ButtonProps, "type" | "danger">>) {
-    const common = "opacity-50 cursor-not-allowed border-design-disabled";
+    const common = "opacity-50 border-design-disabled";
     return useMapper(() => props.type ?? "default", {
         primary() {
             return `${common} bg-design-disabled`;
@@ -18,7 +18,7 @@ export function createDisabledClass(props: Partial<Pick<ButtonProps, "type" | "d
             return this.link();
         },
         default: () => {
-            return ` bg-transparent ${common}`;
+            return ` cursor-not-allowed bg-transparent ${common}`;
         },
     });
 }

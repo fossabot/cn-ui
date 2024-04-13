@@ -3,6 +3,7 @@ import { Match, Switch } from "solid-js";
 import { GlobalButtonSlots } from "./ButtonSlots";
 import { createDisabledClass } from "./style/createDisabledClass";
 import { createTypeClass } from "./style/createTypeClass";
+
 export interface ButtonProps extends ButtonSlots {
     /**
      * 按钮类型
@@ -10,6 +11,7 @@ export interface ButtonProps extends ButtonSlots {
     type?: "primary" | "dashed" | "link" | "default" | "text";
     /**
      * 按钮的HTML类型
+     * @tested
      */
     htmlType?: HTMLButtonElement["type"];
 
@@ -19,16 +21,20 @@ export interface ButtonProps extends ButtonSlots {
     shape?: "default" | "circle" | "round";
     /**
      * 按钮是否禁用
+     * @tested
      */
     disabled?: boolean;
     /**
      * 按钮是否加载中
+     * @tested
      */
     loading?: boolean;
+
     /**
-     * 按钮是否为透明按钮
+     * 加载中的文本
+     * @tested
      */
-    ghost?: boolean;
+    loadingText?: string;
     /**
      * 按钮是否为危险按钮
      */
@@ -45,8 +51,13 @@ export interface ButtonProps extends ButtonSlots {
 export interface ButtonSlots {
     /**
      * 按钮的图标
+     * @tested
      */
     icon?: JSXSlot;
+    /**
+     * loading 按钮的图标
+     * @tested
+     */
     loadingIcon?: JSXSlot;
 }
 
@@ -57,14 +68,16 @@ export const Button = OriginComponent<ButtonProps, HTMLButtonElement>((props) =>
     return (
         <button
             id={props.id}
-            type={props.htmlType}
+            type={props.htmlType ?? "button"}
             class={props.class(
-                "cn-button transition-colors ",
+                "cn-button transition-colors outline-none select-none ",
                 props.loading && "pointer-events-none opacity-50",
                 props.circle ? "rounded-full px-2 py-1" : "rounded-md  px-4 py-1 ",
                 props.disabled ? disabledClass() : typeClass(),
             )}
             style={props.style()}
+            disabled={props.disabled}
+            aria-live={props.loading ? "polite" : undefined}
             {...extendsEvent(props)}
         >
             <Switch
@@ -77,7 +90,7 @@ export const Button = OriginComponent<ButtonProps, HTMLButtonElement>((props) =>
             >
                 <Match when={props.loading}>
                     {GlobalButtonSlots.renderSlotAsDefault("loadingIcon", props.loadingIcon)}
-                    {"加载中"}
+                    {props.loadingText ?? "加载中"}
                 </Match>
             </Switch>
         </button>
