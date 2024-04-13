@@ -7,6 +7,7 @@ import { createTypeClass } from "./style/createTypeClass";
 export interface ButtonProps extends ButtonSlots {
     /**
      * 按钮类型
+     * @tested
      */
     type?: "primary" | "dashed" | "link" | "default" | "text";
     /**
@@ -17,6 +18,7 @@ export interface ButtonProps extends ButtonSlots {
 
     /**
      * 按钮的形状
+     * @tested
      */
     shape?: "default" | "circle" | "round";
     /**
@@ -37,14 +39,17 @@ export interface ButtonProps extends ButtonSlots {
     loadingText?: string;
     /**
      * 按钮是否为危险按钮
+     * @tested
      */
     danger?: boolean;
     /**
      * 按钮是否为块级按钮
+     * @tested
      */
     block?: boolean;
     /**
      * 按钮是否为圆形按钮
+     * @tested
      */
     circle?: boolean;
 }
@@ -73,6 +78,7 @@ export const Button = OriginComponent<ButtonProps, HTMLButtonElement>((props) =>
                 "cn-button transition-colors outline-none select-none ",
                 props.loading && "pointer-events-none opacity-50",
                 props.circle ? "rounded-full px-2 py-1" : "rounded-md  px-4 py-1 ",
+                props.block && "block w-full",
                 props.disabled ? disabledClass() : typeClass(),
             )}
             style={props.style()}

@@ -35,6 +35,7 @@
         "@storybook/addon-mdx-gfm": "^8.0.7",
         "@storybook/blocks": "^8.0.7",
         "@storybook/test": "^8.0.4",
+        "@storybook/test-runner": "^0.17.0",
         "@testing-library/jest-dom": "^6.4.2",
         "@types/lodash": "^4.17.0",
         "@types/lodash-es": "^4.17.12",

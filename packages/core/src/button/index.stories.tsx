@@ -199,39 +199,41 @@ export const loading: Story = {
             </Icon>
         );
         return (
-            <Flex vertical gap="4px">
-                <Flex gap="4px">
-                    <Button
-                        loading
-                        data-testid="loading"
-                        type="primary"
-                        circle
-                        icon={icon()}
-                        onclick={toggleTheme}
-                        loadingText="Loading"
-                    />
-                    <Button loading loadingText="Loading" circle icon={icon()} />
-                    <Button loading type="primary" danger icon={icon()} />
-                    <Button
-                        loading
-                        danger
-                        icon={() => {
-                            return (
-                                <Icon class="spinning" data-testid="unreachable-loadingIcon">
-                                    <AiOutlineSearch />
-                                </Icon>
-                            );
-                        }}
-                        loadingIcon={() => {
-                            return (
-                                <Icon class="cn-animate-spin" data-testid="loadingIcon">
-                                    <AiOutlineSearch />
-                                </Icon>
-                            );
-                        }}
-                    />
-                </Flex>
-            </Flex>
+            <p>
+                <Button
+                    loading
+                    data-testid="loading"
+                    type="primary"
+                    circle
+                    block
+                    icon={icon()}
+                    onclick={toggleTheme}
+                    loadingText="Loading"
+                    class="my-2"
+                />
+                <Button class="my-2" loading loadingText="Loading" circle block icon={icon()} />
+                <Button class="my-2" loading type="primary" danger block icon={icon()} />
+                <Button
+                    loading
+                    class="my-2"
+                    block
+                    danger
+                    icon={() => {
+                        return (
+                            <Icon class="spinning" data-testid="unreachable-loadingIcon">
+                                <AiOutlineSearch />
+                            </Icon>
+                        );
+                    }}
+                    loadingIcon={() => {
+                        return (
+                            <Icon class="cn-animate-spin" data-testid="loadingIcon">
+                                <AiOutlineSearch />
+                            </Icon>
+                        );
+                    }}
+                />
+            </p>
         );
     },
     play: async ({ canvasElement, step }) => {
