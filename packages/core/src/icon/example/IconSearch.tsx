@@ -1,12 +1,17 @@
 import { AC, ArrayFolder, DebounceAtom, atom, computed, resource } from "@cn-ui/reactive";
 import Fuse from "fuse.js";
-import { BaseInput } from "../input";
+import { BaseInput } from "../../input";
 
 import * as AntdIcon from "solid-icons/ai";
 import type { Component } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { watch } from "solidjs-use";
-import { Tabs } from "../tabs";
+import { Tabs } from "../../tabs";
+import copy from "copy-to-clipboard";
+import { VirtualList } from "../../virtualList";
+import { InputNumber } from "../../inputNumber";
+import { Message } from "../../Message";
+
 const loader = {
     Ai: () => AntdIcon,
     Bs: () => import("solid-icons/bs"),
@@ -26,10 +31,11 @@ const loader = {
     // Cg: () => import('solid-icons/cg'),
     // Tb: () => import('solid-icons/tb'),
 } as unknown as Record<string, () => Promise<Record<string, Component>>>;
+
 export const IconSearch = () => {
     const searchText = atom("");
     const searchKey = DebounceAtom(searchText, 500);
-    const size = atom("32");
+    const size = atom(32);
 
     const watchingTab = atom({
         value: "Ai",
@@ -54,31 +60,32 @@ export const IconSearch = () => {
         pack.refetch();
     });
     return (
-        <div class="h-[90vh]">
+        <div class="h-[80vh] grid grid-cols-12 gap-4">
             <BaseInput
+                class="col-span-6"
+                placeholder="试着搜索 icon 的英文"
                 v-model={searchText}
-                suffixIcon={`${result().length} / ${totalAvailable().length}`}
+                suffixIcon={`搜索结果 ${result().length} / ${totalAvailable().length}`}
             />
-            <BaseInput
-                v-model={size}
-                suffixIcon={`${result().length} / ${totalAvailable().length}`}
-            />
+            <InputNumber class="col-span-6" v-model={size} controls step={4} />
             <Tabs
+                class="col-span-12"
                 options={Object.keys(loader).map((i) => {
                     return { label: i, value: i };
                 })}
                 v-model={watchingTab}
             />
-            <AC resource={pack}>
-                {() => {
-                    return <IconGallery comps={pack()} result={result()} size={size()} />;
-                }}
-            </AC>
+            <div class="col-span-12 h-full">
+                <AC resource={pack}>
+                    {() => {
+                        return <IconGallery comps={pack()} result={result()} size={size()} />;
+                    }}
+                </AC>
+            </div>
         </div>
     );
 };
-import copy from "copy-to-clipboard";
-import { VirtualList } from "../virtualList";
+
 const IconGallery = (props: {
     comps: Record<string, Component<{ size: number }>>;
     result: { label: string }[];
@@ -95,13 +102,16 @@ const IconGallery = (props: {
         >
             {(row) => {
                 return (
-                    <div class="grid grid-cols-10 h-12">
+                    <div class="grid grid-cols-10 h-12 ">
                         {row.map((i) => {
                             return (
                                 <div
                                     title={i.label}
-                                    class=" transition p-4 rounded-lg flex justify-center items-center"
-                                    ondblclick={() => copy(i.label)}
+                                    class="cursor-pointer transition p-4 rounded-lg flex justify-center items-center"
+                                    onclick={() => {
+                                        copy(i.label);
+                                        Message.success(`复制 ${i.label} 成功`);
+                                    }}
                                 >
                                     <Dynamic
                                         component={i.comp}

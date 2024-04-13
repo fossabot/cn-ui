@@ -19,7 +19,6 @@ const preview: Preview = {
             extractArgTypes(...args) {
                 // @ts-ignore
                 const res = extractArgTypes(...args);
-                console.log(res);
                 return res;
             },
         },

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
 
 import { Icon } from "./Icon";
-import { IconSearch } from "./IconSearch";
+import { IconSearch } from "./example/IconSearch";
 const meta = {
-    title: "Icon/Icon Search 图标搜索",
+    title: "DesignSystem 设计系统/Icon 图标",
     component: Icon,
     argTypes: {},
 } satisfies Meta<any>;
@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-    name: "Icon Search 图标搜索",
+    name: "Icon 图标",
     render() {
         return <IconSearch />;
     },

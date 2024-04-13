@@ -4,7 +4,7 @@
 }
 .dark body {
     color: #e5eaf3;
-    background-color: #141414;
+    background-color: #000;
 }
 
 ::view-transition-old(root),

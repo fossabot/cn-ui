@@ -1,7 +1,7 @@
 /** 主动切换主题，
  *  @example onclick={toggleTheme}
  */
-export const toggleTheme = (event: { clientX?: number; clientY?: number }, toDark?: boolean) => {
+export const toggleTheme = (event?: { clientX?: number; clientY?: number }, toDark?: boolean) => {
     const isDark =
         document.documentElement.classList.contains("dark") ??
         window?.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -9,8 +9,8 @@ export const toggleTheme = (event: { clientX?: number; clientY?: number }, toDar
     const toggleDark = () => {
         document.documentElement.classList[toDark ? "add" : "remove"]("dark");
     };
-    const x = event.clientX ?? innerWidth / 2;
-    const y = event.clientY ?? innerHeight / 2;
+    const x = event?.clientX ?? innerWidth / 2;
+    const y = event?.clientY ?? innerHeight / 2;
     const endRadius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
 
     // 兼容性处理

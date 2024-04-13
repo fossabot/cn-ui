@@ -52,7 +52,7 @@ export function VirtualList<T>(props: VirtualListProps<T>) {
             return props.overscan ?? Math.min(20, Math.floor(Math.sqrt(props.each.length)));
         },
     });
-    const { height } = useAutoResize(() => tableContainerRef()?.parentElement!);
+    const { height } = useAutoResize(() => tableContainerRef());
     const CoreList = (
         <Key
             by="key"
@@ -91,23 +91,20 @@ export function VirtualList<T>(props: VirtualListProps<T>) {
         <div
             ref={tableContainerRef}
             class={classNames(
-                "cn-virtual-list",
+                "cn-virtual-list w-full overflow-auto relative",
                 props.reverse
                     ? "cn-virtual-list-reverse flex flex-col-reverse"
                     : "cn-virtual-list-normal",
             )}
+            data-height={height()}
             style={{
-                width: "100%",
-                overflow: "auto",
-                position: "relative",
-                height: toCSSPx(props.containerHeight ?? height(), "400px"), //should be a fixed height
+                height: toCSSPx(props.containerHeight ?? height(), "400px"),
             }}
         >
             <div
-                class="cn-virtual-list-container flex-none"
+                class="cn-virtual-list-container flex-none relative"
                 style={{
                     height: `${virtualizer.getTotalSize()}px`,
-                    position: "relative", //needed for absolute positioning of rows
                 }}
             >
                 {props.transitionName ? (

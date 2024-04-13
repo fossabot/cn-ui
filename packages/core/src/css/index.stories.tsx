@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
 
-import { classNames, resource } from "@cn-ui/reactive";
-import { Col, Row } from "../RowAndCol";
+import { classNames } from "@cn-ui/reactive";
 const meta = {
-    title: "Common 通用/Style 样式",
-    component: Row,
+    title: "DesignSystem 设计系统/Color 色彩",
+    component: () => null,
 } satisfies Meta<null>;
 
 export default meta;
@@ -12,72 +11,79 @@ type Story = StoryObj<typeof meta>;
 import { Entries } from "@solid-primitives/keyed";
 import * as copy from "copy-to-clipboard";
 import { Flex } from "../container";
-import { colors } from "./presets/colors";
+import { colors, darkColors } from "./presets/colors";
+import { useDark, useToggle } from "solidjs-use";
+import { ThemeSwitch } from "../switch";
+import type { Accessor } from "solid-js";
 
-/**  */
 export const Primary: Story = {
     name: "Color 色彩",
     render() {
+        const [isDark, toggle] = useToggle(useDark());
         return (
-            <div class="h-screen flex flex-col">
-                <Row>
-                    <Entries of={colors}>
-                        {(colorName, value) => {
-                            const isImportant = [
-                                "primary",
-                                "success",
-                                "warning",
-                                "error",
-                                "design",
-                            ].includes(colorName);
-                            return (
-                                <Col span={6}>
-                                    <Flex
-                                        fill
-                                        vertical
-                                        class={classNames(
-                                            isImportant && "border-primary-400 border-2 p-4",
-                                            "bg-gray-50 rounded-lg ",
-                                        )}
-                                        gap="4px"
-                                    >
-                                        {isImportant && <div>推荐使用</div>}
-                                        <Entries of={value()}>
-                                            {(num, value) => {
-                                                if (num === "DEFAULT") return null;
-                                                if (Number.parseInt(num) < 50) return null;
-                                                const isLightText =
-                                                    Number.parseInt(num) >= 600 ||
-                                                    ["title", "h1", "h2"].includes(num);
+            <div class="h-screen grid grid-cols-4 gap-4 m-12">
+                <div class="col-span-4">
+                    <h1 class="text-lg text-center font-bold my-2">色彩系统</h1>
+                    <ThemeSwitch v-model={isDark} onSwitch={() => toggle()} />
+                </div>
+                <Entries of={isDark() ? darkColors : colors}>
+                    {(colorName, data: Accessor<any>) => {
+                        const isImportant = [
+                            "primary",
+                            "success",
+                            "warning",
+                            "error",
+                            "design",
+                        ].includes(colorName);
+                        return (
+                            <Flex
+                                fill
+                                vertical
+                                justify="start"
+                                class={classNames(
+                                    isImportant && "border-primary-400",
+                                    "bg-gray-50 rounded-lg  border-2 p-4 border-gray-400",
+                                )}
+                                gap="4px"
+                            >
+                                <div>
+                                    {isImportant && "推荐使用"} {colorName.toUpperCase()}
+                                </div>
+                                <Entries of={data()}>
+                                    {(num, value: Accessor<any>) => {
+                                        if (num === "DEFAULT") return null;
+                                        if (Number.parseInt(num) < 50) return null;
+                                        const isLightText =
+                                            Number.parseInt(num) >= 600 ||
+                                            ["title", "h1", "h2"].includes(num);
 
-                                                return (
-                                                    <Flex
-                                                        justify="space-between"
-                                                        class={classNames(
-                                                            "w-full cursor-pointer transition hover:-translate-x-4 rounded-md px-4 py-1 font-light text-sm",
-                                                            `bg-${colorName}-${num}`,
-                                                            isLightText && "text-white",
-                                                        )}
-                                                        style={{
-                                                            background: value(),
-                                                        }}
-                                                        onclick={() => {
-                                                            copy(`bg-${colorName}-${num}`);
-                                                        }}
-                                                    >
-                                                        <span>{`bg-${colorName}-${num}`}</span>
+                                        return (
+                                            <Flex
+                                                justify="space-between"
+                                                class={classNames(
+                                                    "w-full cursor-pointer transition hover:-translate-x-4 rounded-md px-4 py-1 font-light text-sm",
+                                                    `bg-${colorName}-${num}`,
+                                                    isLightText &&
+                                                        (isDark() ? "text-black" : "text-white"),
+                                                )}
+                                                style={{
+                                                    background: value(),
+                                                }}
+                                                onclick={() => {
+                                                    copy(`bg-${colorName}-${num}`);
+                                                }}
+                                            >
+                                                <span>{`bg-${colorName}-${num}`}</span>
 
-                                                        <span>{value()}</span>
-                                                    </Flex>
-                                                );
-                                            }}
-                                        </Entries>
-                                    </Flex>
-                                </Col>
-                            );
-                        }}
-                    </Entries>
-                </Row>
+                                                <span>{value()}</span>
+                                            </Flex>
+                                        );
+                                    }}
+                                </Entries>
+                            </Flex>
+                        );
+                    }}
+                </Entries>
             </div>
         );
     },
