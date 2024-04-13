@@ -9,8 +9,9 @@ export type ExtractOnKeys<T extends object> = {
  * @zh 注意，如果你使用了同名的事件，最好将其列入 Omits
  */
 export const extendsEvent = <T extends object>(props: T): ExtractOnKeys<T> => {
+    const allowPrefix = ["on", "data-", "aria-"];
     const events = untrack(() => {
-        return Object.keys(props).filter((i) => i.startsWith("on") || i.startsWith("data-"));
+        return Object.keys(props).filter((i) => allowPrefix.some((prefix) => i.startsWith(prefix)));
     });
 
     return Object.assign(
