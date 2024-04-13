@@ -1,34 +1,34 @@
 export interface FocusOptions {
-	preventScroll?: boolean;
-	cursor?: "end" | "start" | "all";
+    preventScroll?: boolean;
+    cursor?: "end" | "start" | "all";
 }
 
 /** 聚焦在某个元素上 */
 export function triggerFocus(
-	element?: HTMLInputElement | HTMLTextAreaElement,
-	option: FocusOptions = {},
+    element?: HTMLInputElement | HTMLTextAreaElement,
+    option: FocusOptions = {},
 ) {
-	if (!element) {
-		return;
-	}
+    if (!element) {
+        return;
+    }
 
-	element.focus(option);
+    element.focus(option);
 
-	// Selection content
-	const { cursor } = option;
-	if (cursor) {
-		const len = element.value.length;
+    // Selection content
+    const { cursor } = option;
+    if (cursor) {
+        const len = element.value.length;
 
-		switch (cursor) {
-			case "start":
-				element.setSelectionRange(0, 0);
-				break;
-			case "end":
-				element.setSelectionRange(len, len);
-				break;
-			default:
-				element.setSelectionRange(0, len);
-				break;
-		}
-	}
+        switch (cursor) {
+            case "start":
+                element.setSelectionRange(0, 0);
+                break;
+            case "end":
+                element.setSelectionRange(len, len);
+                break;
+            default:
+                element.setSelectionRange(0, len);
+                break;
+        }
+    }
 }

@@ -4,13 +4,13 @@ import { boxShadow } from "./boxShadow";
 import { colors, darkColors } from "./colors";
 import { DarkDesignCSSVar, DesignCSSVar, designRules } from "./design";
 export default definePreset(() => {
-	return {
-		name: "uno-preset-cn",
-		theme: { colors, boxShadow },
-		rules: [...designRules],
-		preflights: [
-			{
-				getCSS: () => `
+    return {
+        name: "uno-preset-cn",
+        theme: { colors, boxShadow },
+        rules: [...designRules],
+        preflights: [
+            {
+                getCSS: () => `
                 :root {
                    ${DesignCSSVar}
                 }
@@ -18,9 +18,9 @@ export default definePreset(() => {
                     ${DarkDesignCSSVar}
                 }
               `,
-			},
-		],
-	};
+            },
+        ],
+    };
 });
 export const lightColors = colors;
 export { darkColors, boxShadow };

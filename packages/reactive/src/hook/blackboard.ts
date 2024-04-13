@@ -1,22 +1,22 @@
 import { createContext, useContext } from "solid-js";
 import { atom } from "../atom/atom";
 export interface BlackBoardOption {
-	allowSameRegister?: boolean;
-	onUpdate?: () => void;
+    allowSameRegister?: boolean;
+    onUpdate?: () => void;
 }
 
 export const createBlackBoardAtom = <T extends Record<string, any>>(
-	baseOpts: BlackBoardOption = {},
+    baseOpts: BlackBoardOption = {},
 ) => {
-	const bb = createBlackBoard<T>({
-		...baseOpts,
-		onUpdate() {
-			source(() => bb.store);
-			baseOpts.onUpdate?.();
-		},
-	});
-	const source = atom(bb.store, { equals: false });
-	return source;
+    const bb = createBlackBoard<T>({
+        ...baseOpts,
+        onUpdate() {
+            source(() => bb.store);
+            baseOpts.onUpdate?.();
+        },
+    });
+    const source = atom(bb.store, { equals: false });
+    return source;
 };
 
 /**
@@ -24,46 +24,42 @@ export const createBlackBoardAtom = <T extends Record<string, any>>(
  *
  */
 export const createBlackBoard = <T extends Record<string, any>>(
-	baseOpts: BlackBoardOption = {},
+    baseOpts: BlackBoardOption = {},
 ) => {
-	const store = new Map();
+    const store = new Map();
 
-	return {
-		store,
-		/** 应该在组件声明时进行注册 App，保证在 onMount 时能够获取到数据 */
-		register<D extends keyof T>(
-			name: D,
-			api: T[D],
-			opts: BlackBoardOption = {},
-		) {
-			if (store.has(name)) {
-				if (opts.allowSameRegister ?? baseOpts.allowSameRegister) return store;
-				throw new Error("Blackboard has a same app named " + name.toString());
-			}
-			store.set(name, api);
-			baseOpts.onUpdate?.();
-			return store;
-		},
-		/** 在 onMount 阶段可以获取到所有声明的 App */
-		getApp<D extends keyof T>(name: D): T[D] {
-			if (!store.has(name))
-				throw new Error(`Blackboard app ${name.toString()} isn't init yet`);
-			return store.get(name);
-		},
-		delete(name: keyof T) {
-			if (!store.has(name))
-				throw new Error(`Blackboard app ${name.toString()} isn't init yet`);
-			store.delete(name);
-			baseOpts.onUpdate?.();
-		},
-		/** 检查APP是否注册*/
-		check(name: keyof T) {
-			return store.has(name);
-		},
-		destroy() {
-			store.clear();
-		},
-	};
+    return {
+        store,
+        /** 应该在组件声明时进行注册 App，保证在 onMount 时能够获取到数据 */
+        register<D extends keyof T>(name: D, api: T[D], opts: BlackBoardOption = {}) {
+            if (store.has(name)) {
+                if (opts.allowSameRegister ?? baseOpts.allowSameRegister) return store;
+                throw new Error("Blackboard has a same app named " + name.toString());
+            }
+            store.set(name, api);
+            baseOpts.onUpdate?.();
+            return store;
+        },
+        /** 在 onMount 阶段可以获取到所有声明的 App */
+        getApp<D extends keyof T>(name: D): T[D] {
+            if (!store.has(name))
+                throw new Error(`Blackboard app ${name.toString()} isn't init yet`);
+            return store.get(name);
+        },
+        delete(name: keyof T) {
+            if (!store.has(name))
+                throw new Error(`Blackboard app ${name.toString()} isn't init yet`);
+            store.delete(name);
+            baseOpts.onUpdate?.();
+        },
+        /** 检查APP是否注册*/
+        check(name: keyof T) {
+            return store.has(name);
+        },
+        destroy() {
+            store.clear();
+        },
+    };
 };
 
 /**
@@ -82,15 +78,15 @@ export const createBlackBoard = <T extends Record<string, any>>(
  *
  *  */
 export const createCtx = <T>(data?: T, allowEmpty = false) => {
-	const ctx = createContext(data);
-	return {
-		...ctx,
-		use<D = T>() {
-			const context = useContext(ctx);
-			if (!allowEmpty && context === undefined) {
-				throw new Error("context is empty: place check parent jsx element!");
-			}
-			return context as D;
-		},
-	};
+    const ctx = createContext(data);
+    return {
+        ...ctx,
+        use<D = T>() {
+            const context = useContext(ctx);
+            if (!allowEmpty && context === undefined) {
+                throw new Error("context is empty: place check parent jsx element!");
+            }
+            return context as D;
+        },
+    };
 };

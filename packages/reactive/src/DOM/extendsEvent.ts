@@ -1,7 +1,7 @@
 import { untrack } from "solid-js";
 
 export type ExtractOnKeys<T extends object> = {
-	[P in keyof T as P extends `on${string}` ? P : never]: T[P];
+    [P in keyof T as P extends `on${string}` ? P : never]: T[P];
 };
 
 /**
@@ -9,20 +9,18 @@ export type ExtractOnKeys<T extends object> = {
  * @zh 注意，如果你使用了同名的事件，最好将其列入 Omits
  */
 export const extendsEvent = <T extends object>(props: T): ExtractOnKeys<T> => {
-	const events = untrack(() => {
-		return Object.keys(props).filter(
-			(i) => i.startsWith("on") || i.startsWith("data-"),
-		);
-	});
+    const events = untrack(() => {
+        return Object.keys(props).filter((i) => i.startsWith("on") || i.startsWith("data-"));
+    });
 
-	return Object.assign(
-		events.reduce(
-			(col, cur) => {
-				/** @ts-ignore */
-				col[cur] = props[cur];
-				return col;
-			},
-			{} as ExtractOnKeys<T>,
-		),
-	);
+    return Object.assign(
+        events.reduce(
+            (col, cur) => {
+                /** @ts-ignore */
+                col[cur] = props[cur];
+                return col;
+            },
+            {} as ExtractOnKeys<T>,
+        ),
+    );
 };

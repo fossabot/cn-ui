@@ -4,9 +4,9 @@ import solid from "vite-plugin-solid";
 import wasm from "vite-plugin-wasm";
 
 export default defineConfig({
-	plugins: [UnoCSS(), solid(), wasm()],
-	assetsInclude: ["**/*.mdx"],
-	build: {
-		target: "esnext",
-	},
+    plugins: [UnoCSS(), solid(), wasm()],
+    assetsInclude: ["**/*.mdx"],
+    build: {
+        target: "esnext",
+    },
 });

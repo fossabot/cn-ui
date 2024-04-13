@@ -4,11 +4,11 @@ import "../animation/spin.css";
 import { Icon } from "../icon/Icon";
 
 export const GlobalButtonSlots = new ComponentSlots("Button", {
-	loadingIcon: () => {
-		return (
-			<Icon class="pr-1">
-				<AiOutlineLoading3Quarters class=" cn-animate-spin" />
-			</Icon>
-		);
-	},
+    loadingIcon: () => {
+        return (
+            <Icon class="pr-1">
+                <AiOutlineLoading3Quarters class=" cn-animate-spin" />
+            </Icon>
+        );
+    },
 });

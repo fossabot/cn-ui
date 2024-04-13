@@ -4,11 +4,11 @@ import type { CommonGroupListConfig } from "../groupList";
 import { Cascader, type CascaderProps } from "./index";
 
 export const FormCascader = OriginComponent<
-	CascaderProps,
-	HTMLDivElement,
-	CommonGroupListConfig[] | null
+    CascaderProps,
+    HTMLDivElement,
+    CommonGroupListConfig[] | null
 >((props) => {
-	const model = props.model.reflux(props.model() ?? [], (i) => i);
+    const model = props.model.reflux(props.model() ?? [], (i) => i);
 
-	return <Cascader {...(props as any)} v-model={model} />;
+    return <Cascader {...(props as any)} v-model={model} />;
 });

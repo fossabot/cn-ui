@@ -6,15 +6,7 @@ import { CompHeader } from "../components/components/CompHeader";
 import Layout from "./Layout.astro";
 type Props = MarkdownLayoutProps<CollectionEntry<"blog">["data"]>;
 
-const {
-	title,
-	description,
-	pubDate,
-	updatedDate,
-	heroImag,
-	headings,
-	compName,
-} = Astro.props;
+const { title, description, pubDate, updatedDate, heroImag, headings, compName } = Astro.props;
 ---
 
 <Layout {...Astro.props}>

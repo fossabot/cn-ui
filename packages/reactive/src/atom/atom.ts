@@ -1,9 +1,4 @@
-import {
-	type Accessor,
-	type Setter,
-	type Signal,
-	createSignal,
-} from "solid-js";
+import { type Accessor, type Setter, type Signal, createSignal } from "solid-js";
 import { useEffectWithoutFirst } from "./useEffect";
 
 export const AtomTypeSymbol = Symbol("AtomTypeSymbol");
@@ -11,19 +6,19 @@ export const AtomTypeSymbol = Symbol("AtomTypeSymbol");
 export const getAtomType = (a: Atom<unknown>) => a[AtomTypeSymbol];
 
 export interface PartialSetter<T> {
-	<U extends T>(value: (prev: T) => U): U;
-	// biome-ignore lint/complexity/noBannedTypes: <explanation>
-	<U extends T>(value: Exclude<U, Function>): U;
-	// biome-ignore lint/complexity/noBannedTypes: <explanation>
-	<U extends T>(value: Exclude<U, Function> | ((prev: T) => U)): U;
+    <U extends T>(value: (prev: T) => U): U;
+    // biome-ignore lint/complexity/noBannedTypes: <explanation>
+    <U extends T>(value: Exclude<U, Function>): U;
+    // biome-ignore lint/complexity/noBannedTypes: <explanation>
+    <U extends T>(value: Exclude<U, Function> | ((prev: T) => U)): U;
 }
 
 export interface Atom<T> extends Accessor<T>, PartialSetter<T> {
-	reflux: makeReflux<T>;
-	toSignal(): [Accessor<T>, Setter<T>];
-	getGetter(): Accessor<T>;
-	getSetter(): Setter<T>;
-	[AtomTypeSymbol]: string;
+    reflux: makeReflux<T>;
+    toSignal(): [Accessor<T>, Setter<T>];
+    getGetter(): Accessor<T>;
+    getSetter(): Setter<T>;
+    [AtomTypeSymbol]: string;
 }
 type SignalOptions<T> = { equals?: false | ((prev: T, next: T) => boolean) };
 
@@ -44,71 +39,71 @@ type SignalOptions<T> = { equals?: false | ((prev: T, next: T) => boolean) };
  * @description atom 的理念来自 solid-use, 使用一个函数进行响应式数据的管理
  */
 export const atom = <T>(value: T, props?: SignalOptions<T>): Atom<T> => {
-	const signal = createSignal<T>(value, props);
-	return SignalToAtom(signal);
+    const signal = createSignal<T>(value, props);
+    return SignalToAtom(signal);
 };
 
 /** Signal 转为 Atom */
 export const SignalToAtom = <T>(signal: Signal<T>) => {
-	const [state, setState] = signal;
+    const [state, setState] = signal;
 
-	return Object.assign(
-		(...args: [] | [T]) => {
-			if (args.length === 0) {
-				return state();
-			}
-			/** @ts-ignore */
-			return setState(...args);
-		},
-		{
-			reflux,
-			[AtomTypeSymbol]: "atom",
-			/** 转换为原来的写法，为了兼容其他 api 的要求 */
-			toSignal() {
-				return [state, setState];
-			},
-			getSetter() {
-				return setState;
-			},
-			getGetter() {
-				return state;
-			},
-		},
-	) as Atom<T>;
+    return Object.assign(
+        (...args: [] | [T]) => {
+            if (args.length === 0) {
+                return state();
+            }
+            /** @ts-ignore */
+            return setState(...args);
+        },
+        {
+            reflux,
+            [AtomTypeSymbol]: "atom",
+            /** 转换为原来的写法，为了兼容其他 api 的要求 */
+            toSignal() {
+                return [state, setState];
+            },
+            getSetter() {
+                return setState;
+            },
+            getGetter() {
+                return state;
+            },
+        },
+    ) as Atom<T>;
 };
 import type { SetStoreFunction, Store } from "solid-js/store";
 import { ensureFunctionResult } from "../utils";
 
 /** Signal 转为 Atom */
 export const StoreToAtom = <T, D extends keyof T>(
-	store: [Store<T>, SetStoreFunction<T>],
-	key: D | (() => D),
+    store: [Store<T>, SetStoreFunction<T>],
+    key: D | (() => D),
 ) => {
-	const [state, setState] = store;
+    const [state, setState] = store;
 
-	return Object.assign(
-		(...args: [] | [T]) => {
-			if (args.length === 0) {
-				return state[ensureFunctionResult(key)];
-			}
-			/** @ts-ignore */
-			return setState(ensureFunctionResult(key), ...args);
-		},
-		{
-			reflux,
-			[AtomTypeSymbol]: "store-atom",
-		},
-	) as Atom<T[D]>;
+    return Object.assign(
+        (...args: [] | [T]) => {
+            if (args.length === 0) {
+                return state[ensureFunctionResult(key)];
+            }
+            /** @ts-ignore */
+            return setState(ensureFunctionResult(key), ...args);
+        },
+        {
+            reflux,
+            [AtomTypeSymbol]: "store-atom",
+        },
+    ) as Atom<T[D]>;
 };
 
 type makeReflux<T> = <C>(
-	this: Atom<T>,
-	/** 派生 Atom 的初始值 */
-	init: C,
-	/** 回流计算函数 */
-	computed: (inputValue: C) => T,
-	/** 派生 Atom 的初始参数 */
-	Options?: SignalOptions<T>,
+    this: Atom<T>,
+    /** 派生 Atom 的初始值 */
+    init: C,
+    /** 回流计算函数 */
+    computed: (inputValue: C) => T,
+    /** 派生 Atom 的初始参数 */
+    Options?: SignalOptions<T>,
 ) => Atom<C>;
 /**
  * @zh 生成回流 atom， 回流 atom 的数值改变将会返回改变原始的 atom
@@ -128,10 +123,10 @@ type makeReflux<T> = <C>(
  *
  */
 const reflux: makeReflux<any> = function (init, computed, Options) {
-	const a = atom(init, Options);
-	useEffectWithoutFirst(() => {
-		this(() => computed(a()));
-	}, [a]);
-	a[AtomTypeSymbol] = "reflux";
-	return a;
+    const a = atom(init, Options);
+    useEffectWithoutFirst(() => {
+        this(() => computed(a()));
+    }, [a]);
+    a[AtomTypeSymbol] = "reflux";
+    return a;
 };

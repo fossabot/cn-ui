@@ -4,5 +4,5 @@
  * const width = spanToWidth(props.span ?? 8) // '25%'
  */
 export const spanToWidth = (span: number, maxSpan = 24) => {
-	return ((span * 100) / maxSpan).toFixed(6) + "%";
+    return ((span * 100) / maxSpan).toFixed(6) + "%";
 };

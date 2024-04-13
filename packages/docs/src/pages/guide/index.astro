@@ -4,7 +4,7 @@ import { PostList } from "../../components/PostList";
 import Layout from "../../layouts/Layout.astro";
 
 const posts = (await getCollection("guide")).sort(
-	(a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+    (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
 );
 ---
 

@@ -6,10 +6,10 @@ import { defineExampleAC } from "../lazyLoad/example/defineExampleAC";
 import { Tabs } from "./index";
 
 const meta = {
-	title: "Navigation 导航/Tabs",
-	component: Tabs,
-	tags: ["autodocs"],
-	argTypes: {},
+    title: "Navigation 导航/Tabs",
+    component: Tabs,
+    tags: ["autodocs"],
+    argTypes: {},
 } satisfies Meta<typeof Tabs>;
 
 export default meta;
@@ -19,11 +19,11 @@ defineExampleAC();
 
 /**  */
 export const Primary: Story = {
-	render() {
-		const options = Mock.mock<{ data: SelectOptionsType[] }>({
-			"data|5": [{ label: "@cname", value: "@name" }],
-		}).data;
-		return <Tabs options={options} />;
-	},
-	args: {},
+    render() {
+        const options = Mock.mock<{ data: SelectOptionsType[] }>({
+            "data|5": [{ label: "@cname", value: "@name" }],
+        }).data;
+        return <Tabs options={options} />;
+    },
+    args: {},
 };

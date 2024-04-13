@@ -7,23 +7,23 @@ import "../packages/core/src/css/scrollbar.css";
 import { autoChangeTheme } from "../packages/core/src/utils/darkMode";
 autoChangeTheme();
 const preview: Preview = {
-	parameters: {
-		actions: { argTypesRegex: "^on[A-Z].*" },
-		controls: {
-			expanded: true,
-		},
-		docs: {
-			toc: {
-				headingSelector: "h1, h2, h3",
-			},
-			extractArgTypes(...args) {
-				// @ts-ignore
-				const res = extractArgTypes(...args);
-				console.log(res);
-				return res;
-			},
-		},
-	},
+    parameters: {
+        actions: { argTypesRegex: "^on[A-Z].*" },
+        controls: {
+            expanded: true,
+        },
+        docs: {
+            toc: {
+                headingSelector: "h1, h2, h3",
+            },
+            extractArgTypes(...args) {
+                // @ts-ignore
+                const res = extractArgTypes(...args);
+                console.log(res);
+                return res;
+            },
+        },
+    },
 };
 
 export default preview;

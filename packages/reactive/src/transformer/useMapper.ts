@@ -10,14 +10,14 @@ import { ensureFunctionResult } from "../utils";
  * })
  */
 export function useMapper<
-	T extends keyof D,
-	D extends Record<string, unknown | ((this: D) => unknown)>,
+    T extends keyof D,
+    D extends Record<string, unknown | ((this: D) => unknown)>,
 >(type: T | (() => T), Mapper: D) {
-	return computed(() =>
-		ensureFunctionResult(
-			typeof type === "function" ? Mapper[type()] : Mapper[type],
-			undefined,
-			Mapper,
-		),
-	);
+    return computed(() =>
+        ensureFunctionResult(
+            typeof type === "function" ? Mapper[type()] : Mapper[type],
+            undefined,
+            Mapper,
+        ),
+    );
 }

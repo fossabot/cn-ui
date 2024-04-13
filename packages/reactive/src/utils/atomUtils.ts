@@ -16,24 +16,22 @@ import { reflect } from "../atom/reflect";
  * }
  */
 function atomization<T>(prop: T | Atom<T> | Accessor<T>): Atom<T>;
-function atomization<T extends (...args: any) => any>(
-	prop: T,
-): Atom<ReturnType<T>>;
+function atomization<T extends (...args: any) => any>(prop: T): Atom<ReturnType<T>>;
 function atomization<T>(prop: T | Atom<T> | Accessor<T>) {
-	// 保持 Accessor 的样式
-	return typeof prop === "function"
-		? isAtom(prop)
-			? (prop as Atom<T>)
-			: // biome-ignore lint/complexity/noBannedTypes: <explanation>
-				reflect((prop as Accessor<T> | Function)())
-		: atom(prop);
+    // 保持 Accessor 的样式
+    return typeof prop === "function"
+        ? isAtom(prop)
+            ? (prop as Atom<T>)
+            : // biome-ignore lint/complexity/noBannedTypes: <explanation>
+              reflect((prop as Accessor<T> | Function)())
+        : atom(prop);
 }
 export { atomization };
 
 /** 判断是否为 Atom */
 // function isAtom(a: Atom<any>): true;
 function isAtom(a: any): boolean {
-	return typeof (a as any)[AtomTypeSymbol] === "string";
+    return typeof (a as any)[AtomTypeSymbol] === "string";
 }
 export { isAtom };
 /**
@@ -46,7 +44,7 @@ export { isAtom };
  * const [atom1,atom2,atom3] =  AtomToArray(list)
  */
 export const AtomToArray = <T>(atom: Atom<T[]>) => {
-	return atom().map((_, index) => {
-		return reflect(() => atom()[index]);
-	});
+    return atom().map((_, index) => {
+        return reflect(() => atom()[index]);
+    });
 };

@@ -5,8 +5,5 @@ import { glob } from "glob";
 const files = await glob("./src/**/*.css");
 
 files.forEach((i) => {
-	fs.outputFileSync(
-		i.replace("src", "./dist/lib"),
-		fs.readFileSync(i, "utf-8"),
-	);
+    fs.outputFileSync(i.replace("src", "./dist/lib"), fs.readFileSync(i, "utf-8"));
 });

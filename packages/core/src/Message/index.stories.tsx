@@ -6,57 +6,57 @@ import { Button } from "../button";
 import { Alert, Message } from "./index";
 
 const meta = {
-	title: "Feedback 反馈组件/Alert 模态框",
-	component: Alert,
-	argTypes: {},
+    title: "Feedback 反馈组件/Alert 模态框",
+    component: Alert,
+    argTypes: {},
 } satisfies Meta<typeof Alert>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-	render() {
-		const data = atom<{ name: string; id: string }[]>([], { equals: false });
-		createEffect(() => {
-			console.log(data());
-		});
+    render() {
+        const data = atom<{ name: string; id: string }[]>([], { equals: false });
+        createEffect(() => {
+            console.log(data());
+        });
 
-		return (
-			<div class="flex flex-col gap-4">
-				{(["success", "error", "warning", "info"] as const).map((i) => {
-					return <Alert message="你好吗" type={i} closable icon />;
-				})}
-				{(["success", "error", "warning", "info"] as const).map((i) => {
-					return <Alert message="你好吗" type={i} closable icon round border />;
-				})}
-				{(["success", "error", "warning", "info"] as const).map((i) => {
-					return (
-						<Alert
-							message="你好吗"
-							type={i}
-							closable
-							icon
-							round
-							border
-							description={Array(50).fill(i).join(",")}
-						/>
-					);
-				})}
-			</div>
-		);
-	},
-	args: {},
+        return (
+            <div class="flex flex-col gap-4">
+                {(["success", "error", "warning", "info"] as const).map((i) => {
+                    return <Alert message="你好吗" type={i} closable icon />;
+                })}
+                {(["success", "error", "warning", "info"] as const).map((i) => {
+                    return <Alert message="你好吗" type={i} closable icon round border />;
+                })}
+                {(["success", "error", "warning", "info"] as const).map((i) => {
+                    return (
+                        <Alert
+                            message="你好吗"
+                            type={i}
+                            closable
+                            icon
+                            round
+                            border
+                            description={Array(50).fill(i).join(",")}
+                        />
+                    );
+                })}
+            </div>
+        );
+    },
+    args: {},
 };
 
 export const MessageLog: Story = {
-	render() {
-		return (
-			<div class="flex flex-col gap-4">
-				{(["success", "error", "warning", "info"] as const).map((i) => {
-					return <Button onclick={() => Message[i](i)}>{i}</Button>;
-				})}
-			</div>
-		);
-	},
-	args: {},
+    render() {
+        return (
+            <div class="flex flex-col gap-4">
+                {(["success", "error", "warning", "info"] as const).map((i) => {
+                    return <Button onclick={() => Message[i](i)}>{i}</Button>;
+                })}
+            </div>
+        );
+    },
+    args: {},
 };

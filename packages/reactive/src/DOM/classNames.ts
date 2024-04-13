@@ -18,10 +18,10 @@
 //   Marvin Hagemeister <https://github.com/marvinhagemeister>
 
 declare namespace IClassNames {
-	type Value = string | number | boolean | undefined | null;
-	type Mapping = Record<string, unknown>;
-	interface ArgumentArray extends Array<Argument> {}
-	type Argument = Value | Mapping | ArgumentArray;
+    type Value = string | number | boolean | undefined | null;
+    type Mapping = Record<string, unknown>;
+    interface ArgumentArray extends Array<Argument> {}
+    type Argument = Value | Mapping | ArgumentArray;
 }
 export type { IClassNames };
 
@@ -33,39 +33,39 @@ const hasOwn = {}.hasOwnProperty;
  * @description 源自 classnames 库
  */
 export function classNames(...args: IClassNames.ArgumentArray): string {
-	const classes: (string | number)[] = [];
+    const classes: (string | number)[] = [];
 
-	for (let i = 0; i < args.length; i++) {
-		const arg = args[i];
-		if (!arg) continue;
+    for (let i = 0; i < args.length; i++) {
+        const arg = args[i];
+        if (!arg) continue;
 
-		if (typeof arg === "string" || typeof arg === "number") {
-			classes.push(arg);
-		} else if (Array.isArray(arg)) {
-			if (arg.length) {
-				const inner = classNames.apply(null, arg);
-				if (inner) {
-					classes.push(inner);
-				}
-			}
-		} else if (typeof arg === "object") {
-			if (
-				arg.toString !== Object.prototype.toString &&
-				!arg.toString.toString().includes("[native code]")
-			) {
-				classes.push(arg.toString());
-				continue;
-			}
+        if (typeof arg === "string" || typeof arg === "number") {
+            classes.push(arg);
+        } else if (Array.isArray(arg)) {
+            if (arg.length) {
+                const inner = classNames.apply(null, arg);
+                if (inner) {
+                    classes.push(inner);
+                }
+            }
+        } else if (typeof arg === "object") {
+            if (
+                arg.toString !== Object.prototype.toString &&
+                !arg.toString.toString().includes("[native code]")
+            ) {
+                classes.push(arg.toString());
+                continue;
+            }
 
-			for (const key in arg as IClassNames.Mapping) {
-				if (hasOwn.call(arg, key) && arg[key]) {
-					classes.push(key);
-				}
-			}
-		}
-	}
+            for (const key in arg as IClassNames.Mapping) {
+                if (hasOwn.call(arg, key) && arg[key]) {
+                    classes.push(key);
+                }
+            }
+        }
+    }
 
-	return classes.join(" ");
+    return classes.join(" ");
 }
 
 /**
@@ -85,35 +85,35 @@ let className = cx({
 });
  */
 export function classNamesWithModule(
-	this: { [key: string | number]: string },
-	...args: IClassNames.ArgumentArray
+    this: { [key: string | number]: string },
+    ...args: IClassNames.ArgumentArray
 ): string {
-	const classes: (string | number)[] = [];
+    const classes: (string | number)[] = [];
 
-	for (let i = 0; i < args.length; i++) {
-		const arg = args[i];
-		if (!arg) continue;
+    for (let i = 0; i < args.length; i++) {
+        const arg = args[i];
+        if (!arg) continue;
 
-		if (typeof arg === "string" || typeof arg === "number") {
-			classes.push((this && this[arg as string]) || arg);
-		} else if (Array.isArray(arg)) {
-			classes.push(classNames.apply(this, arg));
-		} else if (typeof arg === "object") {
-			if (
-				arg.toString !== Object.prototype.toString &&
-				!arg.toString.toString().includes("[native code]")
-			) {
-				classes.push(arg.toString());
-				continue;
-			}
+        if (typeof arg === "string" || typeof arg === "number") {
+            classes.push((this && this[arg as string]) || arg);
+        } else if (Array.isArray(arg)) {
+            classes.push(classNames.apply(this, arg));
+        } else if (typeof arg === "object") {
+            if (
+                arg.toString !== Object.prototype.toString &&
+                !arg.toString.toString().includes("[native code]")
+            ) {
+                classes.push(arg.toString());
+                continue;
+            }
 
-			for (const key in arg as IClassNames.Mapping) {
-				if (hasOwn.call(arg, key) && arg[key]) {
-					classes.push((this && this[key]) || key);
-				}
-			}
-		}
-	}
+            for (const key in arg as IClassNames.Mapping) {
+                if (hasOwn.call(arg, key) && arg[key]) {
+                    classes.push((this && this[key]) || key);
+                }
+            }
+        }
+    }
 
-	return classes.join(" ");
+    return classes.join(" ");
 }

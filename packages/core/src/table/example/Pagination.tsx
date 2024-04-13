@@ -7,80 +7,80 @@ import { MagicTable } from "../Table";
 import { newPerson } from "./Expanded";
 
 type Person = {
-	firstName: string;
-	lastName: string;
-	age: number;
-	visits: number;
-	status: string;
-	progress: number;
+    firstName: string;
+    lastName: string;
+    age: number;
+    visits: number;
+    status: string;
+    progress: number;
 };
 
 const columnHelper = createColumnHelper<Person>();
 
 const columns = [
-	columnHelper.group({
-		id: "hello",
-		header: () => <span>Hello</span>,
-		// footer: props => props.column.id,
-		columns: [
-			columnHelper.accessor("firstName", {
-				cell: (info) => info.getValue(),
-				footer: (props) => props.column.id,
-			}),
-			columnHelper.accessor((row) => row.lastName, {
-				id: "lastName",
-				cell: (info) => info.getValue(),
-				header: () => <span>Last Name</span>,
-				footer: (props) => props.column.id,
-			}),
-		],
-	}),
-	columnHelper.group({
-		header: "Info",
-		footer: (props) => props.column.id,
-		columns: [
-			columnHelper.accessor("age", {
-				header: () => "Age",
-				footer: (props) => props.column.id,
-			}),
-			columnHelper.group({
-				header: "More Info",
-				columns: [
-					columnHelper.accessor("visits", {
-						header: () => <span>Visits</span>,
-						footer: (props) => props.column.id,
-					}),
-					columnHelper.accessor("progress", {
-						header: "Profile Progress",
-						footer: (props) => props.column.id,
-					}),
-				],
-			}),
-		],
-	}),
+    columnHelper.group({
+        id: "hello",
+        header: () => <span>Hello</span>,
+        // footer: props => props.column.id,
+        columns: [
+            columnHelper.accessor("firstName", {
+                cell: (info) => info.getValue(),
+                footer: (props) => props.column.id,
+            }),
+            columnHelper.accessor((row) => row.lastName, {
+                id: "lastName",
+                cell: (info) => info.getValue(),
+                header: () => <span>Last Name</span>,
+                footer: (props) => props.column.id,
+            }),
+        ],
+    }),
+    columnHelper.group({
+        header: "Info",
+        footer: (props) => props.column.id,
+        columns: [
+            columnHelper.accessor("age", {
+                header: () => "Age",
+                footer: (props) => props.column.id,
+            }),
+            columnHelper.group({
+                header: "More Info",
+                columns: [
+                    columnHelper.accessor("visits", {
+                        header: () => <span>Visits</span>,
+                        footer: (props) => props.column.id,
+                    }),
+                    columnHelper.accessor("progress", {
+                        header: "Profile Progress",
+                        footer: (props) => props.column.id,
+                    }),
+                ],
+            }),
+        ],
+    }),
 ];
 
 export const PaginationExample = () => {
-	const pageSize = atom(100);
-	const a = usePagination<Person[]>(
-		async (_, max, count) => {
-			max(100);
-			count(pageSize() * 100);
-			return Mock.mock<{ data: Person[] }>({
-				[`data|${pageSize}`]: newPerson(),
-			}).data;
-		},
-		{ initValue: [] },
-	);
-	return (
-		<Container class="h-full">
-			<Header />
-			<Main>
-				<MagicTable data={a.currentData()} columns={columns} />
-			</Main>
-			<Footer>
-				<Pagination {...a.toPaginationModel()} pageSize={pageSize()} />
-			</Footer>
-		</Container>
-	);
+    const pageSize = atom(100);
+    const a = usePagination<Person[]>(
+        async (_, max, count) => {
+            max(100);
+            count(pageSize() * 100);
+            return Mock.mock<{ data: Person[] }>({
+                [`data|${pageSize}`]: newPerson(),
+            }).data;
+        },
+        { initValue: [] },
+    );
+    return (
+        <Container class="h-full">
+            <Header />
+            <Main>
+                <MagicTable data={a.currentData()} columns={columns} />
+            </Main>
+            <Footer>
+                <Pagination {...a.toPaginationModel()} pageSize={pageSize()} />
+            </Footer>
+        </Container>
+    );
 };

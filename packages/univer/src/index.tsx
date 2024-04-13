@@ -17,66 +17,63 @@ import { UniverUIPlugin } from "@univerjs/ui";
 import { onMount } from "solid-js";
 import { watch } from "solidjs-use";
 
-export const UniverSheet = OriginComponent<
-	{ data: IWorkbookData },
-	HTMLDivElement
->((props) => {
-	const container = NullAtom<HTMLDivElement>(null);
-	// univer instance
-	const univerInstance = NullAtom<Univer>(null);
-	const workbookInstance = NullAtom<Workbook>(null);
-	/**
-	 * Initialize univer instance and workbook instance
-	 * @param data {IWorkbookData} document see https://univer.work/api/core/interfaces/IWorkbookData.html
-	 */
-	function init(data: IWorkbookData) {
-		const univer = new Univer({
-			theme: defaultTheme,
-		});
-		univerInstance(univer);
+export const UniverSheet = OriginComponent<{ data: IWorkbookData }, HTMLDivElement>((props) => {
+    const container = NullAtom<HTMLDivElement>(null);
+    // univer instance
+    const univerInstance = NullAtom<Univer>(null);
+    const workbookInstance = NullAtom<Workbook>(null);
+    /**
+     * Initialize univer instance and workbook instance
+     * @param data {IWorkbookData} document see https://univer.work/api/core/interfaces/IWorkbookData.html
+     */
+    function init(data: IWorkbookData) {
+        const univer = new Univer({
+            theme: defaultTheme,
+        });
+        univerInstance(univer);
 
-		univer.registerPlugin(UniverRenderEnginePlugin);
-		univer.registerPlugin(UniverFormulaEnginePlugin);
-		univer.registerPlugin(UniverUIPlugin, {
-			container: container(),
-			header: true,
-			toolbar: true,
-			footer: true,
-		});
+        univer.registerPlugin(UniverRenderEnginePlugin);
+        univer.registerPlugin(UniverFormulaEnginePlugin);
+        univer.registerPlugin(UniverUIPlugin, {
+            container: container(),
+            header: true,
+            toolbar: true,
+            footer: true,
+        });
 
-		univer.registerPlugin(UniverDocsPlugin, {
-			hasScroll: false,
-		});
-		univer.registerPlugin(UniverDocsUIPlugin);
+        univer.registerPlugin(UniverDocsPlugin, {
+            hasScroll: false,
+        });
+        univer.registerPlugin(UniverDocsUIPlugin);
 
-		univer.registerPlugin(UniverSheetsPlugin);
-		univer.registerPlugin(UniverSheetsUIPlugin);
-		univer.registerPlugin(UniverSheetsFormulaPlugin);
+        univer.registerPlugin(UniverSheetsPlugin);
+        univer.registerPlugin(UniverSheetsUIPlugin);
+        univer.registerPlugin(UniverSheetsFormulaPlugin);
 
-		workbookInstance(univer.createUniverSheet(data));
-	}
-	/**
-	 * Destroy univer instance and workbook instance
-	 */
-	function destroyUniver() {
-		univerInstance()?.dispose();
-		univerInstance(null);
-		workbookInstance(null);
-	}
-	/**
-	 * Get workbook data
-	 */
-	function getData() {
-		if (!workbookInstance()) {
-			throw new Error("Workbook is not initialized");
-		}
-		return workbookInstance()?.save();
-	}
-	const rebuild = () => {
-		destroyUniver();
-		init(props.data);
-	};
-	onMount(rebuild);
-	watch(() => props.data, rebuild);
-	return <OriginDiv prop={props} ref={container}></OriginDiv>;
+        workbookInstance(univer.createUniverSheet(data));
+    }
+    /**
+     * Destroy univer instance and workbook instance
+     */
+    function destroyUniver() {
+        univerInstance()?.dispose();
+        univerInstance(null);
+        workbookInstance(null);
+    }
+    /**
+     * Get workbook data
+     */
+    function getData() {
+        if (!workbookInstance()) {
+            throw new Error("Workbook is not initialized");
+        }
+        return workbookInstance()?.save();
+    }
+    const rebuild = () => {
+        destroyUniver();
+        init(props.data);
+    };
+    onMount(rebuild);
+    watch(() => props.data, rebuild);
+    return <OriginDiv prop={props} ref={container}></OriginDiv>;
 });
