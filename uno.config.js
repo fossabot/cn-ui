@@ -1,1 +1,1 @@
-export * from './packages/core/uno.config'
+export * from "./packages/core/uno.config";

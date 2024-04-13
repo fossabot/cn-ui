@@ -1,15 +1,21 @@
-import { Accessor, SignalOptions, createEffect, createMemo, untrack } from 'solid-js'
-import { Atom, AtomTypeSymbol, atom } from './atom'
+import {
+	type Accessor,
+	type SignalOptions,
+	createEffect,
+	createMemo,
+	untrack,
+} from "solid-js";
+import { type Atom, AtomTypeSymbol, atom } from "./atom";
 
 export interface ReflectOptions<T> extends SignalOptions<T> {
-    immediately?: boolean
-    initValue?: T
-    step?: boolean
-    deps?: Accessor<any>[]
+	immediately?: boolean;
+	initValue?: T;
+	step?: boolean;
+	deps?: Accessor<any>[];
 }
 
 export interface ComputedAtom<T> extends Atom<T> {
-    recomputed(): void
+	recomputed(): void;
 }
 /**
  * @category atom
@@ -35,64 +41,67 @@ export interface ComputedAtom<T> extends Atom<T> {
  * @design reflect 是为了衍生 Atom，同时具有读写权限。但是不能复用 atom ，atom 中传入函数是把函数当做初始值。 Memo 是只读的，这是它们的区别。
  */
 export const reflect = <T>(
-    /** 衍生函数 */
-    memoFunc: (lastValue: T) => T,
-    {
-        /** 是否立刻求值 (是否忽略第一次求值) */
-        immediately = true,
-        /** 如果不进行求值，那么将会之用初始值进行替代 */
-        /** @ts-ignore */
-        initValue = null,
-        /** 是否手动进行依赖触发 */
-        step = false,
-        deps = [],
-        equals
-    }: ReflectOptions<T> = {}
+	/** 衍生函数 */
+	memoFunc: (lastValue: T) => T,
+	{
+		/** 是否立刻求值 (是否忽略第一次求值) */
+		immediately = true,
+		/** 如果不进行求值，那么将会之用初始值进行替代 */
+		/** @ts-ignore */
+		initValue = null,
+		/** 是否手动进行依赖触发 */
+		step = false,
+		deps = [],
+		equals,
+	}: ReflectOptions<T> = {},
 ) => {
-    const a = atom<T>(immediately ? untrack(() => memoFunc(initValue)) : initValue, { equals })
-    if (step) {
-        createEffect(() => {
-            deps.forEach((i) => i())
-            untrack(() => {
-                a((i) => memoFunc(i))
-            })
-        })
-    } else {
-        // createEffect 会经过 solid 的生命周期，在这之前，是没有值的
-        createEffect((lastValue: T) => {
-            return a(() => memoFunc(lastValue))
-        }, initValue)
-    }
-    a[AtomTypeSymbol] = 'reflect'
-    return Object.assign(a, {
-        recomputed() {
-            return a((val) => memoFunc(val))
-        }
-    }) as ComputedAtom<T>
-}
-export const computed = reflect
+	const a = atom<T>(
+		immediately ? untrack(() => memoFunc(initValue)) : initValue,
+		{ equals },
+	);
+	if (step) {
+		createEffect(() => {
+			deps.forEach((i) => i());
+			untrack(() => {
+				a((i) => memoFunc(i));
+			});
+		});
+	} else {
+		// createEffect 会经过 solid 的生命周期，在这之前，是没有值的
+		createEffect((lastValue: T) => {
+			return a(() => memoFunc(lastValue));
+		}, initValue);
+	}
+	a[AtomTypeSymbol] = "reflect";
+	return Object.assign(a, {
+		recomputed() {
+			return a((val) => memoFunc(val));
+		},
+	}) as ComputedAtom<T>;
+};
+export const computed = reflect;
 /**
  * @zh Memo 形式的映射，注意，其为只读特性
  */
 export const reflectMemo = <T>(
-    /** 衍生函数 */
-    memoFunc: (lastValue: T) => T,
-    {
-        /** 是否立刻求值 (是否忽略第一次求值) */
-        immediately = true,
-        /** 如果不进行求值，那么将会之用初始值进行替代 */
-        /** @ts-ignore */
-        initValue = null
-    }: ReflectOptions<T> = {}
+	/** 衍生函数 */
+	memoFunc: (lastValue: T) => T,
+	{
+		/** 是否立刻求值 (是否忽略第一次求值) */
+		immediately = true,
+		/** 如果不进行求值，那么将会之用初始值进行替代 */
+		/** @ts-ignore */
+		initValue = null,
+	}: ReflectOptions<T> = {},
 ) => {
-    // Memo 与 Effect 不一样，Memo 是立即求值，而 reflect 则在生命周期之后求值
-    return createMemo<T>((lastValue) => {
-        const val = memoFunc(lastValue)
-        if (immediately) {
-            return val
-        } else {
-            immediately = true
-            return initValue
-        }
-    }, initValue)
-}
+	// Memo 与 Effect 不一样，Memo 是立即求值，而 reflect 则在生命周期之后求值
+	return createMemo<T>((lastValue) => {
+		const val = memoFunc(lastValue);
+		if (immediately) {
+			return val;
+		} else {
+			immediately = true;
+			return initValue;
+		}
+	}, initValue);
+};

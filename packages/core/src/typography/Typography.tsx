@@ -1,8 +1,8 @@
-import { extendsEvent, OriginComponent } from '@cn-ui/reactive'
-import './style/index.css'
-import { JSXElement } from 'solid-js'
+import { OriginComponent, extendsEvent } from "@cn-ui/reactive";
+import type { JSXElement } from "solid-js";
+import "./style/index.css";
 export interface TypographyProps {
-    children: JSXElement
+	children: JSXElement;
 }
 
 /**
@@ -10,17 +10,17 @@ export interface TypographyProps {
  *
  */
 export const Typography = OriginComponent<TypographyProps>((props) => {
-    return (
-        <article
-            ref={props.ref}
-            class={props.class('cn-typography')}
-            style={{
-                ...props.style
-            }}
-            {...extendsEvent(props)}
-        >
-            {props.children}
-        </article>
-    )
-})
-export { Typography as Typo }
+	return (
+		<article
+			ref={props.ref}
+			class={props.class("cn-typography")}
+			style={{
+				...props.style,
+			}}
+			{...extendsEvent(props)}
+		>
+			{props.children}
+		</article>
+	);
+});
+export { Typography as Typo };

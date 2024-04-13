@@ -1,23 +1,26 @@
 import {
-  createSummaryValue,
-  isTooLongForDefaultValueSummary,
-  type PropDefaultValue,
-} from '@storybook/docs-tools';
+	type PropDefaultValue,
+	createSummaryValue,
+	isTooLongForDefaultValueSummary,
+} from "@storybook/docs-tools";
 
-import { OBJECT_CAPTION } from '../captions';
-import type { InspectionResult, InspectionArray } from '../inspection';
-import { generateObjectCode } from '../generateCode';
+import { OBJECT_CAPTION } from "../captions";
+import { generateObjectCode } from "../generateCode";
+import type { InspectionArray, InspectionResult } from "../inspection";
 
-export function generateObject({ inferredType, ast }: InspectionResult): PropDefaultValue {
-  const { depth } = inferredType as InspectionArray;
+export function generateObject({
+	inferredType,
+	ast,
+}: InspectionResult): PropDefaultValue {
+	const { depth } = inferredType as InspectionArray;
 
-  if (depth === 1) {
-    const compactObject = generateObjectCode(ast, true);
+	if (depth === 1) {
+		const compactObject = generateObjectCode(ast, true);
 
-    if (!isTooLongForDefaultValueSummary(compactObject)) {
-      return createSummaryValue(compactObject);
-    }
-  }
+		if (!isTooLongForDefaultValueSummary(compactObject)) {
+			return createSummaryValue(compactObject);
+		}
+	}
 
-  return createSummaryValue(OBJECT_CAPTION, generateObjectCode(ast));
+	return createSummaryValue(OBJECT_CAPTION, generateObjectCode(ast));
 }

@@ -1,6 +1,6 @@
-export class zIndexManager {
-    static incr = 10000
-    static getIndex = () => {
-        return zIndexManager.incr++
-    }
-}
+export const zIndexManager = {
+	incr: 10000,
+	getIndex: () => {
+		return zIndexManager.incr++;
+	},
+};

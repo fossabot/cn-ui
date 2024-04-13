@@ -1,2 +1,2 @@
-export * from './toggleTheme'
-export * from './darkMode'
+export * from "./toggleTheme";
+export * from "./darkMode";

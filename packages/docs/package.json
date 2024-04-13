@@ -1,34 +1,34 @@
 {
-    "name": "growing-group",
-    "type": "module",
-    "version": "0.0.1",
-    "scripts": {
-        "dev": "astro dev",
-        "start": "astro dev",
-        "build": "astro build",
-        "preview": "astro preview",
-        "astro": "astro"
-    },
-    "dependencies": {
-        "@astrojs/check": "^0.5.10",
-        "@astrojs/mdx": "^2.2.1",
-        "@astrojs/rss": "^4.0.5",
-        "@astrojs/sitemap": "^3.1.1",
-        "@astrojs/solid-js": "^4.0.1",
-        "@cn-ui/core": "workspace:^",
-        "analyze": "workspace:^",
-        "astro": "^4.5.9",
-        "echarts": "^5.5.0",
-        "pretty-bytes": "^6.1.1",
-        "solid-icons": "^1.1.0",
-        "solid-js": "^1.8.16",
-        "typescript": "^5.4.3"
-    },
-    "devDependencies": {
-        "@unocss/reset": "^0.58.6",
-        "@unocss/transformer-directives": "^0.58.6",
-        "unocss": "^0.58.6",
-        "unocss-preset-chinese": "^0.3.2",
-        "unocss-preset-theme": "^0.12.0"
-    }
+	"name": "growing-group",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"start": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro"
+	},
+	"dependencies": {
+		"@astrojs/check": "^0.5.10",
+		"@astrojs/mdx": "^2.2.1",
+		"@astrojs/rss": "^4.0.5",
+		"@astrojs/sitemap": "^3.1.1",
+		"@astrojs/solid-js": "^4.0.1",
+		"@cn-ui/core": "workspace:^",
+		"analyze": "workspace:^",
+		"astro": "^4.5.9",
+		"echarts": "^5.5.0",
+		"pretty-bytes": "^6.1.1",
+		"solid-icons": "^1.1.0",
+		"solid-js": "^1.8.16",
+		"typescript": "^5.4.3"
+	},
+	"devDependencies": {
+		"@unocss/reset": "^0.58.6",
+		"@unocss/transformer-directives": "^0.58.6",
+		"unocss": "^0.58.6",
+		"unocss-preset-chinese": "^0.3.2",
+		"unocss-preset-theme": "^0.12.0"
+	}
 }

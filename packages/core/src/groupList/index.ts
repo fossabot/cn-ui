@@ -1,1 +1,1 @@
-export * from './GroupList'
+export * from "./GroupList";

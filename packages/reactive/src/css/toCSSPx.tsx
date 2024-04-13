@@ -2,13 +2,16 @@
  * @example
  * const px = toCSSPx(prop.width, '20px')
  */
-export const toCSSPx = (val: number | string | undefined, defaultValue = ''): string => {
-    switch (typeof val) {
-        case 'number':
-            return val + 'px'
-        case 'string':
-            return val
-        default:
-            return defaultValue
-    }
-}
+export const toCSSPx = (
+	val: number | string | undefined,
+	defaultValue = "",
+): string => {
+	switch (typeof val) {
+		case "number":
+			return val + "px";
+		case "string":
+			return val;
+		default:
+			return defaultValue;
+	}
+};

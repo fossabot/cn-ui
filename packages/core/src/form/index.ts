@@ -1,2 +1,2 @@
-export * from './MagicForm'
-export * from './FormCore'
+export * from "./MagicForm";
+export * from "./FormCore";

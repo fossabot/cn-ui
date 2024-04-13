@@ -1,9 +1,11 @@
 ---
-import { getCollection } from 'astro:content'
-import Layout from '../layouts/Layout.astro'
-import { IndexPage } from './_index.page'
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import { IndexPage } from "./_index.page";
 
-const posts = (await getCollection('blog')).sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
+const posts = (await getCollection("blog")).sort(
+	(a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+);
 ---
 
 <Layout title="CN UI 文档站" description="CN UI 是一个 SolidJS 组件库">

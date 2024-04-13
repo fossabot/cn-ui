@@ -1,2 +1,2 @@
-export * from './EditText'
-export * from './Typography'
+export * from "./EditText";
+export * from "./Typography";

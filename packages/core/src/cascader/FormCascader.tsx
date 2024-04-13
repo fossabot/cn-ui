@@ -1,10 +1,14 @@
-import { OriginComponent } from '@cn-ui/reactive'
+import { OriginComponent } from "@cn-ui/reactive";
 
-import { Cascader, CascaderProps } from './index'
-import { CommonGroupListConfig } from '../groupList'
+import type { CommonGroupListConfig } from "../groupList";
+import { Cascader, type CascaderProps } from "./index";
 
-export const FormCascader = OriginComponent<CascaderProps, HTMLDivElement, CommonGroupListConfig[] | null>((props) => {
-    const model = props.model.reflux(props.model() ?? [], (i) => i)
+export const FormCascader = OriginComponent<
+	CascaderProps,
+	HTMLDivElement,
+	CommonGroupListConfig[] | null
+>((props) => {
+	const model = props.model.reflux(props.model() ?? [], (i) => i);
 
-    return <Cascader {...(props as any)} v-model={model}></Cascader>
-})
+	return <Cascader {...(props as any)} v-model={model} />;
+});

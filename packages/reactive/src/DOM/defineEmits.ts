@@ -14,9 +14,12 @@
  * }
  */
 export const defineEmits = <E>(props: E) => {
-    /** @ts-ignore */
-    return <D extends keyof E, Fn extends (...args: any[]) => any = E[D]>(name: D, ...args: Parameters<Fn>): ReturnType<Fn> => {
-        /** @ts-ignore */
-        return props[name]?.(...args)
-    }
-}
+	/** @ts-ignore */
+	return <D extends keyof E, Fn extends (...args: any[]) => any = E[D]>(
+		name: D,
+		...args: Parameters<Fn>
+	): ReturnType<Fn> => {
+		/** @ts-ignore */
+		return props[name]?.(...args);
+	};
+};

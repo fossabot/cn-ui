@@ -1,24 +1,32 @@
-import { Atom, createCtx } from '@cn-ui/reactive'
-import { CellContext, RowSelectionState, Table } from '@tanstack/solid-table'
-import { useVirtual } from './useVirtual'
-import { useScroll } from 'solidjs-use'
-import { Accessor } from 'solid-js'
-import { MagicTableProps } from './interface'
-import { JSX } from 'solid-js'
-import { useSticky } from './useSticky'
-import { useStaticTableDefine } from './useStaticTableDefine'
+import { type Atom, createCtx } from "@cn-ui/reactive";
+import type {
+	CellContext,
+	RowSelectionState,
+	Table,
+} from "@tanstack/solid-table";
+import type { Accessor } from "solid-js";
+import type { JSX } from "solid-js";
+import type { useScroll } from "solidjs-use";
+import type { MagicTableProps } from "./interface";
+import type { useStaticTableDefine } from "./useStaticTableDefine";
+import type { useSticky } from "./useSticky";
+import type { useVirtual } from "./useVirtual";
 
-export interface MagicTableCtxType<T = unknown> extends ReturnType<typeof useSticky>, ReturnType<typeof useStaticTableDefine<T>> {
-    tableProps: MagicTableProps<T>
-    table: Table<T>
-    rowSelection: Atom<RowSelectionState>
-    tableScroll: ReturnType<typeof useScroll>
-    selection: Accessor<MagicTableProps<T>['selection']>
-    estimateHeight: Accessor<number | undefined>
-    width: Accessor<number>
-    defaultCell?: <T, D>(props: CellContext<T, D>) => JSX.Element
+export interface MagicTableCtxType<T = unknown>
+	extends ReturnType<typeof useSticky>,
+		ReturnType<typeof useStaticTableDefine<T>> {
+	tableProps: MagicTableProps<T>;
+	table: Table<T>;
+	rowSelection: Atom<RowSelectionState>;
+	tableScroll: ReturnType<typeof useScroll>;
+	selection: Accessor<MagicTableProps<T>["selection"]>;
+	estimateHeight: Accessor<number | undefined>;
+	width: Accessor<number>;
+	defaultCell?: <T, D>(props: CellContext<T, D>) => JSX.Element;
 }
 
-export const MagicTableCtx = /* @__PURE__ */ createCtx<MagicTableCtxType>()
+export const MagicTableCtx = /* @__PURE__ */ createCtx<MagicTableCtxType>();
 
-export const MagicVirtualTableCtx = /* @__PURE__ */ createCtx<ReturnType<typeof useVirtual<unknown>>>(undefined, true)
+export const MagicVirtualTableCtx = /* @__PURE__ */ createCtx<
+	ReturnType<typeof useVirtual<unknown>>
+>(undefined, true);

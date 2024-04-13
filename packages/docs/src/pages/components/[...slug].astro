@@ -1,18 +1,18 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content'
-import ComponentLayout from '../../layouts/ComponentLayout.astro'
+import { type CollectionEntry, getCollection } from "astro:content";
+import ComponentLayout from "../../layouts/ComponentLayout.astro";
 
 export async function getStaticPaths() {
-    const posts = await getCollection('components')
-    return posts.map((post) => ({
-        params: { slug: post.slug },
-        props: post
-    }))
+	const posts = await getCollection("components");
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: post,
+	}));
 }
-type Props = CollectionEntry<'components'>
+type Props = CollectionEntry<"components">;
 
-const post = Astro.props
-const { Content, ...other } = await post.render()
+const post = Astro.props;
+const { Content, ...other } = await post.render();
 ---
 
 <ComponentLayout {...{ ...post.data, ...other }}>

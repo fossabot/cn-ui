@@ -1,2 +1,2 @@
-export * from './InputNumber'
-export * from './FormInputNumber'
+export * from "./InputNumber";
+export * from "./FormInputNumber";

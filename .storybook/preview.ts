@@ -1,29 +1,29 @@
-import { Preview } from 'storybook-solidjs'
-import { extractArgTypes } from 'storybook-solidjs-docgen/src/docs/extractArgTypes'
-import '@unocss/reset/tailwind.css'
-import 'virtual:uno.css'
-import '../packages/core/src/css/scrollbar.css'
-import '../packages/core/src/css/dark.css'
-import { autoChangeTheme } from '../packages/core/src/utils/darkMode'
-autoChangeTheme()
+import "virtual:uno.css";
+import "@unocss/reset/tailwind.css";
+import type { Preview } from "storybook-solidjs";
+import { extractArgTypes } from "storybook-solidjs-docgen/src/docs/extractArgTypes";
+import "../packages/core/src/css/dark.css";
+import "../packages/core/src/css/scrollbar.css";
+import { autoChangeTheme } from "../packages/core/src/utils/darkMode";
+autoChangeTheme();
 const preview: Preview = {
-    parameters: {
-        actions: { argTypesRegex: '^on[A-Z].*' },
-        controls: {
-            expanded: true
-        },
-        docs: {
-            toc: {
-                headingSelector: 'h1, h2, h3'
-            },
-            extractArgTypes() {
-                // @ts-ignore
-                const res = extractArgTypes(...arguments)
-                console.log(res)
-                return res
-            }
-        }
-    }
-}
+	parameters: {
+		actions: { argTypesRegex: "^on[A-Z].*" },
+		controls: {
+			expanded: true,
+		},
+		docs: {
+			toc: {
+				headingSelector: "h1, h2, h3",
+			},
+			extractArgTypes(...args) {
+				// @ts-ignore
+				const res = extractArgTypes(...args);
+				console.log(res);
+				return res;
+			},
+		},
+	},
+};
 
-export default preview
+export default preview;

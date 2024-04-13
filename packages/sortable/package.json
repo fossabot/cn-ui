@@ -1,16 +1,16 @@
 {
-    "name": "@cn-ui/sortable",
-    "version": "3.1.0",
-    "description": "",
-    "main": "src/index.ts",
-    "scripts": {},
-    "sideEffects": false,
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "@cn-ui/reactive": "workspace:^",
-        "solid-js": "^1.8.16",
-        "sortablejs": "^1.15.2"
-    }
+	"name": "@cn-ui/sortable",
+	"version": "3.1.0",
+	"description": "",
+	"main": "src/index.ts",
+	"scripts": {},
+	"sideEffects": false,
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@cn-ui/reactive": "workspace:^",
+		"solid-js": "^1.8.16",
+		"sortablejs": "^1.15.2"
+	}
 }

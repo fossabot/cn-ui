@@ -1,2 +1,2 @@
-export * from './compress'
-export * from './getChinaAddressOptions'
+export * from "./compress";
+export * from "./getChinaAddressOptions";
