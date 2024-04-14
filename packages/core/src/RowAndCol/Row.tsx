@@ -13,11 +13,26 @@ export const RowJustify = [
 export const RowAlign = ["top", "middle", "bottom"] as const;
 
 export type RowProps = {
-    /** @todo */
-    tag?: string;
+    /**
+     * 子单元之间的间距
+     * @default 8px
+     */
     gutter?: number | string | [number | string, number | string];
+    /**
+     * 水平对齐方式
+     * @default start
+     * @tested
+     */
     justify?: (typeof RowJustify)[number];
+    /**
+     * 垂直对齐方式
+     */
     align?: (typeof RowAlign)[number];
+    /**
+     * 每一行的底部 Margin
+     * @default 20px
+     * @tested
+     */
     bottomSpace?: number | string;
 };
 export const RowCtx = /* @__PURE__ */ createCtx<{
@@ -40,7 +55,6 @@ export const Row = OriginComponent<RowProps>((props) => {
                 class="flex flex-row flex-wrap"
                 style={{
                     // 为了兼容性和与其他框架实现一致，采用子 padding 的模式
-                    // gap: toCSSPx(props.gutter, '8px'),
                     "justify-content": props.justify ?? "start",
                     "align-items": props.align,
                     "margin-bottom": toCSSPx(props.bottomSpace, "20px"),

@@ -27,3 +27,5 @@ export const Primary: Story = {
     },
     args: {},
 };
+
+// 额外附加类的需要测试和文档 cn-indent indent-none

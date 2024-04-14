@@ -7,7 +7,7 @@ export default definePreset(() => {
     return {
         name: "uno-preset-cn",
         theme: { colors, boxShadow },
-        rules: [...designRules],
+        rules: [...designRules, ["indent-none", { indent: 0 }]],
         preflights: [
             {
                 getCSS: () => `
