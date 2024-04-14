@@ -97,7 +97,11 @@ const getSelf = () => window.parent.document.querySelector("iframe")!;
 
 const testSizeUnderWidth = async (canvas: any, spans: number[], width: number) => {
     const iframe = getSelf();
-    iframe.style.width = width + "px";
+    if (!iframe) {
+        console.error("识别 iframe 错误");
+        return;
+    }
+    iframe.style.width = `${width}px`;
     await sleep(50);
 
     const widths = [...canvas.getByTestId("responsive").children].map((i) =>

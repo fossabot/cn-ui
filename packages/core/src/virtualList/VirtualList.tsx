@@ -6,22 +6,53 @@ import {
     classNames,
     ensureFunctionResult,
     toCSSPx,
+    OriginComponent,
+    OriginDiv,
+    type OriginComponentInputType,
 } from "@cn-ui/reactive";
 import { Key } from "@solid-primitives/keyed";
-import { type Accessor, type JSXElement, Show } from "solid-js";
+import { type Accessor, type JSXElement, Show, type Setter } from "solid-js";
 import { TransitionGroup } from "solid-transition-group";
 import { useAutoResize } from "../table/hook/useAutoResize";
-import { createVirtualizer } from "../table/virtual/createVirtualizer";
-
+import { type CNVirtualizer, createVirtualizer } from "../table/virtual/createVirtualizer";
+export interface VirtualListExpose {
+    virtualizer: CNVirtualizer<HTMLDivElement, Element>;
+}
 export interface VirtualListProps<T> {
+    /**
+     * 需要渲染的数组
+     * @tested
+     */
     each: T[];
+    /**
+     * 翻转渲染方向。比如原来从上至下，现在从下至上渲染。
+     * @tested
+     */
     reverse?: boolean;
+    /**
+     * 当没有数据时的渲染
+     */
     fallback?: JSXSlot;
+    /**
+     * 预估每一项的高度
+     * @tested
+     */
     estimateSize?: number;
+    /**
+     * 覆盖自动计算的容器高度
+     */
     containerHeight?: number;
+    /**
+     * 是否是横向滚动
+     * @tested
+     */
     horizontal?: boolean;
     /** 标识其 Key 值的属性，为了保证渲染的高效 */
     getItemKey?: (index: number) => number | string;
+    /**
+     * 每一项的渲染组件
+     * @tested
+     */
     children: (
         item: T,
         index: Accessor<number>,
@@ -30,11 +61,23 @@ export interface VirtualListProps<T> {
             itemRef: Atom<HTMLDivElement | null>;
         },
     ) => JSXElement;
+    /** transition 动画需要的样式 */
     transitionName?: string;
+    /**
+     * 视图之外预先渲染的数据量
+     * @tested
+     */
     overscan?: number;
+    /**
+     * 暴露一些内部方法
+     * @tested
+     */
+    expose?: Setter<VirtualListExpose>;
 }
 
-export function VirtualList<T>(props: VirtualListProps<T>) {
+export const VirtualList = OriginComponent(function <T>(
+    props: OriginComponentInputType<VirtualListProps<T>, HTMLDivElement, unknown>,
+) {
     const tableContainerRef = NullAtom<HTMLDivElement>(null);
     const virtualizer = createVirtualizer({
         get count() {
@@ -52,7 +95,8 @@ export function VirtualList<T>(props: VirtualListProps<T>) {
             return props.overscan ?? Math.min(20, Math.floor(Math.sqrt(props.each.length)));
         },
     });
-    const { height } = useAutoResize(() => tableContainerRef());
+    props.expose?.({ virtualizer });
+    const { height, width } = useAutoResize(() => tableContainerRef());
     const CoreList = (
         <Key
             by="key"
@@ -65,14 +109,24 @@ export function VirtualList<T>(props: VirtualListProps<T>) {
                 const context = { itemClass, itemRef };
                 return (
                     <div
-                        class={classNames("cn-virtual-list-item absolute w-full", itemClass())}
+                        class={classNames(
+                            "cn-virtual-list-item absolute ",
+                            props.horizontal ? "h-full" : "w-full",
+                            itemClass(),
+                        )}
                         data-index={virtualRow().index} //needed for dynamic row height measurement
                         ref={(node) => {
                             itemRef(node);
                             queueMicrotask(() => virtualizer.measureElement(node));
                         }}
                         style={{
-                            [props.reverse ? "bottom" : "top"]: `${virtualRow().start}px`,
+                            [props.horizontal
+                                ? props.reverse
+                                    ? "right"
+                                    : "left"
+                                : props.reverse
+                                  ? "bottom"
+                                  : "top"]: `${virtualRow().start}px`,
                         }}
                     >
                         <Show when={props.each[virtualRow().index]}>
@@ -88,23 +142,32 @@ export function VirtualList<T>(props: VirtualListProps<T>) {
         </Key>
     );
     return (
-        <div
+        <OriginDiv
+            prop={props}
             ref={tableContainerRef}
             class={classNames(
-                "cn-virtual-list w-full overflow-auto relative",
+                "cn-virtual-list overflow-auto relative",
+                props.horizontal ? "h-full" : "w-full",
                 props.reverse
-                    ? "cn-virtual-list-reverse flex flex-col-reverse"
+                    ? `cn-virtual-list-reverse flex ${
+                          props.horizontal ? "flex-row-reverse" : "flex-col-reverse"
+                      }`
                     : "cn-virtual-list-normal",
+                props.horizontal,
             )}
             data-height={height()}
             style={{
-                height: toCSSPx(props.containerHeight ?? height(), "400px"),
+                width: props.horizontal ? toCSSPx(width(), "400px") : "auto",
+                height: props.horizontal
+                    ? "auto"
+                    : toCSSPx(props.containerHeight ?? height(), "400px"),
             }}
         >
             <div
                 class="cn-virtual-list-container flex-none relative"
                 style={{
-                    height: `${virtualizer.getTotalSize()}px`,
+                    width: props.horizontal ? `${virtualizer.getTotalSize()}px` : "100%",
+                    height: props.horizontal ? "100%" : `${virtualizer.getTotalSize()}px`,
                 }}
             >
                 {props.transitionName ? (
@@ -113,6 +176,6 @@ export function VirtualList<T>(props: VirtualListProps<T>) {
                     CoreList
                 )}
             </div>
-        </div>
+        </OriginDiv>
     );
-}
+});
