@@ -12,7 +12,7 @@
 
 .cn-typography {
     font-family: var(--default-font);
-    --at-apply: box-border w-full pb-12 text-design-title;
+    --at-apply: box-border w-full pb-12 text-design-text;
     /* 默认不显示下划线，保持页面简洁 */
 }
 .cn-typography ins,
@@ -59,10 +59,11 @@
 } */
 
 .cn-typography hr {
-    --at-apply: my-2;
+    --at-apply: my-2 border-design-border;
 }
 .cn-typography blockquote {
-    --at-apply: relative my-2 border-l-4 border-solid border-design-border pl-2 font-normal text-design-h2;
+    --at-apply: relative my-2 border-l-4 border-solid border-design-border pl-2 font-normal
+        text-design-h2;
 }
 .cn-typography :not(pre) > code {
     --at-apply: mx-1 my-2 rounded-md px-1;
@@ -75,7 +76,7 @@
 .cn-typography h4,
 .cn-typography h5,
 .cn-typography h6 {
-    --at-apply: mb-[0.6em] mt-[0.75em] leading-snug pb-4;
+    --at-apply: mb-[0.6em] mt-[0.75em] leading-snug pb-4 text-design-title;
 }
 .cn-typography h1,
 .cn-typography h2,
@@ -87,7 +88,7 @@
     --at-apply: text-3xl;
 }
 .cn-typography h2 {
-    --at-apply: text-2xl border-b;
+    --at-apply: text-2xl border-b border-design-border;
 }
 
 .cn-typography h3 {
@@ -125,7 +126,7 @@
 }
 
 .cn-typography table {
-    --at-apply: max-w-[100%] overflow-auto;
+    --at-apply: w-full overflow-auto;
 }
 
 /* 同 ul/ol，在文章中应用 table 基本格式 */
@@ -157,18 +158,31 @@
 }
 
 .cn-typography abbr {
-    --at-apply: underline-offset-4;
+    --at-apply: underline-offset-4 cursor-pointer;
 }
 /* Responsive images */
 .cn-typography img {
     max-width: 100%;
 }
 .cn-typography > p {
-    --at-apply: whitespace-pre-wrap indent-[2em];
+    --at-apply: whitespace-pre-wrap;
+}
+.cn-typography.cn-indent p:not(.indent-none) {
+    --at-apply: indent-[2em];
 }
 .cn-typography a {
     --at-apply: text-primary-500 hover: text-primary-400;
 }
 .cn-typography strong {
     --at-apply: mx-1;
+}
+.cn-typography summary {
+    --at-apply: cursor-pointer select-none;
+}
+.cn-typography figcaption {
+    --at-apply: mt-2 pt-2 border-t border-design-border;
+}
+
+.cn-typography section {
+    --at-apply: my-4;
 }

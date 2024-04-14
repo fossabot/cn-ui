@@ -13,7 +13,7 @@ export const Typography = OriginComponent<TypographyProps>((props) => {
     return (
         <article
             ref={props.ref}
-            class={props.class("cn-typography")}
+            class={props.class("cn-typography chinese")}
             style={{
                 ...props.style,
             }}

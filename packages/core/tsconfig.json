@@ -27,10 +27,5 @@
         },
         "types": ["node"]
     },
-    "include": [
-        "src/**/*",
-        "../reactive/src/hook/useLazyMount.tsx",
-        "../reactive/src/DOM/PortalEasy.tsx",
-        "../reactive/src/DOM/ComponentSlots.tsx"
-    ]
+    "include": ["src/**/*"]
 }
