@@ -66,6 +66,7 @@ export interface ButtonSlots {
     loadingIcon?: JSXSlot;
 }
 
+/** 基础按钮组件 */
 export const Button = OriginComponent<ButtonProps, HTMLButtonElement>((props) => {
     const typeClass = createTypeClass(props as ButtonProps);
     const disabledClass = createDisabledClass(props as ButtonProps);

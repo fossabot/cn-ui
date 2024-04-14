@@ -1,8 +1,14 @@
-import { type JSXSlot, OriginComponent, createCtx, ensureFunctionResult } from "@cn-ui/reactive";
-import { AiOutlineClose } from "solid-icons/ai";
+import {
+    type JSXSlot,
+    OriginComponent,
+    createCtx,
+    ensureFunctionResult,
+    type Atom,
+    classHelper,
+} from "@cn-ui/reactive";
+import { AiOutlineClose, AiOutlinePlus } from "solid-icons/ai";
 import { For, Show } from "solid-js";
 import { Button, type ButtonProps } from "../button";
-import { Flex } from "../container";
 import { Icon } from "../icon/Icon";
 
 export interface FloatingButtonProps extends ButtonProps {
@@ -18,7 +24,7 @@ export const FloatingButton = OriginComponent<FloatingButtonProps>((props) => {
             type="text"
             {...(props as any)}
             class={props.class(
-                " h-10 w-10 p-2 right-4 bottom-4 shadow-3 z-10 active:scale-75 transition-transform",
+                " h-10 w-10 p-2 right-4 bottom-4 shadow-3 z-10 active:scale-75 transition-all duration-300",
                 groupCtx ? "" : props.absolute ? "absolute" : "fixed",
             )}
             style={props.style()}
@@ -28,53 +34,49 @@ export const FloatingButton = OriginComponent<FloatingButtonProps>((props) => {
     );
 });
 export const FloatingGroupCtx = /* @__PURE__ */ createCtx<any>(undefined, true);
+
+interface FloatingButtonGroupProps {
+    options: FloatingButtonProps[];
+    switchIcon?: JSXSlot<Atom<boolean>>;
+}
+
 export const FloatingButtonGroup = OriginComponent<
-    { options: FloatingButtonProps[]; icon?: FloatingButtonProps },
+    FloatingButtonGroupProps,
     HTMLDivElement,
     boolean
 >(
     (props) => {
-        const closeBtn = () => (
-            <Icon>
-                <AiOutlineClose />
-            </Icon>
-        );
         return (
             <FloatingGroupCtx.Provider value={{}}>
-                <Flex
-                    reverse
-                    vertical
-                    gap={"12px"}
-                    class={props.class("fixed right-4 bottom-4")}
+                <div
+                    class={props.class("fixed right-4 bottom-4 flex flex-col-reverse gap-3")}
                     style={props.style()}
                 >
-                    <Show when={props.icon}>
-                        <Show
-                            when={!props.model()}
-                            fallback={FloatingButton({
-                                children: closeBtn(),
-                                // @ts-ignore
-                                "on:click"() {
-                                    props.model(false);
-                                },
-                            })}
-                        >
-                            {FloatingButton({
-                                ...props.icon,
-                                "on:click"() {
-                                    props.model(true);
-                                },
-                            } as any)}
-                        </Show>
-                    </Show>
+                    <FloatingButton
+                        // @ts-ignore
+                        on:click={() => {
+                            props.model((i) => !i);
+                        }}
+                    >
+                        {ensureFunctionResult(props.switchIcon ?? DefaultSwitchButton, [
+                            props.model,
+                        ])}
+                    </FloatingButton>
+
                     <For each={props.options}>
                         {(item) => {
                             return <Show when={props.model()}>{FloatingButton(item as any)}</Show>;
                         }}
                     </For>
-                </Flex>
+                </div>
             </FloatingGroupCtx.Provider>
         );
     },
     { modelValue: true },
+);
+
+export const DefaultSwitchButton = (model: Atom<boolean>) => (
+    <Icon class={classHelper.base(model() ? "rotate-45" : "", "transition-transform")()}>
+        <AiOutlinePlus />
+    </Icon>
 );

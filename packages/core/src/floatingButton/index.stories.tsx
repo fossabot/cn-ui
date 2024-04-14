@@ -1,14 +1,7 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
 
 import { atom } from "@cn-ui/reactive";
-import {
-    AiFillHighlight,
-    AiOutlineAccountBook,
-    AiOutlineAlert,
-    AiOutlinePlus,
-    AiOutlinePullRequest,
-    AiOutlineSearch,
-} from "solid-icons/ai";
+import { AiOutlineAccountBook, AiOutlineAlert, AiOutlineSearch } from "solid-icons/ai";
 import { Button } from "../button";
 import { Flex } from "../container/Flex";
 import { Icon } from "../icon/Icon";
@@ -16,7 +9,7 @@ import { toggleTheme } from "../utils/toggleTheme";
 import { FloatingButton, FloatingButtonGroup, type FloatingButtonProps } from "./index";
 
 const meta = {
-    title: "Common 通用/FloatingButton 按钮",
+    title: "Common 通用/FloatingButton 浮动按钮",
     component: FloatingButton,
     tags: ["autodocs"],
     argTypes: {},
@@ -71,17 +64,7 @@ export const Group: Story = {
         return (
             <>
                 <Button onclick={() => show((i) => !i)}>{show() ? "True" : "False"}</Button>
-                <FloatingButtonGroup
-                    v-model={show}
-                    options={options}
-                    icon={{
-                        children: (
-                            <Icon>
-                                <AiOutlinePlus />
-                            </Icon>
-                        ),
-                    }}
-                />
+                <FloatingButtonGroup v-model={show} options={options} />
             </>
         );
     },
