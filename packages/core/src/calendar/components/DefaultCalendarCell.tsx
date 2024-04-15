@@ -4,15 +4,18 @@ import { CalenderCtx } from "../Calendar";
 
 export const CalendarDateCell = (props: { date: Dayjs }) => {
     const calendarSystem = CalenderCtx.use();
-    const edgeDateClass = "bg-primary-50 text-primary-300 hover:text-primary-600 ";
+    const edgeDateClass = "bg-primary-50 text-primary-300 hover:text-primary-600 cn-selected";
     return (
         <div
+            aria-label={props.date.format("YYYY MM DD")}
+            role="button"
+            aria-selected={calendarSystem.isSelected(props.date)}
             class={firstClass.base(
                 "transition-colors cursor-pointer  w-8 h-8 flex justify-center items-center",
                 calendarSystem.mode() !== "range" && "rounded-md",
             )(
-                calendarSystem.isStartDate(props.date) && `${edgeDateClass}rounded-md`,
-                calendarSystem.isEndDate(props.date) && `${edgeDateClass}rounded-r-md`,
+                calendarSystem.isStartDate(props.date) && `${edgeDateClass} rounded-md`,
+                calendarSystem.isEndDate(props.date) && `${edgeDateClass} rounded-r-md`,
                 calendarSystem.isSelected(props.date) && edgeDateClass,
                 "hover:bg-gray-100 rounded-md",
             )}
@@ -34,6 +37,9 @@ export const CalendarMonthCell = (props: { date: Dayjs }) => {
     const edgeDateClass = "bg-primary-50 text-primary-300 hover:text-primary-600";
     return (
         <div
+            aria-label={props.date.format("YYYY MM")}
+            role="button"
+            aria-selected={calendarSystem.isSelected(props.date, "month")}
             class={firstClass.base(
                 "transition-colors cursor-pointer m-2 h-6 flex justify-center items-center w-full rounded-md",
             )(
@@ -53,6 +59,9 @@ export const CalendarYearCell = (props: { date: Dayjs; year: number }) => {
     const edgeDateClass = "bg-primary-50 text-primary-300 hover:text-primary-600";
     return (
         <div
+            aria-label={props.date.format("YYYY")}
+            role="button"
+            aria-selected={calendarSystem.isSelected(props.date, "year")}
             class={firstClass.base(
                 "transition-colors cursor-pointer m-2 h-6 flex justify-center items-center w-full rounded-md",
             )(

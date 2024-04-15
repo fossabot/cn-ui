@@ -3,6 +3,7 @@ import {
     type DateCalendarConfig,
     type JSXSlot,
     OriginComponent,
+    OriginDiv,
     atom,
     computed,
     createCtx,
@@ -46,7 +47,7 @@ export const Calendar = OriginComponent<CalendarProps, HTMLTableElement, Dayjs[]
     const calendarSystem = useDateCalendar(watchingDate, () => props);
     return (
         <CalenderCtx.Provider value={{ ...select, ...calendarSystem, calendarShowingType }}>
-            <div class="flex flex-col select-none w-fit min-w-[15rem]">
+            <OriginDiv prop={props} class="flex flex-col select-none w-fit min-w-[15rem]">
                 <CalendarHeader />
                 <Switch>
                     <Match when={calendarShowingType() === "year"}>
@@ -59,7 +60,7 @@ export const Calendar = OriginComponent<CalendarProps, HTMLTableElement, Dayjs[]
                         <DateCalendarPanel Cell={props.Cell} />
                     </Match>
                 </Switch>
-            </div>
+            </OriginDiv>
         </CalenderCtx.Provider>
     );
 });

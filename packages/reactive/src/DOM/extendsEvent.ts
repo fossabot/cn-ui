@@ -11,7 +11,9 @@ export type ExtractOnKeys<T extends object> = {
 export const extendsEvent = <T extends object>(props: T): ExtractOnKeys<T> => {
     const allowPrefix = ["on", "data-", "aria-"];
     const events = untrack(() => {
-        return Object.keys(props).filter((i) => allowPrefix.some((prefix) => i.startsWith(prefix)));
+        return Object.keys(props).filter(
+            (i) => allowPrefix.some((prefix) => i.startsWith(prefix)) || i === "role",
+        );
     });
 
     return Object.assign(
