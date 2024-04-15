@@ -10,9 +10,9 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-import { Heti } from "./example/Heti";
-import { ThemeSwitch } from "../switch";
 import { toggleTheme } from "..";
+import { ThemeSwitch } from "../switch";
+import { Heti } from "./example/Heti";
 
 /**  */
 export const Primary: Story = {

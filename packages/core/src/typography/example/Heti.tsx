@@ -859,10 +859,10 @@ export const Heti = () => {
                             <tr>
                                 <td>代码</td>
                                 <td>
-                                    <code>{`<code>.heti { star: 5; }</code>`}</code>
+                                    <code>{"<code>.heti { star: 5; }</code>"}</code>
                                 </td>
                                 <td>
-                                    <code>{`.heti { star: 5; }`}</code>
+                                    <code>{".heti { star: 5; }"}</code>
                                 </td>
                             </tr>
                             <tr>

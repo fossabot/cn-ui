@@ -10,11 +10,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 import { Entries } from "@solid-primitives/keyed";
 import * as copy from "copy-to-clipboard";
-import { Flex } from "../container";
-import { colors, darkColors } from "./presets/colors";
-import { useDark, useToggle } from "solidjs-use";
-import { ThemeSwitch } from "../switch";
 import type { Accessor } from "solid-js";
+import { useDark, useToggle } from "solidjs-use";
+import { Flex } from "../container";
+import { ThemeSwitch } from "../switch";
+import { colors, darkColors } from "./presets/colors";
 
 export const Primary: Story = {
     name: "Color 色彩",

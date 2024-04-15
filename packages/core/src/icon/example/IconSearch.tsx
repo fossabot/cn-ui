@@ -2,15 +2,15 @@ import { AC, ArrayFolder, DebounceAtom, atom, computed, resource } from "@cn-ui/
 import Fuse from "fuse.js";
 import { BaseInput } from "../../input";
 
+import copy from "copy-to-clipboard";
 import * as AntdIcon from "solid-icons/ai";
 import type { Component } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { watch } from "solidjs-use";
-import { Tabs } from "../../tabs";
-import copy from "copy-to-clipboard";
-import { VirtualList } from "../../virtualList";
-import { InputNumber } from "../../inputNumber";
 import { Message } from "../../Message";
+import { InputNumber } from "../../inputNumber";
+import { Tabs } from "../../tabs";
+import { VirtualList } from "../../virtualList";
 
 const loader = {
     Ai: () => AntdIcon,

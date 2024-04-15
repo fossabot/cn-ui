@@ -3,8 +3,8 @@ import type { SelectOptionsType } from "@cn-ui/reactive";
 import { SelectableList, type SelectableListExpose } from "@cn-ui/reactive";
 import { firstClass } from "@cn-ui/reactive";
 import { AiOutlineClose, AiOutlinePlus } from "solid-icons/ai";
-import { Icon } from "../icon";
 import { Show } from "solid-js";
+import { Icon } from "../icon";
 
 export const Tabs = OriginComponent<
     {
