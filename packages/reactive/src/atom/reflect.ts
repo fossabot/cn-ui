@@ -49,7 +49,9 @@ export const reflect = <T>(
         equals,
     }: ReflectOptions<T> = {},
 ) => {
-    const a = atom<T>(immediately ? untrack(() => memoFunc(initValue)) : initValue, { equals });
+    const a = atom<T>(immediately ? untrack(() => memoFunc(initValue)) : initValue, {
+        equals,
+    });
     if (step) {
         createEffect(() => {
             deps.forEach((i) => i());

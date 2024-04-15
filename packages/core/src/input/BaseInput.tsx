@@ -20,13 +20,7 @@ import { type CountProps, useTextCount } from "./useTextCount";
 export interface CountConfig {
     max?: number; // Max character count. Different from the native `maxLength`, it will be marked warning but not truncated
     strategy?: (value: string) => number; // Custom character count, for example, the standard emoji length is greater than 1, you can customize the counting strategy to change it to 1
-    show?:
-        | boolean
-        | ((args: {
-              value: string;
-              count: number;
-              maxLength?: number;
-          }) => JSXElement); // Same as `showCount`
+    show?: boolean | ((args: { value: string; count: number; maxLength?: number }) => JSXElement); // Same as `showCount`
     exceedFormatter?: (value: string, config: CountConfig) => string; // Custom clipping logic when the number of characters exceeds `count.max`, no clipping when not configured
 }
 

@@ -9,14 +9,14 @@ pnpm i @cn-ui/core
 
 ```js
 // entry
-import '@cn-ui/core/dist/cn-uno.css' // if you don't use UnoCSS
+import "@cn-ui/core/dist/cn-uno.css"; // if you don't use UnoCSS
 ```
 
 ```tsx
-import { Button } from '@cn-ui/core'
+import { Button } from "@cn-ui/core";
 export const MyComponent = () => {
-    return <Button></Button>
-}
+    return <Button></Button>;
+};
 ```
 
 ## SSR Support

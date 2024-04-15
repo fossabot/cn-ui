@@ -1,9 +1,9 @@
 .cn-date-panel {
-    [aria-disabled='true'] button {
+    [aria-disabled="true"] button {
         @apply text-design-disabled;
     }
 
-    [aria-selected='true'] button {
+    [aria-selected="true"] button {
         @apply bg-primary-50 text-design-text rounded-none;
     }
 

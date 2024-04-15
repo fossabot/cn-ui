@@ -100,7 +100,10 @@ export const DatePicker = OriginComponent<DatePickerProps, HTMLDivElement, Date[
                 </Match>
                 <Match when={props.mode === "range"}>
                     <RangeInput
-                        inputProps={{ id: props.id, ...extendsBaseFormItemProp(props) }}
+                        inputProps={{
+                            id: props.id,
+                            ...extendsBaseFormItemProp(props),
+                        }}
                         v-model={stringDate}
                         onClear={() => {
                             DatePickerExpose()?.clearValue();

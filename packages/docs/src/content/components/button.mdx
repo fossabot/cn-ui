@@ -1,21 +1,21 @@
 ---
-title: 'Button 按钮'
-description: '按钮 是承接用户触达行为的代码触发单位'
-pubDate: '2024/3/28'
-compName: 'Button'
-image: 'buttonHero'
-sourceLink: '/packages/core/src/button'
+title: "Button 按钮"
+description: "按钮 是承接用户触达行为的代码触发单位"
+pubDate: "2024/3/28"
+compName: "Button"
+image: "buttonHero"
+sourceLink: "/packages/core/src/button"
 ---
 
-import { Button } from '@cn-ui/core/dist/docgen.mjs'
-import { APIOfComponent } from '../../components/APIOfComponent'
-import Demo from '../../components/components/Demo.astro'
+import { Button } from "@cn-ui/core/dist/docgen.mjs";
+import { APIOfComponent } from "../../components/APIOfComponent";
+import Demo from "../../components/components/Demo.astro";
 
 ## 设计理念
 
 ## 代码演示
 
-import * as ButtonExample from '../../example/ButtonExample'
+import * as ButtonExample from "../../example/ButtonExample";
 
 ### 普通模式
 
@@ -41,7 +41,7 @@ import * as ButtonExample from '../../example/ButtonExample'
 
 危险模式常常伴随低模态弹窗，危险的颜色配合二次确认，可以很好的保留一体化应用的感觉，用于替换高模态弹窗带来的隔阂感。
 
-import * as ButtonDangerExample from '../../example/ButtonDangerExample'
+import * as ButtonDangerExample from "../../example/ButtonDangerExample";
 
 <Demo module={ButtonDangerExample}>
     <ButtonDangerExample.default client:load />

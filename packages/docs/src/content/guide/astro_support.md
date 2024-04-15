@@ -1,8 +1,8 @@
 ---
-title: 'Astro 适配'
-description: 'Lorem ipsum dolor sit amet'
-pubDate: '2024/3/28'
-heroImage: '/blog-placeholder-3.jpg'
+title: "Astro 适配"
+description: "Lorem ipsum dolor sit amet"
+pubDate: "2024/3/28"
+heroImage: "/blog-placeholder-3.jpg"
 ---
 
 # Astro 适配
@@ -44,14 +44,14 @@ export default defineConfig({
 ## 添加基础的 CSS 文件
 
 ```js
-import '@cn-ui/core/dist/cn-uno.css'
+import "@cn-ui/core/dist/cn-uno.css";
 ```
 
 ## 快乐地使用组件！
 
 ```tsx
-import { Button } from '@cn-ui/core'
+import { Button } from "@cn-ui/core";
 export const MyComponent = () => {
-    return <Button></Button>
-}
+    return <Button></Button>;
+};
 ```

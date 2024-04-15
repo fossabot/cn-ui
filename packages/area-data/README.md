@@ -6,7 +6,7 @@
 | Gzipped | 28.2 KiB  | 20.69 KiB        |
 
 ```js
-import compressedData from '@cn-ui/area-data/dist/area.json'
-import { decompress } from '@cn-ui/area-data'
-const originData = decompress(compressedData.county_list)
+import compressedData from "@cn-ui/area-data/dist/area.json";
+import { decompress } from "@cn-ui/area-data";
+const originData = decompress(compressedData.county_list);
 ```

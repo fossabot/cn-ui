@@ -89,11 +89,7 @@ export const InputNumber = OriginComponent<InputNumberProps, HTMLDivElement, num
         </NumberInput.Root>
     );
 });
-function Controls(props: {
-    disabled?: boolean;
-    mode: "add" | "minus";
-    children: JSXElement;
-}) {
+function Controls(props: { disabled?: boolean; mode: "add" | "minus"; children: JSXElement }) {
     const ctx = useNumberInputContext();
     return (
         <Icon

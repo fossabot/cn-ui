@@ -122,12 +122,14 @@ export const Heti = () => {
                 使用方法
             </h2>
             <p>
-                项目地址：<a href="https://github.com/sivan/heti">https://github.com/sivan/heti</a>
+                项目地址：
+                <a href="https://github.com/sivan/heti">https://github.com/sivan/heti</a>
                 ，使用方法如下：
             </p>
             <ol>
                 <li>
-                    在页面的<code>&lt;/head&gt;</code>标签前中引入<code>heti.css</code>样式文件：
+                    在页面的<code>&lt;/head&gt;</code>标签前中引入<code>heti.css</code>
+                    样式文件：
                     <pre>
                         <code>
                             &lt;link rel=&quot;stylesheet&quot;
@@ -148,7 +150,8 @@ export const Heti = () => {
                 </li>
             </ol>
             <small>
-                注：赫蹏是正文区域的样式增强，不是<i>normalize.css</i>或<i>CSS Reset</i>的替代。因此
+                注：赫蹏是正文区域的样式增强，不是<i>normalize.css</i>或<i>CSS Reset</i>
+                的替代。因此
                 <b>不建议</b>将它作用在根标签（如<code>&lt;body&gt;</code>或
                 <code>&lt;div class=&quot;container&quot;&gt;</code>）上。
             </small>
@@ -160,7 +163,8 @@ export const Heti = () => {
                 </a>
             </h2>
             <p>
-                本页面<em>全页</em>应用了赫蹏样式，所见即所得。下面是内置的多种排版效果演示。
+                本页面<em>全页</em>
+                应用了赫蹏样式，所见即所得。下面是内置的多种排版效果演示。
             </p>
 
             <h3 id="example-ancient">
@@ -186,7 +190,8 @@ export const Heti = () => {
                         <h1 class="text-center">出师表</h1>
                         <p class="text-center">
                             <small>
-                                作者：<abbr title="字孔明">諸葛亮</abbr>（181年～234年10月8日）
+                                作者：<abbr title="字孔明">諸葛亮</abbr>
+                                （181年～234年10月8日）
                             </small>
                         </p>
                         <p>
@@ -228,7 +233,8 @@ export const Heti = () => {
                 <summary>如何使用？</summary>
                 <ul>
                     <li>
-                        诗词：为容器元素<code>&lt;div class=&quot;heti&quot;&gt;</code>添加名为
+                        诗词：为容器元素<code>&lt;div class=&quot;heti&quot;&gt;</code>
+                        添加名为
                         <code>heti--poetry</code>的class实现诗词版式：
                         <pre>
                             <code>
@@ -272,8 +278,10 @@ export const Heti = () => {
                         </pre>
                     </li>
                     <li>
-                        搭配使用标点悬挂<code>&lt;span class=&quot;heti-hang&quot;&gt;</code>
-                        、元信息<code>&lt;span class=&quot;heti-meta heti-small&quot;&gt;</code>
+                        搭配使用标点悬挂
+                        <code>&lt;span class=&quot;heti-hang&quot;&gt;</code>
+                        、元信息
+                        <code>&lt;span class=&quot;heti-meta heti-small&quot;&gt;</code>
                         来丰富展示效果。
                     </li>
                 </ul>
@@ -343,7 +351,8 @@ export const Heti = () => {
                         <h2 class="text-center">庖丁解牛</h2>
                         <p class="text-center">
                             <small>
-                                作者：<abbr title="庄子">庄周</abbr>（公元前369～公元前286年）
+                                作者：<abbr title="庄子">庄周</abbr>
+                                （公元前369～公元前286年）
                             </small>
                         </p>
                         <p>
@@ -431,7 +440,8 @@ export const Heti = () => {
                                     <rp>)</rp>
                                 </ruby>
                             </u>
-                            ，<u title="依">因</u>其<u title="指牛体本来的结构">固然</u>，技经肯
+                            ，<u title="依">因</u>其<u title="指牛体本来的结构">固然</u>
+                            ，技经肯
                             <ruby>
                                 <rb>綮</rb>
                                 <rp>(</rp>
@@ -549,7 +559,8 @@ export const Heti = () => {
                         <section class="write-vertical-right tracking-[0.125em]">
                             <h1>出師表</h1>
                             <p class="text-sm">
-                                作者：<abbr title="字孔明">諸葛亮</abbr>（181年－234年10月8日）
+                                作者：<abbr title="字孔明">諸葛亮</abbr>
+                                （181年－234年10月8日）
                             </p>
                             <p>
                                 先帝創業未半，而中道崩殂；今天下三分，益州疲弊，此誠危急存亡之秋也﹗然侍衞之臣，不懈於內；忠志之士，忘身於外者，蓋追先帝之殊遇，欲報之於陛下也。
@@ -704,7 +715,8 @@ export const Heti = () => {
                                 <td>
                                     <section>
                                         <p>
-                                            他说：<q>我买几个橘子去。你就在此地，不要走动。</q>
+                                            他说：
+                                            <q>我买几个橘子去。你就在此地，不要走动。</q>
                                         </p>
                                     </section>
                                 </td>
@@ -874,8 +886,9 @@ export const Heti = () => {
                                     </code>
                                 </td>
                                 <td>
-                                    此时来自<u title="位于山东省聊城市阳谷县城东">景阳冈</u>的
-                                    <u>武松</u>大喝一声：<q>纳命来！</q>
+                                    此时来自
+                                    <u title="位于山东省聊城市阳谷县城东">景阳冈</u>的<u>武松</u>
+                                    大喝一声：<q>纳命来！</q>
                                 </td>
                             </tr>
                             <tr>
@@ -1029,8 +1042,10 @@ export const Heti = () => {
                             >
                                 古代称用以书写的小幅绢帛。后亦以借指纸<mark>。《</mark>
                                 汉书·外戚传下·孝成赵皇后<mark>》：「</mark>武（籍武
-                                ）发篋中，有裹药二枚，赫蹏书。」<u>颜师古</u>注：「<u>邓展</u>
-                                曰：『赫音兄弟鬩墙之鬩。』<u>应劭</u>曰：『赫蹏，薄小纸也。』」
+                                ）发篋中，有裹药二枚，赫蹏书。」<u>颜师古</u>注：「
+                                <u>邓展</u>
+                                曰：『赫音兄弟鬩墙之鬩。』<u>应劭</u>
+                                曰：『赫蹏，薄小纸也。』」
                                 <u>宋</u>
                                 <u>赵彦卫</u>
                                 《云麓漫钞》卷七：「《赵后传》所谓『赫蹏』者，注云『薄小纸』，然其寔亦縑帛。」
@@ -1043,8 +1058,10 @@ export const Heti = () => {
                             <blockquote style="margin-inline-start: 0; margin-inline-end: 0">
                                 古代称用以书写的小幅绢帛。后亦以借指纸<mark>。《</mark>
                                 汉书·外戚传下·孝成赵皇后<mark>》：「</mark>武（籍武
-                                ）发篋中，有裹药二枚，赫蹏书。」<u>颜师古</u>注：「<u>邓展</u>
-                                曰：『赫音兄弟鬩墙之鬩。』<u>应劭</u>曰：『赫蹏，薄小纸也。』」
+                                ）发篋中，有裹药二枚，赫蹏书。」<u>颜师古</u>注：「
+                                <u>邓展</u>
+                                曰：『赫音兄弟鬩墙之鬩。』<u>应劭</u>
+                                曰：『赫蹏，薄小纸也。』」
                                 <u>宋</u>
                                 <u>赵彦卫</u>
                                 《云麓漫钞》卷七：「《赵后传》所谓『赫蹏』者，注云『薄小纸』，然其寔亦縑帛。」

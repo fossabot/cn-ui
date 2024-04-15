@@ -8,7 +8,7 @@
 }
 
 .cn-switch .slider::after {
-    content: '';
+    content: "";
     display: inline-block;
     width: var(--toggle-diameter);
     height: var(--toggle-diameter);
@@ -17,23 +17,29 @@
     position: absolute;
     top: var(--button-toggle-offset);
     transform: translateX(var(--button-toggle-offset));
-    box-shadow: var(--toggle-shadow-offset) 0 calc(var(--toggle-shadow-offset) * 4) rgba(0, 0, 0, 0.1);
+    box-shadow: var(--toggle-shadow-offset) 0 calc(var(--toggle-shadow-offset) * 4)
+        rgba(0, 0, 0, 0.1);
     transition: 0.3s all ease-in-out;
 }
 
-.cn-switch input[type='checkbox']:checked + .slider::after {
-    transform: translateX(calc(var(--button-width) - var(--toggle-diameter) - var(--button-toggle-offset)));
-    box-shadow: calc(var(--toggle-shadow-offset) * -1) 0 calc(var(--toggle-shadow-offset) * 4) rgba(0, 0, 0, 0.1);
+.cn-switch input[type="checkbox"]:checked + .slider::after {
+    transform: translateX(
+        calc(var(--button-width) - var(--toggle-diameter) - var(--button-toggle-offset))
+    );
+    box-shadow: calc(var(--toggle-shadow-offset) * -1) 0 calc(var(--toggle-shadow-offset) * 4)
+        rgba(0, 0, 0, 0.1);
 }
 
-.cn-switch input[type='checkbox'] {
+.cn-switch input[type="checkbox"] {
     display: none;
 }
 
-.cn-switch input[type='checkbox']:active + .slider::after {
+.cn-switch input[type="checkbox"]:active + .slider::after {
     width: var(--toggle-wider);
 }
 
-.cn-switch input[type='checkbox']:checked:active + .slider::after {
-    transform: translateX(calc(var(--button-width) - var(--toggle-wider) - var(--button-toggle-offset)));
+.cn-switch input[type="checkbox"]:checked:active + .slider::after {
+    transform: translateX(
+        calc(var(--button-width) - var(--toggle-wider) - var(--button-toggle-offset))
+    );
 }

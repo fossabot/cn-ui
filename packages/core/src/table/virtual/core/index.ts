@@ -903,7 +903,11 @@ function calculateRange({
     measurements,
     outerSize,
     scrollOffset,
-}: { measurements: VirtualItem[]; outerSize: number; scrollOffset: number }) {
+}: {
+    measurements: VirtualItem[];
+    outerSize: number;
+    scrollOffset: number;
+}) {
     const count = measurements.length - 1;
     const getOffset = (index: number) => measurements[index]!.start;
 

@@ -70,8 +70,8 @@
         "yorkie": "^2.0.0"
     },
     "lint-staged": {
-        "*.{ts,tsx,js,jsx}": "biome check --diagnostic-level=error  ",
-        "*.{json,css,md,mdx}": "prettier --ignore-unknown "
+        "*.{ts,tsx,js,jsx,json}": "biome check --diagnostic-level=error  ",
+        "*.{css,md,mdx}": "prettier --ignore-unknown "
     },
     "gitHooks": {
         "pre-commit": "lint-staged"

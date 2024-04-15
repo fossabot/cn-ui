@@ -1,8 +1,8 @@
 ---
-title: '组件文档编写指南'
-description: 'Lorem ipsum dolor sit amet'
-pubDate: '2024/3/28'
-heroImage: '/blog-placeholder-3.jpg'
+title: "组件文档编写指南"
+description: "Lorem ipsum dolor sit amet"
+pubDate: "2024/3/28"
+heroImage: "/blog-placeholder-3.jpg"
 ---
 
 # 如何编写一份组件文档

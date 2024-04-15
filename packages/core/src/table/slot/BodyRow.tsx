@@ -72,7 +72,10 @@ export function BodyRow<T, _D>(props: {
                                     absolute={props.absolute}
                                     cell={cell()}
                                     item={
-                                        { index: index(), start: cell().column.getStart() } as any
+                                        {
+                                            index: index(),
+                                            start: cell().column.getStart(),
+                                        } as any
                                     }
                                 />
                             </Show>
@@ -124,7 +127,10 @@ export function BodyRow<T, _D>(props: {
                                     absolute={props.absolute}
                                     cell={cell()}
                                     item={
-                                        { index: index(), start: cell().column.getStart() } as any
+                                        {
+                                            index: index(),
+                                            start: cell().column.getStart(),
+                                        } as any
                                     }
                                 />
                             </Show>

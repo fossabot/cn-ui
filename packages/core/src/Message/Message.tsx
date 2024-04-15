@@ -27,10 +27,7 @@ export class MessageControl {
             return arr.filter((i) => i.id !== id);
         });
     }
-    private render(props: {
-        store: MessageInfo[];
-        setStore: SetStoreFunction<MessageInfo[]>;
-    }) {
+    private render(props: { store: MessageInfo[]; setStore: SetStoreFunction<MessageInfo[]> }) {
         const show = atom(true);
         return (
             <Modal v-model={show} each={props.store} by={(i) => i.id!} position="top">
