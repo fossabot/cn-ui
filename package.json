@@ -4,7 +4,10 @@
     "version": "0.0.1",
     "type": "module",
     "main": "./dist/index.js",
-    "files": ["dist", "src"],
+    "files": [
+        "dist",
+        "src"
+    ],
     "scripts": {
         "storybook": "storybook dev -p 6006",
         "type-check": "tsc -p tsconfig.node.json",
@@ -47,6 +50,7 @@
         "hast-util-to-jsx-runtime": "^2.3.0",
         "jsdom": "^22.1.0",
         "lint-staged": "^15.2.2",
+        "lodash-es": "^4.17.21",
         "mockjs-ts": "^2.3.0",
         "release-it": "^17.1.1",
         "rollup-plugin-bundle-stats": "^4.12.1",

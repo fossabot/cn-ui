@@ -17,7 +17,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
     name: "日历面板",
     render() {
-        const date = atom([dayjs()]);
+        const date = atom([dayjs('2024-04-15')]);
         return (
             <Flex gap="20px">
                 <Calendar v-model={date} />
@@ -31,7 +31,7 @@ export const Primary: Story = {
 export const Second: Story = {
     name: "月份面板",
     render() {
-        const date = atom([dayjs()]);
+        const date = atom([dayjs('2024-04-15')]);
         return (
             <Flex gap="20px">
                 <Calendar v-model={date} type="month" />
@@ -45,7 +45,7 @@ export const Second: Story = {
 export const Year: Story = {
     name: "年份面板",
     render() {
-        const date = atom([dayjs()]);
+        const date = atom([dayjs('2024-04-15')]);
         return (
             <Flex gap="20px">
                 <Calendar v-model={date} type="year" />

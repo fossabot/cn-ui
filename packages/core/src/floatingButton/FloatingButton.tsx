@@ -6,7 +6,7 @@ import {
     createCtx,
     ensureFunctionResult,
 } from "@cn-ui/reactive";
-import { AiOutlineClose, AiOutlinePlus } from "solid-icons/ai";
+import { AiOutlinePlus } from "solid-icons/ai";
 import { For, Show } from "solid-js";
 import { Button, type ButtonProps } from "../button";
 import { Icon } from "../icon/Icon";
