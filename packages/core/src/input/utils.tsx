@@ -16,7 +16,11 @@ export const PasswordControl: Component<InputExpose> = (expose) => {
     );
     return (
         <Icon
+            aria-label="更改密码显隐"
+            clickable
+            aria-disabled={expose.disabled()}
             onclick={() => {
+                if (expose.disabled()) return;
                 expose.inputType((i) => {
                     return i === "password" ? "text" : "password";
                 });
@@ -33,6 +37,8 @@ export const ClearControl: Component<{
 }> = (expose) => {
     return (
         <Icon
+            clickable
+            aria-label="清空按钮"
             class="cn-clear-btn opacity-0 transition cursor-pointer"
             onclick={() => {
                 expose.model?.("");

@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
 
 import { type SelectOptionsType, atom, computed, genArray, resource } from "@cn-ui/reactive";
+import { within } from "@storybook/test";
 import Mock from "mockjs-ts";
 import { JSONViewer } from "../dataViewer";
 import { Select } from "./index";
-import { within } from "@storybook/test";
 const meta = {
     title: "Controls/Select 选择器",
     component: Select,
@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
     name: "Select 单选框",
     render() {
-        const selected = atom([])
+        const selected = atom([]);
         return (
             <div class="flex gap-4">
                 <Select

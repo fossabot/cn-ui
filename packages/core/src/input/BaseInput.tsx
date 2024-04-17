@@ -29,15 +29,36 @@ export interface InputExpose {
     isHovering: Accessor<boolean>;
     model: Atom<string>;
     focus: (opts: FocusOptions) => void;
+    disabled: Accessor<boolean>;
 }
 
 export interface BaseInputProps extends Omit<CountProps, "model">, BaseFormItemType {
-    id?: string; // The ID for input
-    prefixIcon?: JSXElement | ((expose: InputExpose) => JSXElement); // The prefix icon for the Input
-    suffixIcon?: JSXElement | ((expose: InputExpose) => JSXElement); // The suffix icon for the Input
-    rounded?: boolean; // Whether to round the corners of the input box
-    type?: "text" | "textarea" | "password" | string; // The type of input, see: MDN (use Input.TextArea instead of type="textarea")
+    /**
+     * input 的 id，而不是外层的
+     * @tested
+     */
+    id?: string;
+    /**
+     * 前置图标
+     * @tested
+     */
+    prefixIcon?: JSXElement | ((expose: InputExpose) => JSXElement);
+    /**
+     * 后置图标
+     * @tested
+     */
+    suffixIcon?: JSXElement | ((expose: InputExpose) => JSXElement);
+    rounded?: boolean;
+    /**
+     * input type 属性
+     * @tested
+     */
+    type?: "text" | "textarea" | "password" | string;
     expose?: (expose: InputExpose) => void;
+    /**
+     * textarea 自动高度
+     * @tested
+     */
     autoSize?: boolean;
     resize?: boolean;
     wrapperRef?: (el: HTMLSpanElement) => void;
@@ -62,6 +83,7 @@ export const BaseInput = OriginComponent<BaseInputProps, HTMLInputElement, strin
             triggerFocus(inputEl()!, opts);
         },
         isHovering,
+        disabled: () => !!props.disabled,
     };
     onMount(() => {
         props.expose?.(expose);
@@ -88,7 +110,6 @@ export const BaseInput = OriginComponent<BaseInputProps, HTMLInputElement, strin
     const isTextarea = createMemo(() => props.type === "textarea");
     return (
         <span
-            role="button"
             ref={(el) => {
                 inputWrapper(el);
                 return props.wrapperRef?.(el);
@@ -102,7 +123,7 @@ export const BaseInput = OriginComponent<BaseInputProps, HTMLInputElement, strin
                 props.error && "border-red-300",
                 !props.disabled && !props.error && "border-design-border hover:border-blue-400",
             )}
-            data-replicated-value={isTextarea() && props.autoSize && props.model()}
+            data-replicated-value={isTextarea() && props.autoSize ? props.model() : undefined}
             style={props.style()}
         >
             {Prefix()}

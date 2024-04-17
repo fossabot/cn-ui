@@ -79,6 +79,7 @@ export const SelectPanel = OriginComponent<
                         return (
                             <div
                                 role="option"
+                                aria-selected={selectSystem.isSelected(item)}
                                 class={createClass(item)}
                                 onClick={() => {
                                     triggerSelect(item);
