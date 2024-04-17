@@ -205,9 +205,9 @@ export const Second: Story = {
         const date = atom([dayjs("2024-04-15")]);
         return (
             <Flex gap="20px">
-                <Calendar v-model={date} type="month" />
-                <Calendar v-model={date} type="month" mode="multiple" />
-                <Calendar v-model={date} type="month" mode="range" />
+                <Calendar v-model={date} view="month" />
+                <Calendar v-model={date} view="month" mode="multiple" />
+                <Calendar v-model={date} view="month" mode="range" />
             </Flex>
         );
     },
@@ -219,9 +219,9 @@ export const Year: Story = {
         const date = atom([dayjs("2024-04-15")]);
         return (
             <Flex gap="20px">
-                <Calendar v-model={date} type="year" />
-                <Calendar v-model={date} type="year" mode="multiple" />
-                <Calendar v-model={date} type="year" mode="range" />
+                <Calendar v-model={date} view="year" />
+                <Calendar v-model={date} view="year" mode="multiple" />
+                <Calendar v-model={date} view="year" mode="range" />
             </Flex>
         );
     },

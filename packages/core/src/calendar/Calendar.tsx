@@ -22,13 +22,21 @@ export interface CalendarProps extends DateCalendarConfig {
         date: Dayjs;
         model: Atom<Dayjs[]>;
     }>;
+    /**
+     * 日历选择模式
+     * @tested
+     */
     mode?: "single" | "multiple" | "range";
-    type?: "year" | "month" | "day";
+    /**
+     * 日历视图
+     * @tested
+     */
+    view?: "year" | "month" | "day";
 }
 
 export const CalenderCtx = createCtx<
     {
-        calendarShowingType: Atom<NonNullable<CalendarProps["type"]>>;
+        calendarShowingType: Atom<NonNullable<CalendarProps["view"]>>;
     } & ReturnType<typeof useCalendarSelect> &
         ReturnType<typeof useDateCalendar>
 >();
@@ -36,7 +44,7 @@ export const CalenderCtx = createCtx<
 export const Calendar = OriginComponent<CalendarProps, HTMLTableElement, Dayjs[]>((props) => {
     const selected = props.model;
     /** 目标选择的时候使用的 */
-    const calendarType = createMemo(() => props.type ?? "day");
+    const calendarType = createMemo(() => props.view ?? "day");
     /** 展示的时候使用 */
     const calendarShowingType = computed(() => untrack(calendarType) ?? "day");
     const select = useCalendarSelect(selected, {
