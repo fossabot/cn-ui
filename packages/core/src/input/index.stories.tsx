@@ -30,10 +30,21 @@ export const Primary: Story = {
                         </Icon>
                     }
                 />
+                <Button onclick={()=>{data('123232')}}>Reset</Button>
             </div>
         );
     },
-    args: {},
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+        await step("检查初始状态", () => {
+            /** 数据回显完成 */
+            canvas.queryAllByRole('button').forEach(i=>{
+                expect(i).toHaveDisplayValue('123232')
+            })
+            expect
+
+        });
+    },
 };
 export const Password: Story = {
     name: "Password 密码",
@@ -51,6 +62,7 @@ export const Password: Story = {
 import { runes } from "runes2";
 import { Button } from "../button";
 import { ClearControl, PasswordControl } from "./utils";
+import { expect, within } from "@storybook/test";
 
 /** 右侧计数 */
 export const Count: Story = {

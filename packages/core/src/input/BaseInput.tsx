@@ -88,10 +88,12 @@ export const BaseInput = OriginComponent<BaseInputProps, HTMLInputElement, strin
     const isTextarea = createMemo(() => props.type === "textarea");
     return (
         <span
+            role="button"
             ref={(el) => {
                 inputWrapper(el);
                 return props.wrapperRef?.(el);
             }}
+            aria-disabled={props.disabled}
             class={props.class(
                 "cn-base-input transition inline-flex border  py-1 px-3 text-sm",
                 isTextarea() && props.autoSize && "cn-textarea-auto-size",

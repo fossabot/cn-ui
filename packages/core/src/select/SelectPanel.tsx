@@ -51,6 +51,7 @@ export const SelectPanel = OriginComponent<
     const VoidSlot = () => <div class="text-center text-gray-600">无数据</div>;
     return (
         <div
+            role="listbox"
             class={props.class("max-h-32 w-full ", isVirtual() ? "h-32" : "overflow-y-auto")}
             style={props.style()}
             {...extendsEvent(props)}
@@ -77,6 +78,7 @@ export const SelectPanel = OriginComponent<
                     {(item) => {
                         return (
                             <div
+                                role="option"
                                 class={createClass(item)}
                                 onClick={() => {
                                     triggerSelect(item);

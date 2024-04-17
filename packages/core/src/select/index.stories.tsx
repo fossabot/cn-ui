@@ -4,6 +4,7 @@ import { type SelectOptionsType, atom, computed, genArray, resource } from "@cn-
 import Mock from "mockjs-ts";
 import { JSONViewer } from "../dataViewer";
 import { Select } from "./index";
+import { within } from "@storybook/test";
 const meta = {
     title: "Controls/Select 选择器",
     component: Select,
@@ -17,9 +18,12 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
     name: "Select 单选框",
     render() {
+        const selected = atom([])
         return (
             <div class="flex gap-4">
                 <Select
+                    v-model={selected}
+                    aria-label="selected"
                     filterable
                     options={[
                         {
@@ -37,6 +41,8 @@ export const Primary: Story = {
                     ]}
                 />
                 <Select
+                    v-model={selected}
+                    aria-label="selected"
                     options={[
                         {
                             value: "jack",
@@ -55,7 +61,10 @@ export const Primary: Story = {
             </div>
         );
     },
-    args: {},
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+        await step("检查点击弹出", () => {});
+    },
 };
 
 export const Multi: Story = {
