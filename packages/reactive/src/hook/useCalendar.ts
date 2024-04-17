@@ -35,14 +35,14 @@ export const useCalendarSelect = (
         if (["single", "multiple"].includes(mode())) {
             return selectedDate().some((i) => d.isSame(i, u ?? unit()));
         } else if (isSelectingEnd()) {
-            return isBetweenRange(d);
+            return isBetweenRange(d, u);
         } else {
-            return d.isBetween(selectedDate()[0], selectedDate()[1], null, "[]");
+            return d.isBetween(selectedDate()[0], selectedDate()[1], u ?? unit(), "[]");
         }
     };
-    const isBetweenRange = (d: Dayjs) => {
+    const isBetweenRange = (d: Dayjs, u?: "day" | "month" | "year") => {
         const minmax = [selectedDate()[0], virtualEndTime()];
-        return d.isBetween(dayjs.min(minmax), dayjs.max(minmax));
+        return d.isBetween(dayjs.min(minmax), dayjs.max(minmax), u ?? unit());
     };
     return {
         selectedDate,
