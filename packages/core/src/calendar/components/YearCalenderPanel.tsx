@@ -32,8 +32,8 @@ export const YearCalenderPanel = () => {
                                         );
                                     calendarSystem.toggleSelect(date);
                                 } else {
-                                    calendarSystem.calendarShowingType("month");
                                     calendarSystem.targetDate((i) => i.set("year", date.year()));
+                                    calendarSystem.calendarShowingType("month");
                                 }
                             }}
                         >

@@ -41,7 +41,7 @@ export const CalendarMonthCell = (props: { date: Dayjs }) => {
             role="button"
             aria-selected={calendarSystem.isSelected(props.date, "month")}
             class={firstClass.base(
-                "transition-colors cursor-pointer m-2 h-6 flex justify-center items-center w-full rounded-md",
+                "transition-colors cursor-pointer p-2 h-6 flex justify-center items-center w-full rounded-md",
             )(
                 (calendarSystem.isStartDate(props.date, "month") ||
                     calendarSystem.isEndDate(props.date, "month")) &&
@@ -63,7 +63,7 @@ export const CalendarYearCell = (props: { date: Dayjs; year: number }) => {
             role="button"
             aria-selected={calendarSystem.isSelected(props.date, "year")}
             class={firstClass.base(
-                "transition-colors cursor-pointer m-2 h-6 flex justify-center items-center w-full rounded-md",
+                "transition-colors cursor-pointer p-2 h-6 flex justify-center items-center w-full rounded-md",
             )(
                 (calendarSystem.isStartDate(props.date, "year") ||
                     calendarSystem.isEndDate(props.date, "year")) &&
