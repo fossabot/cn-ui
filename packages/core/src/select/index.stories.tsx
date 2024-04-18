@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
 
-import { type SelectOptionsType, atom, computed, genArray, resource } from "@cn-ui/reactive";
-import { within } from "@storybook/test";
+import { type SelectOptionsType, atom, computed, genArray, resource, sleep } from "@cn-ui/reactive";
+import { expect, userEvent, within } from "@storybook/test";
 import Mock from "mockjs-ts";
 import { JSONViewer } from "../dataViewer";
 import { Select } from "./index";
@@ -23,7 +23,7 @@ export const Primary: Story = {
             <div class="flex gap-4">
                 <Select
                     v-model={selected}
-                    aria-label="selected"
+                    aria-label="selected-filterable"
                     filterable
                     options={[
                         {
@@ -63,7 +63,50 @@ export const Primary: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
-        await step("检查点击弹出", () => {});
+        await step("检查点击弹出", async () => {
+            await userEvent.click(canvas.getByLabelText("selected-filterable"));
+            expect(canvas.getByRole("tooltip")).toBeInTheDocument();
+            expect(canvas.getByRole("listbox")).toBeInTheDocument();
+            expect(canvas.getByText("Jack")).toBeInTheDocument();
+            expect(canvas.getByText("Lucy")).toBeInTheDocument();
+            expect(canvas.getByText("Tom")).toBeInTheDocument();
+
+            // 点击别的地方隐藏
+            await userEvent.click(canvasElement);
+            expect(canvas.getByText("Jack")).not.toBeVisible();
+            expect(canvas.getByText("Lucy")).not.toBeVisible();
+            expect(canvas.getByText("Tom")).not.toBeVisible();
+        });
+        await step("检查选中切换", async () => {
+            const filterable = canvas.getByLabelText("selected-filterable");
+            const another = canvas.getByLabelText("selected");
+
+            await userEvent.click(canvas.getByText("Jack"));
+            filterable.focus();
+            await sleep(100);
+            expect(filterable).toHaveAttribute("placeholder", "Jack");
+
+            filterable.blur();
+            await sleep(100);
+
+            expect(filterable).toHaveDisplayValue("Jack");
+            expect(another).toHaveDisplayValue("Jack");
+        });
+        await step("filterable 测试", async () => {
+            const filterable = canvas.getByLabelText("selected-filterable");
+
+            filterable.focus();
+            await sleep(100);
+            canvas.getAllByRole("option").forEach((i)=>{
+
+                expect(i).toBeVisible();
+            })
+            expect(canvas.getAllByRole("option").length).toBe(3);
+
+            await userEvent.type(filterable, "Luc");
+            await userEvent.click(canvas.getByText("Lucy"));
+            expect(filterable).toHaveDisplayValue("Lucy");
+        });
     },
 };
 
