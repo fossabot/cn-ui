@@ -7,6 +7,7 @@ import {
     computed,
     ensureFunctionResult,
     splitOneChild,
+    extendsEvent,
 } from "@cn-ui/reactive";
 import { PortalEasy } from "@cn-ui/reactive";
 import type { Placement } from "@popperjs/core";
@@ -147,6 +148,7 @@ export const Popover = OriginComponent<PopoverProps, HTMLElement, boolean>(
                             )}
                             style={{ ...props.style(), "z-index": zIndex() }}
                             role="tooltip"
+                            {...extendsEvent(props)}
                         >
                             <div class="popover__arrow" ref={arrow} />
                             {ensureFunctionResult(props.content, [{ model: props.model }])}

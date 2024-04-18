@@ -54,6 +54,7 @@ export const SelectPanel = OriginComponent<
             role="listbox"
             class={props.class("max-h-32 w-full ", isVirtual() ? "h-32" : "overflow-y-auto")}
             style={props.style()}
+            tabIndex="0"
             {...extendsEvent(props)}
         >
             {isVirtual() ? (
@@ -80,6 +81,7 @@ export const SelectPanel = OriginComponent<
                             <div
                                 role="option"
                                 aria-selected={selectSystem.isSelected(item)}
+                                aria-disabled={selectSystem.isDisabled(item)}
                                 class={createClass(item)}
                                 onClick={() => {
                                     triggerSelect(item);

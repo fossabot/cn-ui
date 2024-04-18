@@ -32,7 +32,6 @@ import "./index.css";
 export const SelectCtx =
     /* @__PURE__ */ createCtx<ReturnType<typeof useSelect<SelectOptionsType>>>();
 
-    
 export interface SelectProps extends BaseFormItemType {
     /** TODO 异步态监控 */
     options: SelectOptionsType[];
@@ -173,6 +172,7 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                     }}
                 />
                 <Popover
+                    aria-label={props["aria-label"] ? `${props["aria-label"]} tooltip` : undefined}
                     popoverTarget={wrapper()!}
                     disabled={props.disabled}
                     v-model={PopoverOpen}
@@ -180,6 +180,9 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                     trigger="focus"
                     content={() => (
                         <SelectPanel
+                            aria-label={
+                                props["aria-label"] ? `${props["aria-label"]} panel` : undefined
+                            }
                             onSelected={(item, state) => {
                                 // 单选模式下，清空
                                 !props.multiple &&

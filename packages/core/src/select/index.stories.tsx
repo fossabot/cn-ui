@@ -97,10 +97,9 @@ export const Primary: Story = {
 
             filterable.focus();
             await sleep(100);
-            canvas.getAllByRole("option").forEach((i)=>{
-
+            canvas.getAllByRole("option").forEach((i) => {
                 expect(i).toBeVisible();
-            })
+            });
             expect(canvas.getAllByRole("option").length).toBe(3);
 
             await userEvent.type(filterable, "Luc");
@@ -129,25 +128,34 @@ export const Multi: Story = {
         const options = computed(() => [{ label: "Jack", value: "jack" }, ...res()]);
         return (
             <>
-                <JSONViewer data={selected()} />
                 <div class="flex gap-4">
                     <Select
+                        aria-label="multi-select"
                         v-model={selected}
                         disabledOptions={["jack"]}
                         multiple
                         options={options()}
                     />
                     <Select
+                        aria-label="multi-select-copy"
                         v-model={selected}
                         disabledOptions={["jack"]}
                         multiple
                         options={options()}
                     />
                 </div>
+                <JSONViewer data={selected()} />
             </>
         );
     },
-    args: {},
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+        await step("检查 disabled", async () => {
+            await userEvent.click(canvas.getByLabelText("multi-select"));
+            expect(canvas.getAllByRole("option")[0]).toHaveAttribute("aria-disabled", "true");
+            expect(canvas.getAllByRole("option")[0]).toBeInTheDocument();
+        });
+    },
 };
 
 export const Search: Story = {
