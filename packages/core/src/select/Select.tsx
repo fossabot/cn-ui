@@ -12,7 +12,7 @@ import {
 } from "@cn-ui/reactive";
 import type { SelectOptionsType } from "@cn-ui/reactive";
 import { AiOutlineCheck, AiOutlineDown, AiOutlineSearch } from "solid-icons/ai";
-import { createEffect, createMemo } from "solid-js";
+import { Accessor, createEffect, createMemo } from "solid-js";
 import { TransitionGroup } from "solid-transition-group";
 import { watch } from "solidjs-use";
 import { createSync } from "../../../reactive/src/atom/createSync";
@@ -31,28 +31,32 @@ import "./index.css";
 
 export const SelectCtx =
     /* @__PURE__ */ createCtx<ReturnType<typeof useSelect<SelectOptionsType>>>();
+
+    
 export interface SelectProps extends BaseFormItemType {
     /** TODO 异步态监控 */
     options: SelectOptionsType[];
     multiple?: boolean;
-    disabled?: boolean;
     disabledOptions?: string[];
     onInput?: (text: string) => void;
     filterable?: boolean;
 }
 
 /** 抽离的 input 的展示逻辑 */
-const useInputSearch = (inputRef: Atom<HTMLInputElement | null>) => {
-    let placeholder = "";
+const useInputSearch = (
+    inputRef: Atom<HTMLInputElement | null>,
+    inputText: Atom<string>,
+    getPlaceholder: Accessor<string>,
+    selectedLabel: Accessor<string>,
+) => {
     const [isFocusing] = useFocusIn(inputRef);
     const whenFocus = () => {
-        placeholder = inputRef()!.placeholder;
-        inputRef()!.placeholder = inputRef()!.value || placeholder;
-        inputRef()!.value = "";
+        inputRef()!.placeholder = inputText() || getPlaceholder();
+        inputText("");
     };
     const whenBlur = () => {
-        inputRef()!.value = inputRef()!.placeholder;
-        inputRef()!.placeholder = placeholder;
+        inputRef()!.placeholder = getPlaceholder();
+        inputText(() => selectedLabel());
     };
 
     watch(
@@ -85,7 +89,7 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
             });
         });
         const input = NullAtom<HTMLInputElement>(null);
-        useInputSearch(input);
+
         const selectedText = computed(() =>
             props.multiple
                 ? ""
@@ -94,20 +98,28 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                       .map((i) => i.label)
                       .join("/"),
         );
-        const inputText = atom<string>(selectedText());
-        const filteredOptions = computed(() => {
-            if (!inputText() || !props.filterable) {
-                return props.options;
-            }
+        const inputText = atom(selectedText());
+        useInputSearch(input, inputText, () => props.placeholder ?? "请选择", selectedText);
+        // fix: 当外部 model 触发时，同步 inputText
+        createEffect(() => inputText(() => selectedText()));
 
-            return props.options.filter((i) => getLabelFromOptions(i).includes(inputText()));
-        });
         const PopoverOpen = atom(false);
         const multipleTags = ThrottleAtom(
             createMemo(() => selectSystem.selected()),
             500,
         );
         const wrapper = NullAtom<HTMLSpanElement>(null);
+        const filteredOptions = computed(() => {
+            if (!PopoverOpen() || !inputText() || !props.filterable) {
+                return props.options;
+            }
+            // 单选选中状态返回所有
+            if (!selectSystem.multi() && selectSystem.selected().length) {
+                return props.options;
+            }
+
+            return props.options.filter((i) => getLabelFromOptions(i).includes(inputText()));
+        });
         return (
             <SelectCtx.Provider value={selectSystem}>
                 <BaseInput
@@ -115,7 +127,9 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                     v-model={inputText}
                     ref={input}
                     wrapperRef={wrapper}
+                    class={props.class("cn-select-input")}
                     {...extendsBaseFormItemProp(props)}
+                    readonly={!props.filterable}
                     {...extendsEvent(props)}
                     prefixIcon={() => {
                         if (!props.multiple) return;
@@ -139,14 +153,14 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                     suffixIcon={(expose) => {
                         return (
                             <>
-                                <Icon>
-                                    {!props.disabled && (
-                                        <ClearControl
-                                            {...expose}
-                                            onClear={() => selectSystem.clearAll()}
-                                        />
-                                    )}
-                                </Icon>
+                                {!props.disabled && (
+                                    <ClearControl
+                                        {...expose}
+                                        onClear={() => {
+                                            selectSystem.clearAll();
+                                        }}
+                                    />
+                                )}
                                 <Icon>
                                     {PopoverOpen() ? (
                                         <AiOutlineSearch color="#777" />

@@ -6,7 +6,7 @@ export interface BaseFormItemType {
     placeholder?: string;
     /** 禁止操作 */
     disabled?: boolean;
-    /** 只可以读取的一种状态 */
+    /** 只读状态, 保证控件不会被输入控制 */
     readonly?: boolean;
     /** 强制必填 */
     required?: boolean;

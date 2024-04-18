@@ -9,4 +9,10 @@ export default defineConfig({
     build: {
         target: "esnext",
     },
+    server: {
+        watch: {
+            usePolling: false,
+            interval: 300,
+        },
+    },
 });

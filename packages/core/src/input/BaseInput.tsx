@@ -3,9 +3,9 @@ import {
     NullAtom,
     OriginComponent,
     atomization,
-    classNames,
     computed,
     extendsEvent,
+    classHelper,
 } from "@cn-ui/reactive";
 import { ensureFunctionResult } from "@cn-ui/reactive";
 import { type Accessor, Show, createMemo, mergeProps, onMount } from "solid-js";
@@ -116,12 +116,16 @@ export const BaseInput = OriginComponent<BaseInputProps, HTMLInputElement, strin
             }}
             aria-disabled={props.disabled}
             class={props.class(
-                "cn-base-input transition inline-flex border  py-1 px-3 text-sm",
-                isTextarea() && props.autoSize && "cn-textarea-auto-size",
-                props.rounded && "rounded",
-                props.disabled && "border-design-border bg-gray-100 text-gray-400 opacity-50",
-                props.error && "border-red-300",
-                !props.disabled && !props.error && "border-design-border hover:border-blue-400",
+                classHelper.base(
+                    "cn-base-input transition inline-flex border  py-1 px-3 text-sm text-design-text",
+                    isTextarea() && props.autoSize && "cn-textarea-auto-size",
+                    props.rounded && "rounded",
+                )(
+                    props.readonly && "cursor-default",
+                    props.disabled && "border-design-border bg-gray-100 text-gray-400 opacity-50",
+                    props.error && "border-red-300",
+                    "border-design-border hover:border-blue-400",
+                ),
             )}
             data-replicated-value={isTextarea() && props.autoSize ? props.model() : undefined}
             style={props.style()}
@@ -135,11 +139,10 @@ export const BaseInput = OriginComponent<BaseInputProps, HTMLInputElement, strin
                 }}
                 id={props.id}
                 type={inputType()}
-                class={classNames(
+                class={classHelper.base(
                     "bg-transparent appearance-none outline-none w-full ",
-                    props.disabled && " cursor-not-allowed",
                     !props.resize && "resize-none",
-                )}
+                )(props.disabled && " cursor-not-allowed")}
                 {...extendsBaseFormItemProp(props)}
                 {...props.$input()}
                 {...extendsEvent(props)}
