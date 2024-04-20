@@ -108,6 +108,7 @@ export const Primary: Story = {
         await step("已有区间，点击另外节点清空区间并选中", async () => {
             for (const page of [range]) {
                 await userEvent.click(page.getByLabelText("2024 04 01"));
+                await sleep(100);
                 await expect(
                     getSelected("range").map((i) => {
                         return i.textContent;

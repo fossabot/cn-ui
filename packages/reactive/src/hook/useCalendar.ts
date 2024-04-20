@@ -1,8 +1,7 @@
 import dayjs, { type Dayjs } from "dayjs";
-import isBetween from "dayjs/esm/plugin/isBetween";
-import minMax from "dayjs/esm/plugin/minMax";
-import "dayjs/plugin/isBetween.d";
-import "dayjs/plugin/minMax.d";
+import isBetween from "dayjs/plugin/isBetween";
+import minMax from "dayjs/plugin/minMax";
+
 /** 手动初始化 dayjs */
 let init: boolean;
 export const initDayjs = () => {

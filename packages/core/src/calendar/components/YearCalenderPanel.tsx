@@ -1,5 +1,5 @@
 import { genArray } from "@cn-ui/reactive";
-import { debounce } from "lodash-es";
+import { debounce } from "radash";
 import { For, createMemo } from "solid-js";
 import { CalenderCtx } from "../Calendar";
 import { CalendarYearCell } from "./DefaultCalendarCell";
@@ -20,10 +20,15 @@ export const YearCalenderPanel = () => {
                     return (
                         <div
                             class="p-2"
-                            onmouseover={debounce(() => {
-                                if (isYearView() && calendarSystem.isSelectingEnd())
-                                    calendarSystem.virtualEndTime(date);
-                            }, 100)}
+                            onmouseover={debounce(
+                                {
+                                    delay: 100,
+                                },
+                                () => {
+                                    if (isYearView() && calendarSystem.isSelectingEnd())
+                                        calendarSystem.virtualEndTime(date);
+                                },
+                            )}
                             onclick={() => {
                                 if (isYearView()) {
                                     !calendarSystem.isInMonth(date) &&

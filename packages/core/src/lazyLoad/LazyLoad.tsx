@@ -6,7 +6,7 @@ import {
     atom,
 } from "@cn-ui/reactive";
 import { ensureFunctionResult } from "@cn-ui/reactive";
-import { debounce } from "lodash-es";
+import { debounce } from "radash";
 import {
     type Component,
     type JSXElement,
@@ -53,9 +53,12 @@ export const LazyLoad = OriginComponent(
         onMount(() => {
             if (observer) observer.disconnect();
             // 处理用户手速太快划过去的问题
-            const visibleDebounce = debounce(visible, props.debounceTime ?? 150, {
-                leading: false,
-            });
+            const visibleDebounce = debounce(
+                {
+                    delay: props.debounceTime ?? 150,
+                },
+                visible,
+            );
             observer = new IntersectionObserver(([entries]) => {
                 visibleDebounce(entries.isIntersecting);
             }, props);

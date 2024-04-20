@@ -41,7 +41,7 @@ export const createSourceCode = (imports, options) => {
     ["Select"],
     ["Splitter"],
     ["MagicTable"],
-    ["Tabs", "Tab"],
+    ["Tabs"],
     ["Tag", "TagGroup"],
     ["TOC"],
     ["Typography"],

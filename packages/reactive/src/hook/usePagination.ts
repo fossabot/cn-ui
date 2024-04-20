@@ -1,4 +1,4 @@
-import { debounce } from "lodash-es";
+import { debounce } from "radash";
 import { type Atom, type ResourceOptions, atom, resource } from "../atom/index";
 import { sleep } from "../utils";
 export type PaginationOptions<T> = ResourceOptions<T> & {
@@ -21,7 +21,7 @@ export const usePagination = <T>(
     const currentData = resource<T>(() => getData(currentIndex(), maxPage, count), init);
 
     const refetchImmediate = () => currentData.refetch();
-    const refetch = debounce(refetchImmediate, init.debounceTime!);
+    const refetch = debounce({ delay: init.debounceTime }, refetchImmediate);
     // 更新数据
     const goto = (index: number, immediate = false) => {
         if (index < 0 || index >= maxPage()) {

@@ -11,7 +11,7 @@ import {
 } from "@cn-ui/reactive";
 import { PortalEasy } from "@cn-ui/reactive";
 import type { Placement } from "@popperjs/core";
-import { pick } from "lodash-es";
+import { pick } from "radash";
 import { Show, createEffect, createMemo, mergeProps, onMount } from "solid-js";
 import { nextTick, onClickOutside, useEventListener } from "solidjs-use";
 import { useFocusIn } from "./composable/useFocusIn";
@@ -68,7 +68,7 @@ export const Popover = OriginComponent<PopoverProps, HTMLElement, boolean>(
             arrow,
             // 单独构建 atom 给配置，用于单独引用
             createMemo(() =>
-                pick(props, "placement", "disabled", "sameWidth", "lazy", "popoverTarget"),
+                pick(props, ["placement", "disabled", "sameWidth", "lazy", "popoverTarget"]),
             ),
             () => props.model(),
             {

@@ -59,6 +59,7 @@
         "dayjs": "^1.11.10",
         "esbuild": "^0.20.2",
         "lodash-es": "^4.17.21",
+        "radash": "^12.1.0",
         "solid-icons": "^1.1.0",
         "solid-js": "^1.8.16",
         "solid-transition-group": "^0.2.3",

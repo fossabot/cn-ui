@@ -1,4 +1,4 @@
-import { debounce } from "lodash-es";
+import { debounce } from "radash";
 import { For, createMemo } from "solid-js";
 import { CalenderCtx } from "../Calendar";
 import { CalendarMonthCell } from "./DefaultCalendarCell";
@@ -14,10 +14,10 @@ export const MonthCalenderPanel = () => {
                     return (
                         <div
                             class="p-2"
-                            onmouseover={debounce(() => {
+                            onmouseover={debounce({ delay: 100 }, () => {
                                 if (isMonthView() && calendarSystem.isSelectingEnd())
                                     calendarSystem.virtualEndTime(date);
-                            }, 100)}
+                            })}
                             onclick={() => {
                                 if (isMonthView()) {
                                     !calendarSystem.isInMonth(date) &&

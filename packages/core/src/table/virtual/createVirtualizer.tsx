@@ -1,6 +1,6 @@
 // from @tanstack/solid-table
 // add throttle for performance
-import { throttle } from "lodash-es";
+import { throttle } from "radash";
 import {
     type PartialKeys,
     Virtualizer,
@@ -86,9 +86,12 @@ function createVirtualizerBase<
     createComputed(() => {
         virtualizer.setOptions(
             mergeProps(resolvedOptions, options, {
-                onChange: throttle(updateView, 10, {
-                    trailing: true,
-                }),
+                onChange: throttle(
+                    {
+                        interval: 10,
+                    },
+                    updateView,
+                ),
                 // onChange: updateView
             }),
         );

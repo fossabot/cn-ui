@@ -5,6 +5,5 @@ export * from "./useEffect";
 export * from "./ArrayAtom";
 export * from "./ObjectAtom";
 export * from "./FilterAtom";
-export * from "./SetAtom";
 export * from "./NullAtom";
-export * from './createSync'
+export * from "./createSync";

@@ -1,5 +1,5 @@
 import { classNames, ensureFunctionResult, firstClass } from "@cn-ui/reactive";
-import { debounce } from "lodash-es";
+import { debounce } from "radash";
 import { For, createMemo } from "solid-js";
 import { type CalendarProps, CalenderCtx } from "../Calendar";
 import { CalendarDateCell } from "./DefaultCalendarCell";
@@ -35,10 +35,10 @@ export const DateCalendarPanel = (props: { Cell?: CalendarProps["Cell"] }) => {
                                     !calendarSystem.isInMonth(date) && "opacity-50",
                                     "",
                                 )}
-                                onmouseover={debounce(() => {
+                                onmouseover={debounce({ delay: 100 }, () => {
                                     if (calendarSystem.isSelectingEnd())
                                         calendarSystem.virtualEndTime(date);
-                                }, 100)}
+                                })}
                                 onclick={() => {
                                     !calendarSystem.isInMonth(date) &&
                                         calendarSystem.targetDate((i) =>
