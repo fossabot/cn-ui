@@ -15,7 +15,7 @@ import { AiOutlineCheck, AiOutlineDown, AiOutlineSearch } from "solid-icons/ai";
 import { type Accessor, createEffect, createMemo } from "solid-js";
 import { TransitionGroup } from "solid-transition-group";
 import { watch } from "solidjs-use";
-import { createSync } from "../../../reactive/src/atom/createSync";
+import { createSync } from "@cn-ui/reactive";
 import "../animation/cn-list.css";
 import { Flex } from "../container";
 import { type BaseFormItemType, extendsBaseFormItemProp } from "../form/BaseFormItemType";
@@ -39,6 +39,7 @@ export interface SelectProps extends BaseFormItemType {
     disabledOptions?: string[];
     onInput?: (text: string) => void;
     filterable?: boolean;
+
     optionRender?: SelectPanelProps["children"];
 }
 
@@ -117,7 +118,6 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
             if (!selectSystem.multi() && selectSystem.selected().length) {
                 return props.options;
             }
-
             return props.options.filter((i) => getLabelFromOptions(i).includes(inputText()));
         });
         return (

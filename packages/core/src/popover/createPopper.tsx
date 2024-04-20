@@ -20,10 +20,10 @@ export const createPopper = popperGenerator({
             phase: "beforeWrite",
             requires: ["computeStyles"],
             fn: ({ state }) => {
-                state.styles.popper.width = `${state.rects.reference.width}px`;
+                state.styles.popper.minWidth = `${state.rects.reference.width}px`;
             },
             effect: ({ state }) => {
-                state.elements.popper.style.width = `${
+                state.elements.popper.style.minWidth = `${
                     (state.elements.reference as any).offsetWidth
                 }px`;
             },

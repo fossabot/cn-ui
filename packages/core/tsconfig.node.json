@@ -1,4 +1,31 @@
 {
-    "extends": "./tsconfig.json",
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "declaration": true,
+        "emitDeclarationOnly": false,
+        "outDir": "dist/lib",
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+        "removeComments": false,
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        /* Bundler mode */
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "jsxImportSource": "solid-js",
+        /* Linting */
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "paths": {
+            "@cn-ui/reactive": ["./packages/reactive/src/index"]
+        },
+        "types": ["node"]
+    },
     "exclude": ["src/**/*.stories.tsx", "src/**/example/**/*.tsx"]
 }

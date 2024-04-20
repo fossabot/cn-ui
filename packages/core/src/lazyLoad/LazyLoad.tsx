@@ -5,7 +5,7 @@ import {
     OriginDiv,
     atom,
 } from "@cn-ui/reactive";
-import { ensureFunctionResult } from "@cn-ui/reactive/src/utils/ensureFunctionResult";
+import { ensureFunctionResult } from "@cn-ui/reactive";
 import { debounce } from "lodash-es";
 import {
     type Component,

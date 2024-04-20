@@ -205,10 +205,11 @@ export const Search: Story = {
                 }).data,
             { initValue: [] },
         );
-
+        const data = atom([]);
         return (
             <div class="flex flex-col gap-4">
-                <Select options={res()} onInput={res.refetch} />
+                <Select v-model={data} options={res()} />
+                {data()}
             </div>
         );
     },
