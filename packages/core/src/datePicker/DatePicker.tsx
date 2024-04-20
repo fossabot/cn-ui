@@ -1,28 +1,30 @@
 import type { DatePickerContext } from "@ark-ui/solid";
 import { NullAtom, OriginComponent, OriginDiv, classNames, computed } from "@cn-ui/reactive";
+import dayjs from "dayjs";
 import { AiOutlineCalendar, AiOutlineCloseCircle, AiOutlineSwapRight } from "solid-icons/ai";
 import { Match, Show, Switch, createMemo } from "solid-js";
 import { TransitionGroup } from "solid-transition-group";
 import { useElementHover } from "solidjs-use";
 import "../animation/cn-list.css";
+import { Calendar, type CalendarProps } from "../calendar";
 import { Flex } from "../container/Flex";
 import { type BaseFormItemType, extendsBaseFormItemProp } from "../form/BaseFormItemType";
 import { Icon } from "../icon/Icon";
 import { BaseInput, ClearControl, type InputExpose } from "../input";
 import { Popover } from "../popover";
-import { TagGroup } from "../tag/TagGroup";
-import { DatePanel, type DatePanelProps } from "./Panel/DatePanel";
+import { TagGroup } from "../tag";
 
-export interface DatePickerProps extends DatePanelProps, BaseFormItemType {
-    formatter?: (date: Date, locale?: string) => string;
+export interface DatePickerProps extends CalendarProps, BaseFormItemType {
+    format?: string;
 }
 
-const DefaultDateFormatter = (date: Date, locale?: string) => {
-    return new Intl.DateTimeFormat(locale ?? "zh-CN").format(date);
-};
 export const DatePicker = OriginComponent<DatePickerProps, HTMLDivElement, Date[]>((props) => {
+    const innerModel = props.model.reflux(
+        props.model().map((i) => dayjs(i)),
+        (inner) => inner.map((i) => i.toDate()),
+    );
     const stringDate = computed(() => {
-        return props.model().map((i) => (props.formatter ?? DefaultDateFormatter)(i, props.locale));
+        return innerModel().map((i) => i.format(props.format ?? "YYYY-MM-DD"));
     });
     const DatePickerExpose = NullAtom<ReturnType<DatePickerContext>>(null);
 
@@ -46,18 +48,11 @@ export const DatePicker = OriginComponent<DatePickerProps, HTMLDivElement, Date[
     );
     return (
         <Popover
+            trigger="focus"
+            sameWidth
             disabled={props.disabled}
             class="p-2"
-            content={() => (
-                <DatePanel
-                    {...(props as DatePanelProps)}
-                    expose={(api) => {
-                        props.expose?.(api);
-                        DatePickerExpose(api);
-                    }}
-                    v-model={props.model}
-                />
-            )}
+            content={() => <Calendar view={props.view} mode={props.mode} v-model={innerModel} />}
         >
             <Switch
                 fallback={

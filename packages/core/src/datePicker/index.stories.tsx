@@ -1,30 +1,17 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
 
 import { atom } from "@cn-ui/reactive";
-import { DatePanel, DatePicker } from "./index";
+import { DatePicker } from "./index";
 
 const meta = {
-    title: "Controls/DatePanel 日期选择",
-    component: DatePanel,
+    title: "Controls/DatePicker 日期选择",
+    component: DatePicker,
     argTypes: {},
-} satisfies Meta<typeof DatePanel>;
+} satisfies Meta<typeof DatePicker>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
-    name: "DatePanel 日历面板",
-    render() {
-        const date = atom<Date[]>([new Date()]);
-        return (
-            <>
-                <DatePanel v-model={date} />
-                <div>{date().map((i) => i.toString())}</div>
-            </>
-        );
-    },
-    args: {},
-};
 export const Se: Story = {
     name: "SingleDate 日期单选",
     render() {

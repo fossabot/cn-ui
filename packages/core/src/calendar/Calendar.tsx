@@ -9,6 +9,7 @@ import {
     createCtx,
     useCalendarSelect,
     useDateCalendar,
+    initDayjs,
 } from "@cn-ui/reactive";
 import dayjs, { type Dayjs } from "dayjs";
 import { Match, Switch, createMemo, untrack } from "solid-js";
@@ -16,7 +17,7 @@ import { CalendarHeader } from "./components/CalendarHeader";
 import { DateCalendarPanel } from "./components/DateCalendarPanel";
 import { MonthCalenderPanel } from "./components/MonthCalenderPanel";
 import { YearCalenderPanel } from "./components/YearCalenderPanel";
-
+initDayjs();
 export interface CalendarProps extends DateCalendarConfig {
     Cell?: JSXSlot<{
         date: Dayjs;
@@ -41,7 +42,7 @@ export const CalenderCtx = createCtx<
         ReturnType<typeof useDateCalendar>
 >();
 
-export const Calendar = OriginComponent<CalendarProps, HTMLTableElement, Dayjs[]>((props) => {
+export const Calendar = OriginComponent<CalendarProps, HTMLDivElement, Dayjs[]>((props) => {
     const selected = props.model;
     /** 目标选择的时候使用的 */
     const calendarType = createMemo(() => props.view ?? "day");
@@ -55,7 +56,7 @@ export const Calendar = OriginComponent<CalendarProps, HTMLTableElement, Dayjs[]
     const calendarSystem = useDateCalendar(watchingDate, () => props);
     return (
         <CalenderCtx.Provider value={{ ...select, ...calendarSystem, calendarShowingType }}>
-            <OriginDiv prop={props} class="flex flex-col select-none w-fit min-w-[15rem]">
+            <OriginDiv prop={props} class="flex flex-col select-none  min-w-[15rem]">
                 <CalendarHeader />
                 <Switch>
                     <Match when={calendarShowingType() === "year"}>

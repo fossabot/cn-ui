@@ -1,11 +1,21 @@
 import dayjs, { type Dayjs } from "dayjs";
-import isBetween from "dayjs/plugin/isBetween";
-import minMax from "dayjs/plugin/minMax";
+import isBetween from "dayjs/esm/plugin/isBetween";
+import minMax from "dayjs/esm/plugin/minMax";
+import "dayjs/plugin/isBetween.d";
+import "dayjs/plugin/minMax.d";
+/** 手动初始化 dayjs */
+let init: boolean;
+export const initDayjs = () => {
+    if (init) return;
+    dayjs.extend(minMax);
+    dayjs.extend(isBetween);
+    init = true;
+};
+
 import { type Accessor, createMemo } from "solid-js";
 import { type Atom, atom } from "../atom";
 import { genArray } from "../utils";
-dayjs.extend(minMax);
-dayjs.extend(isBetween);
+
 export const useCalendar = () => {
     return;
 };
@@ -187,7 +197,7 @@ export const MonthLocale = (
     });
 };
 
-/** 日期区间选中，这个包含左右两端 */
+/** 获取日期区间中所有天，这个包含左右两端 */
 export const getDaysInRange = (startDate: Dayjs, endDate: Dayjs) => {
     if (endDate < startDate) {
         console.warn("getDaysInRange end > start");

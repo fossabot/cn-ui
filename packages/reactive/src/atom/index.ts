@@ -7,3 +7,4 @@ export * from "./ObjectAtom";
 export * from "./FilterAtom";
 export * from "./SetAtom";
 export * from "./NullAtom";
+export * from './createSync'
