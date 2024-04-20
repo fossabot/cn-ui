@@ -5,6 +5,7 @@ import { expect, userEvent, within } from "@storybook/test";
 import Mock from "mockjs-ts";
 import { JSONViewer } from "../dataViewer";
 import { Select } from "./index";
+import { isVisible, scrollIntoView } from "./scrollHelper";
 const meta = {
     title: "Controls/Select 选择器",
     component: Select,
@@ -114,14 +115,10 @@ export const Multi: Story = {
     render() {
         const res = resource(
             async () =>
-                Mock.mock<{ data: SelectOptionsType[] }>({
-                    "data|10": [
-                        {
-                            value: "@name",
-                            label: "@cname",
-                        },
-                    ],
-                }).data,
+                genArray(10).map((i) => ({
+                    label: new Intl.NumberFormat("en-IN").format(i * 2000),
+                    value: `${i}`,
+                })),
             { initValue: [] },
         );
         const selected = atom([]);
@@ -150,10 +147,45 @@ export const Multi: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
+
+        const selectOption = async (key: string, selected = true, scope = canvas) => {
+            const zero = scope.getAllByRole("option").find((i) => i.textContent === key);
+            await userEvent.click(zero!);
+            if (selected) expect(zero).toHaveAttribute("aria-selected", "true");
+        };
+
         await step("检查 disabled", async () => {
+            await sleep(100);
             await userEvent.click(canvas.getByLabelText("multi-select"));
             expect(canvas.getAllByRole("option")[0]).toHaveAttribute("aria-disabled", "true");
             expect(canvas.getAllByRole("option")[0]).toBeInTheDocument();
+
+            expect(canvas.getByText("0")).not.toHaveAttribute("aria-disabled", "true");
+            expect(canvas.getByText("0")).toBeVisible();
+
+            expect(canvas.getByText("18,000")).not.toHaveAttribute("aria-disabled", "true");
+            expect(canvas.getByText("18,000")).toBeVisible();
+
+            await userEvent.click(canvasElement);
+            expect(canvas.getByText("0")).not.toBeVisible();
+            expect(canvas.getByText("18,000")).not.toBeVisible();
+        });
+        await step("多选状态切换", async () => {
+            await userEvent.click(canvas.getByLabelText("multi-select"));
+
+            await userEvent.click(canvas.getByText("Jack"));
+            expect(canvas.getByText("Jack")).not.toHaveAttribute("aria-selected");
+
+            await selectOption("0");
+            await selectOption("2,000");
+            await selectOption("4,000");
+            await selectOption("18,000");
+            await selectOption("2,000", false);
+
+            await sleep(1000); // 动画时间
+            for (const item of canvasElement.querySelectorAll(".cn-selected-tags")) {
+                expect(item.textContent).toBe("18,0004,0001+");
+            }
         });
     },
 };
@@ -192,11 +224,102 @@ export const Virtual: Story = {
                 label: `Jack${i}`,
             };
         });
+        const selected = atom([]);
         return (
             <div class="flex gap-4">
-                <Select filterable multiple options={options} />
+                <Select
+                    v-model={selected}
+                    aria-label="virtualSelect"
+                    filterable
+                    multiple
+                    options={options}
+                />
+
+                <span data-testid="result">{selected().join("")}</span>
             </div>
         );
     },
-    args: {},
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+
+        const selectOption = async (key: string, selected = true, scope = canvas) => {
+            const zero = scope.getAllByRole("option").find((i) => i.textContent === key);
+            await userEvent.click(zero!);
+            if (selected) expect(zero).toHaveAttribute("aria-selected", "true");
+        };
+        await step("虚拟初始化数据判断", async () => {
+            await userEvent.click(canvas.getByLabelText("virtualSelect"));
+            const tooltip = within(canvas.getByRole("tooltip"));
+            expect(tooltip.getByText("Jack1")).toBeVisible();
+            expect(tooltip.getByText("Jack2")).toBeVisible();
+            expect(tooltip.getByText("Jack3")).toBeVisible();
+            expect(tooltip.queryByText("Jack100")).toBeFalsy();
+            expect(tooltip.queryByText("Jack200")).toBeFalsy();
+            expect(tooltip.queryByText("Jack500")).toBeFalsy();
+            expect(tooltip.queryByText("Jack700")).toBeFalsy();
+            expect(tooltip.queryByText("Jack900")).toBeFalsy();
+        });
+        await step("滚动并依次选中", async () => {
+            await userEvent.click(canvas.getByLabelText("virtualSelect"));
+            const tooltip = within(canvas.getByRole("tooltip"));
+            await scrollIntoView(
+                canvasElement.querySelector(".cn-virtual-list")!,
+                async (scrollElement) => {
+                    for (const i of scrollElement.children[0].children) {
+                        if (
+                            ["Jack1", "Jack2", "Jack3", "Jack100", "Jack500"].includes(
+                                i.textContent!,
+                            ) &&
+                            i.getAttribute("aria-selected") !== "true"
+                        )
+                            await userEvent.click(i);
+                        if (i.textContent === "Jack500") {
+                            const canSee = await isVisible(i);
+                            if (canSee) {
+                                return 0;
+                            } else {
+                                return -1;
+                            }
+                        }
+                    }
+                    return 1;
+                },
+                { step: 128 },
+            );
+
+            expect(tooltip.queryByText("Jack1")).toBeFalsy();
+            expect(tooltip.queryByText("Jack2")).toBeFalsy();
+            expect(tooltip.queryByText("Jack3")).toBeFalsy();
+            expect(tooltip.queryByText("Jack100")).toBeFalsy();
+            expect(tooltip.queryByText("Jack200")).toBeFalsy();
+            expect(tooltip.queryByText("Jack500")).toBeVisible();
+            expect(tooltip.queryByText("Jack700")).toBeFalsy();
+            expect(tooltip.queryByText("Jack999")).toBeFalsy();
+            expect(canvas.getByTestId("result")).toHaveTextContent("jack1jack2jack3jack100jack500");
+        });
+        await step("滚动到底部", async () => {
+            await userEvent.click(canvas.getByLabelText("virtualSelect"));
+            const tooltip = within(canvas.getByRole("tooltip"));
+            await scrollIntoView(
+                canvasElement.querySelector(".cn-virtual-list")!,
+                async (scrollElement) => {
+                    for (const i of scrollElement.children[0].children) {
+                        if (i.textContent === "Jack9999") {
+                            const canSee = await isVisible(i);
+                            if (canSee) {
+                                return 0;
+                            } else {
+                                return -1;
+                            }
+                        }
+                    }
+                    return 1;
+                },
+                { step: 4196 },
+            );
+
+            expect(tooltip.queryByText("Jack9999")).not.toBeFalsy();
+            expect(tooltip.queryByText("Jack9998")).not.toBeFalsy();
+        });
+    },
 };

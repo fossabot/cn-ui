@@ -12,7 +12,7 @@ import {
 } from "@cn-ui/reactive";
 import type { SelectOptionsType } from "@cn-ui/reactive";
 import { AiOutlineCheck, AiOutlineDown, AiOutlineSearch } from "solid-icons/ai";
-import { Accessor, createEffect, createMemo } from "solid-js";
+import { type Accessor, createEffect, createMemo } from "solid-js";
 import { TransitionGroup } from "solid-transition-group";
 import { watch } from "solidjs-use";
 import { createSync } from "../../../reactive/src/atom/createSync";
@@ -25,7 +25,7 @@ import { ClearControl } from "../input/utils";
 import { Popover } from "../popover";
 import { useFocusIn } from "../popover/composable/useFocusIn";
 import { TagGroup } from "../tag/TagGroup";
-import { SelectPanel } from "./SelectPanel";
+import { SelectPanel, type SelectPanelProps } from "./SelectPanel";
 import { getLabelFromOptions } from "./getLabelFromOptions";
 import "./index.css";
 
@@ -39,6 +39,7 @@ export interface SelectProps extends BaseFormItemType {
     disabledOptions?: string[];
     onInput?: (text: string) => void;
     filterable?: boolean;
+    optionRender?: SelectPanelProps["children"];
 }
 
 /** 抽离的 input 的展示逻辑 */
@@ -134,7 +135,11 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                         if (!props.multiple) return;
 
                         return (
-                            <Flex class=" flex-nowrap gap-2" justify="start">
+                            <Flex
+                                class="cn-selected-tags flex-nowrap gap-2"
+                                justify="start"
+                                role="list"
+                            >
                                 <TransitionGroup name="cn-list">
                                     <TagGroup
                                         color="#a8a8a8"
@@ -197,7 +202,9 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
                                     </Icon>
                                 );
                             }}
-                        />
+                        >
+                            {props.optionRender as any}
+                        </SelectPanel>
                     )}
                 />
             </SelectCtx.Provider>

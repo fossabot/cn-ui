@@ -6,8 +6,8 @@ import {
     atom,
     computed,
     ensureFunctionResult,
-    splitOneChild,
     extendsEvent,
+    splitOneChild,
 } from "@cn-ui/reactive";
 import { PortalEasy } from "@cn-ui/reactive";
 import type { Placement } from "@popperjs/core";

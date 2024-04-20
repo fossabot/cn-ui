@@ -6,27 +6,30 @@ import {
     firstClass,
 } from "@cn-ui/reactive";
 import type { SelectOptionsType } from "@cn-ui/reactive";
-import { For, createEffect, createMemo } from "solid-js";
+import { type Accessor, For, type JSXElement, createEffect, createMemo } from "solid-js";
 import { useEventListener } from "solidjs-use";
 import { VirtualList } from "../virtualList";
 import { SelectCtx } from "./Select";
 
+export interface SelectPanelProps {
+    /** 禁用点击选中状态 取消选择 */
+    disallowCancelClick?: boolean;
+    options: SelectOptionsType[];
+    onSelected?: (item: SelectOptionsType, state: boolean) => void;
+    selectedIconSlot?: JSXSlot<SelectOptionsType>;
+    children?: (item: SelectOptionsType, index: Accessor<number>) => JSXElement;
+}
+
 /** 可选列表面板，需要依赖 useSelect 环境 */
-export const SelectPanel = OriginComponent<
-    {
-        /** 禁用点击选中状态 取消选择 */
-        disallowCancelClick?: boolean;
-        options: SelectOptionsType[];
-        onSelected?: (item: SelectOptionsType, state: boolean) => void;
-        selectedIconSlot?: JSXSlot<SelectOptionsType>;
-    },
-    HTMLDivElement,
-    null
->((props) => {
+export const SelectPanel = OriginComponent<SelectPanelProps, HTMLDivElement, null>((props) => {
     const selectSystem = SelectCtx.use();
-    const innerContent = (item: SelectOptionsType) => (
+    const innerContent = (item: SelectOptionsType, index: Accessor<number>) => (
         <>
-            <span class="flex-1">{item.label ?? item.value}</span>
+            {props.children ? (
+                props.children(item, index)
+            ) : (
+                <span class="flex-1">{item.label ?? item.value}</span>
+            )}
             {ensureFunctionResult(props.selectedIconSlot, [item])}
         </>
     );
@@ -64,19 +67,23 @@ export const SelectPanel = OriginComponent<
                     estimateSize={24}
                     fallback={VoidSlot}
                 >
-                    {(item, _, { itemClass, itemRef }) => {
+                    {(item, index, { itemClass, itemRef }) => {
                         createEffect(() => {
                             itemClass(createClass(item));
                             useEventListener(itemRef, "click", () => {
                                 triggerSelect(item);
                             });
+                            selectSystem.isSelected(item) &&
+                                itemRef()?.setAttribute("aria-selected", "true");
+                            selectSystem.isDisabled(item) &&
+                                itemRef()?.setAttribute("aria-disabled", "true");
                         });
-                        return <>{innerContent(item)}</>;
+                        return <>{innerContent(item, index)}</>;
                     }}
                 </VirtualList>
             ) : (
                 <For each={props.options} fallback={VoidSlot()}>
-                    {(item) => {
+                    {(item, index) => {
                         return (
                             <div
                                 role="option"
@@ -87,7 +94,7 @@ export const SelectPanel = OriginComponent<
                                     triggerSelect(item);
                                 }}
                             >
-                                {innerContent(item)}
+                                {innerContent(item, index)}
                             </div>
                         );
                     }}

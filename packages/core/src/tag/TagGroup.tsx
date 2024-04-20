@@ -40,6 +40,7 @@ export const TagGroup = OriginComponent<TagGroupProps, HTMLDivElement, TagGroupO
                 {(item) => {
                     return (
                         <Tag
+                            role="listitem"
                             icon={ensureFunctionResult(item().icon)}
                             color={item().color}
                             onClose={() => {
