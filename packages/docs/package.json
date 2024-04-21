@@ -11,23 +11,23 @@
     },
     "dependencies": {
         "@astrojs/check": "^0.5.10",
-        "@astrojs/mdx": "^2.2.1",
+        "@astrojs/mdx": "^2.3.1",
         "@astrojs/rss": "^4.0.5",
-        "@astrojs/sitemap": "^3.1.1",
-        "@astrojs/solid-js": "^4.0.1",
+        "@astrojs/sitemap": "^3.1.4",
+        "@astrojs/solid-js": "^4.1.0",
         "@cn-ui/core": "workspace:^",
         "analyze": "workspace:^",
-        "astro": "^4.5.9",
+        "astro": "^4.6.3",
         "echarts": "^5.5.0",
         "pretty-bytes": "^6.1.1",
         "solid-icons": "^1.1.0",
         "solid-js": "^1.8.16",
-        "typescript": "^5.4.3"
+        "typescript": "^5.4.5"
     },
     "devDependencies": {
-        "@unocss/reset": "^0.58.6",
-        "@unocss/transformer-directives": "^0.58.6",
-        "unocss": "^0.58.6",
+        "@unocss/reset": "^0.58.9",
+        "@unocss/transformer-directives": "^0.58.9",
+        "unocss": "^0.58.9",
         "unocss-preset-chinese": "^0.3.2",
         "unocss-preset-theme": "^0.12.0"
     }
