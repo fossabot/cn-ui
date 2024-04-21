@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from "storybook-solidjs";
 import { atom } from "@cn-ui/reactive";
 import { Button } from "../button";
 import { InputNumber } from "./index";
+import { expect, userEvent, within } from "@storybook/test";
+import { sleep } from "radash";
 
 const meta = {
     title: "Controls/InputNumber",
@@ -19,12 +21,53 @@ export const Primary: Story = {
         const data = atom(123232);
         return (
             <div class="flex gap-4">
-                <div>{data()}</div>
                 <InputNumber min={0} max={100} v-model={data} controls />
+                <div>{data()}</div>
             </div>
         );
     },
-    args: {},
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+        const typeAndCheck = async (el: HTMLInputElement, value: string) => {
+            await userEvent.clear(el);
+            await userEvent.type(el, value);
+            el.blur();
+            return expect(el);
+        };
+
+        await step("检查初始状态", async () => {
+            expect(canvas.getByRole("spinbutton")).toHaveValue("123,232");
+
+            await expect(canvas.getByText("123232")).toBeInTheDocument();
+        });
+        await step("加减按钮测试", async () => {
+            await userEvent.click(canvas.getByLabelText("increment value"));
+            expect(canvas.getByRole("spinbutton")).toHaveValue("100");
+            await userEvent.click(canvas.getByLabelText("increment value"));
+            await userEvent.click(canvas.getByLabelText("increment value"));
+            await userEvent.click(canvas.getByLabelText("decrease value"));
+            await userEvent.click(canvas.getByLabelText("decrease value"));
+            await userEvent.click(canvas.getByLabelText("decrease value"));
+            await userEvent.click(canvas.getByLabelText("decrease value"));
+            await userEvent.click(canvas.getByLabelText("decrease value"));
+            await userEvent.click(canvas.getByLabelText("decrease value"));
+            expect(canvas.getByRole("spinbutton")).toHaveValue("94");
+        });
+        await step("输入测试", async () => {
+            const input: HTMLInputElement = canvas.getByRole("spinbutton");
+            await userEvent.clear(canvas.getByRole("spinbutton"));
+            expect(canvas.getByRole("spinbutton")).toHaveValue("");
+            expect(canvas.getByText("NaN")).toBeInTheDocument();
+
+            (await typeAndCheck(input, "96")).toHaveValue("96");
+
+            (await typeAndCheck(input, "1024")).toHaveValue("100");
+
+            (await typeAndCheck(input, "-1024")).toHaveValue("0");
+
+            (await typeAndCheck(input, "52.3")).toHaveValue("52.3");
+        });
+    },
 };
 
 export const Disabled: Story = {
@@ -41,7 +84,18 @@ export const Disabled: Story = {
             </div>
         );
     },
-    args: {},
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+        await step("状态切换", async () => {
+            expect(canvas.getByRole("spinbutton")).toHaveValue("123,232");
+            expect(canvas.getByRole("spinbutton")).toBeDisabled();
+            await userEvent.click(canvas.getByText("Toggle Disabled"));
+
+            expect(canvas.getByRole("spinbutton")).not.toBeDisabled();
+            await userEvent.click(canvas.getByText("Toggle Disabled"));
+            expect(canvas.getByRole("spinbutton")).toBeDisabled();
+        });
+    },
 };
 export const allowMouseWheel: Story = {
     name: "MouseWheel",
@@ -72,5 +126,25 @@ export const precision: Story = {
             </div>
         );
     },
-    args: {},
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+        const typeAndCheck = async (el: HTMLInputElement, value: string) => {
+            await userEvent.clear(el);
+            await userEvent.type(el, value);
+
+            el.blur();
+            await sleep(100);
+            return expect(el);
+        };
+        //TODO 状态切换不稳定问题
+        await step("状态切换", async () => {
+            await (await typeAndCheck(canvas.getByRole("spinbutton"), "123.232")).toHaveValue(
+                "100.0000",
+            );
+            await sleep(100);
+            await (await typeAndCheck(canvas.getByRole("spinbutton"), "99.0001")).toHaveValue(
+                "99.0001",
+            );
+        });
+    },
 };

@@ -62,7 +62,7 @@ const useInputSearch = (
 
     watch(
         isFocusing,
-        debounce((val: boolean) => (val ? whenFocus() : whenBlur()), 100),
+        debounce({ delay: 200 }, (val: boolean) => (val ? whenFocus() : whenBlur())),
     );
     return { isFocusing };
 };
