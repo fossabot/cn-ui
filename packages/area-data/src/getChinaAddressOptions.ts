@@ -1,4 +1,3 @@
-import "./deps.d";
 import data from "@cn-ui/area-data/dist/area.json";
 import { decompress } from "./compress";
 export const getChinaAddressOptions = () => {
