@@ -6,8 +6,16 @@ import { Checkbox, CheckboxGroupCtx, type CheckboxProps } from "./Checkbox";
 
 export interface CheckboxGroupExpose extends ReturnType<typeof useSelect<SelectOptionsType>> {}
 export interface CheckboxGroupProps extends BaseFormItemType {
+    /**
+     * 生成选项
+     * @tested
+     */
     options: CheckboxProps[];
     expose?: (expose: CheckboxGroupExpose) => void;
+    /**
+     * 是否支持多选
+     * @tested
+     */
     multiple?: boolean;
 }
 

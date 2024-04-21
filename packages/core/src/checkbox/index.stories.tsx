@@ -1,9 +1,13 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
 
 import { Atom, NullAtom, atom, computed } from "@cn-ui/reactive";
-import { watch } from "solidjs-use";
 import { Flex } from "../container/Flex";
 import { Checkbox, CheckboxGroup, type CheckboxGroupExpose, useControlCheckbox } from "./index";
+import { expect, userEvent, within } from "@storybook/test";
+
+const expectCheckBox = (el: HTMLElement) => {
+    return expect(el.children[0]);
+};
 
 const meta = {
     title: "Controls/Checkbox",
@@ -22,12 +26,25 @@ export const Primary: Story = {
         return (
             <div class="flex gap-4">
                 <Checkbox v-model={data} label={"恭喜发财"} value={"2333"} />
-
-                {data() ? "选中" : "未选中"}
+                <Checkbox disabled v-model={data} label={"disabled"} value={"2333"} />
+                <span data-testid="state">{data() ? "选中" : "未选中"}</span>
             </div>
         );
     },
-    args: {},
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+        await step("初始状态测试", async () => {
+            expect(await canvas.findByText("恭喜发财")).not.toBeDisabled();
+            expectCheckBox(await canvas.findByText("disabled")).toBeDisabled();
+            expect(await canvas.findByText("未选中")).toBeInTheDocument();
+        });
+        await step("状态切换测试", async () => {
+            await userEvent.click(await canvas.findByText("恭喜发财"));
+            expectCheckBox(await canvas.findByText("恭喜发财")).toBeChecked();
+            expectCheckBox(await canvas.findByText("disabled")).toBeChecked();
+            expect(await canvas.findByText("选中")).toBeInTheDocument();
+        });
+    },
 };
 const optionsWithDisabled = [
     { label: "苹果", value: "Apple" },
@@ -58,7 +75,28 @@ export const Group: Story = {
             </div>
         );
     },
-    args: {},
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+
+        const toggleCheckbox = async (name: string, state = true) => {
+            await userEvent.click(await canvas.findByText(name));
+
+            if (state) expectCheckBox(await canvas.findByText(name)).toBeChecked();
+        };
+
+        await step("多选子按钮测试", async () => {
+            await toggleCheckbox("苹果");
+
+            expectCheckBox(await canvas.getByText("切换选中")).toBePartiallyChecked();
+
+            await toggleCheckbox("梨子");
+            expectCheckBox(await canvas.getByText("切换选中")).toBePartiallyChecked();
+            await toggleCheckbox("橙子");
+            expectCheckBox(await canvas.getByText("切换选中")).toBeChecked();
+            await toggleCheckbox("橙子", false);
+            expectCheckBox(await canvas.getByText("切换选中")).toBePartiallyChecked();
+        });
+    },
 };
 export const RadioGroup: Story = {
     name: "Radio 单选框",
@@ -66,7 +104,6 @@ export const RadioGroup: Story = {
         const selected = atom<string[]>(["Apple"]);
         return (
             <div class="flex gap-4">
-                {JSON.stringify(selected())}
                 <Flex vertical>
                     <CheckboxGroup
                         options={optionsWithDisabled}
@@ -74,8 +111,29 @@ export const RadioGroup: Story = {
                         multiple={false}
                     />
                 </Flex>
+                <span>{selected().join("/")}</span>
             </div>
         );
     },
-    args: {},
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+
+        const toggleCheckbox = async (name: string, state = true) => {
+            await userEvent.click(await canvas.findByText(name));
+
+            if (state) expectCheckBox(await canvas.findByText(name)).toBeChecked();
+        };
+
+        await step("多选子按钮测试", async () => {
+            await toggleCheckbox("苹果");
+            expect(await canvas.getByText("Apple")).toBeInTheDocument();
+            await toggleCheckbox("梨子");
+            expectCheckBox(await canvas.getByText("苹果")).not.toBeChecked();
+            expect(await canvas.getByText("Pear")).toBeInTheDocument();
+            await toggleCheckbox("橙子");
+            expectCheckBox(await canvas.getByText("梨子")).not.toBeChecked();
+            expectCheckBox(await canvas.getByText("苹果")).not.toBeChecked();
+            expect(await canvas.getByText("Orange")).toBeInTheDocument();
+        });
+    },
 };

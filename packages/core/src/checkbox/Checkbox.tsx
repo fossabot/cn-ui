@@ -14,6 +14,10 @@ export type CheckboxGroupCtxType = ReturnType<typeof useSelect<SelectOptionsType
 export const CheckboxGroupCtx = /* @__PURE__ */ createCtx<CheckboxGroupCtxType>({} as any);
 
 export interface CheckboxProps extends BaseFormItemType, SelectOptionsType {
+    /**
+     * 是否是半选状态
+     * @tested
+     */
     indeterminate?: boolean;
 }
 export const Checkbox = OriginComponent<CheckboxProps, HTMLInputElement, boolean>((props) => {
@@ -44,7 +48,7 @@ export const Checkbox = OriginComponent<CheckboxProps, HTMLInputElement, boolean
     return (
         <label
             class={classNames(
-                "select-none cursor-pointer",
+                "select-none cursor-pointer flex",
                 props.disabled && "cursor-not-allowed opacity-50",
             )}
         >
