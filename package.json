@@ -12,7 +12,7 @@
         "storybook": "storybook dev -p 6006",
         "type-check": "tsc -p tsconfig.node.json",
         "check": "biome check --apply ./ --diagnostic-level=error",
-        "build-storybook": "pnpm --filter=@cn-ui/area-data build && storybook build",
+        "build-storybook": "pnpm --filter=@cn-ui/area-data build && pnpm --filter=@cn-ui/svg-spinner build && storybook build",
         "prettier": "prettier --write packages/**/*.{json,less,md}",
         "build": "pnpm --filter \"*\" build && pnpm storybook build"
     },
