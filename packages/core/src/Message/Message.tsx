@@ -1,11 +1,11 @@
-import { type JSXSlot, atom } from "@cn-ui/reactive";
-import { type SetStoreFunction, createStore } from "solid-js/store";
+import { type JSXSlot } from "@cn-ui/reactive";
+import { type SetStoreFunction, createStore, reconcile } from "solid-js/store";
 import { Modal } from "../Modal/Modal";
 import { Alert } from "./Alert";
 import { createRuntimeArea } from "./runtime";
 
 export interface MessageInfo {
-    id?: number | string;
+    id?: string;
     title: JSXSlot;
     description?: JSXSlot;
     duration?: number;
@@ -22,20 +22,23 @@ export class MessageControl {
     }
     public store: MessageInfo[];
     public setStore: SetStoreFunction<MessageInfo[]>;
-    public removeMessage(id: string | number) {
-        return this.setStore((arr) => {
-            return arr.filter((i) => i.id !== id);
-        });
+    public removeMessage(id: string) {
+        return this.setStore(
+            reconcile(
+                this.store.filter((i) => i.id !== id),
+                { key: "id" },
+            ),
+        );
     }
     private render(props: { store: MessageInfo[]; setStore: SetStoreFunction<MessageInfo[]> }) {
-        const show = atom(true);
         return (
-            <Modal v-model={show} each={props.store} by={(i) => i.id!} position="top">
+            <Modal v-model={() => true} each={props.store} by={(i) => i.id!} position="top">
                 {(item) => {
                     return (
                         <Alert
-                            class="h-full rounded-md"
+                            class="h-full bg-design-pure shadow-lg"
                             type={item.type}
+                            round
                             message={item.title}
                             description={item.description}
                             icon
@@ -47,17 +50,21 @@ export class MessageControl {
             </Modal>
         );
     }
-    private autoKey = 0;
+    private autoKey = 1;
     public create(message: JSXSlot, type: MessageInfo["type"], duration?: number) {
-        const id = this.autoKey++;
-        const item = { id, title: message, type, duration };
+        const id = (this.autoKey++).toString();
+        const item: MessageInfo = { id, title: message, type, duration, closable: true };
         this.setStore((arr) => {
             return [item, ...arr];
         });
         this.durationClose(item, duration);
         return item;
     }
-    private durationClose(item: MessageInfo, duration = 3000) {
+    close(item: MessageInfo) {
+        if (item.id) this.removeMessage(item.id);
+        throw new Error("需要输入一个 id 来关闭 Message");
+    }
+    private durationClose(item: MessageInfo, duration = 0) {
         if (duration <= 0) {
             return;
         }

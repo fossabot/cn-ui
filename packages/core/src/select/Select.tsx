@@ -9,6 +9,7 @@ import {
     debounce,
     extendsEvent,
     useSelect,
+    DebounceAtom,
 } from "@cn-ui/reactive";
 import type { SelectOptionsType } from "@cn-ui/reactive";
 import { AiOutlineCheck, AiOutlineDown, AiOutlineSearch } from "solid-icons/ai";
@@ -105,7 +106,7 @@ export const Select = OriginComponent<SelectProps, HTMLDivElement, string[]>(
         createEffect(() => inputText(() => selectedText()));
 
         const PopoverOpen = atom(false);
-        const multipleTags = ThrottleAtom(
+        const multipleTags = DebounceAtom(
             createMemo(() => selectSystem.selected()),
             500,
         );

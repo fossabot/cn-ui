@@ -107,6 +107,6 @@
     }
     to {
         opacity: 1;
-        translate: 0;
+        translate: 0px;
     }
 }

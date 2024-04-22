@@ -15,7 +15,7 @@ export type ModalPosition =
     | "bottom-right"
     | "top"
     | "bottom";
-
+import "../animation/fade.css";
 export interface ModalProps<T> {
     maxStackItem?: number;
     each: T[];
@@ -34,7 +34,7 @@ export const Modal = OriginComponent(function <T>(
 ) {
     const { position, modalShowPosition } = useModalPosition(props);
     return (
-        <Show when={props.model() && props.each.length}>
+        <Show when={props.model()}>
             <div
                 class={classNames(
                     props.stack !== false &&
@@ -53,6 +53,7 @@ export const Modal = OriginComponent(function <T>(
                     reverse={props.position?.startsWith("bottom")}
                     getItemKey={(index) => props.by(props.each[index], index)}
                     estimateSize={props.itemSize?.height ?? 64}
+                    transitionName="cn-fade"
                 >
                     {(item, index, { itemClass }) => {
                         itemClass("px-3 py-2");

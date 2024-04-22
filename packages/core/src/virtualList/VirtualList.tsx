@@ -97,50 +97,51 @@ export const VirtualList = OriginComponent(function <T>(
     });
     props.expose?.({ virtualizer });
     const { height, width } = useAutoResize(() => tableContainerRef());
-    const CoreList = (
-        <Key
-            by="key"
-            each={virtualizer.getVirtualItems()}
-            fallback={ensureFunctionResult(props.fallback)}
-        >
-            {(virtualRow) => {
-                const itemClass = atom("");
-                const itemRef = NullAtom<HTMLDivElement>(null);
-                const context = { itemClass, itemRef };
-                return (
-                    <div
-                        class={classNames(
-                            "cn-virtual-list-item absolute ",
-                            props.horizontal ? "h-full" : "w-full",
-                            itemClass(),
-                        )}
-                        data-index={virtualRow().index} //needed for dynamic row height measurement
-                        ref={(node) => {
-                            itemRef(node);
-                            queueMicrotask(() => virtualizer.measureElement(node));
-                        }}
-                        style={{
-                            [props.horizontal
-                                ? props.reverse
-                                    ? "right"
-                                    : "left"
-                                : props.reverse
-                                  ? "bottom"
-                                  : "top"]: `${virtualRow().start}px`,
-                        }}
-                    >
-                        <Show when={props.each[virtualRow().index]}>
+    const CoreList = () => {
+        return (
+            <Key
+                by="key"
+                each={virtualizer.getVirtualItems()}
+                fallback={ensureFunctionResult(props.fallback)}
+            >
+                {(virtualRow) => {
+                    const itemClass = atom("");
+                    const itemRef = NullAtom<HTMLDivElement>(null);
+                    const context = { itemClass, itemRef };
+
+                    return (
+                        <div
+                            class={classNames(
+                                "cn-virtual-list-item absolute ",
+                                props.horizontal ? "h-full" : "w-full",
+                                itemClass(),
+                            )}
+                            data-index={virtualRow().index} //needed for dynamic row height measurement
+                            ref={(node) => {
+                                itemRef(node);
+                                queueMicrotask(() => virtualizer.measureElement(node));
+                            }}
+                            style={{
+                                [props.horizontal
+                                    ? props.reverse
+                                        ? "right"
+                                        : "left"
+                                    : props.reverse
+                                      ? "bottom"
+                                      : "top"]: `${virtualRow().start}px`,
+                            }}
+                        >
                             {props.children(
                                 props.each[virtualRow().index],
                                 () => virtualRow().index,
                                 context,
                             )}
-                        </Show>
-                    </div>
-                );
-            }}
-        </Key>
-    );
+                        </div>
+                    );
+                }}
+            </Key>
+        );
+    };
     return (
         <OriginDiv
             prop={props}
@@ -171,9 +172,11 @@ export const VirtualList = OriginComponent(function <T>(
                 }}
             >
                 {props.transitionName ? (
-                    <TransitionGroup name={props.transitionName}>{CoreList}</TransitionGroup>
+                    <TransitionGroup name={props.transitionName}>
+                        <CoreList></CoreList>
+                    </TransitionGroup>
                 ) : (
-                    CoreList
+                    <CoreList></CoreList>
                 )}
             </div>
         </OriginDiv>

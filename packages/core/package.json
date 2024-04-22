@@ -49,6 +49,8 @@
         "@cn-ui/svg-spinner": "workspace:^",
         "@popperjs/core": "^2.11.8",
         "@solid-primitives/keyed": "^1.2.2",
+        "@solid-primitives/refs": "^1.0.8",
+        "@solid-primitives/transition-group": "^1.0.5",
         "@storybook/test": "^8.0.4",
         "@tanstack/solid-table": "^8.15.3",
         "@tanstack/table-core": "^8.15.3",

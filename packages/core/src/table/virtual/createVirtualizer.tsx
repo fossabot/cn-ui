@@ -1,6 +1,4 @@
 // from @tanstack/solid-table
-// add throttle for performance
-import { throttle } from "radash";
 import {
     type PartialKeys,
     Virtualizer,
@@ -75,7 +73,7 @@ function createVirtualizerBase<
         startTransition(() => {
             setVirtualItems(
                 reconcile(instance.getVirtualItems(), {
-                    key: "index",
+                    key: "id",
                 }),
             );
         });
@@ -86,13 +84,7 @@ function createVirtualizerBase<
     createComputed(() => {
         virtualizer.setOptions(
             mergeProps(resolvedOptions, options, {
-                onChange: throttle(
-                    {
-                        interval: 10,
-                    },
-                    updateView,
-                ),
-                // onChange: updateView
+                onChange: updateView,
             }),
         );
         // 防止与 sorting 冲突导致无限循环

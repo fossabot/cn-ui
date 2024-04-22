@@ -28,23 +28,6 @@ export interface AlertProps {
 }
 
 export const Alert = OriginComponent<AlertProps>((props) => {
-    const boxClass = useMapper(props.type ?? "default", {
-        success() {
-            return `${this.default()}bg-green-50 border-green-200`;
-        },
-        info() {
-            return `${this.default()}bg-blue-50 border-blue-100`;
-        },
-        warning() {
-            return `${this.default()}bg-yellow-50 border-yellow-500`;
-        },
-        error() {
-            return `${this.default()}bg-red-50 border-red-100`;
-        },
-        default() {
-            return `${classNames(props.round && "rounded-md", props.border && "border-1", "p-2")} `;
-        },
-    });
     const commonIconClass = "text-xl pr-2";
     const DynamicIcon = useMapper(props.type ?? "default", {
         success() {
@@ -80,7 +63,7 @@ export const Alert = OriginComponent<AlertProps>((props) => {
         },
     });
     return (
-        <div class={props.class(boxClass(), "overflow-hidden")}>
+        <div class={props.class(props.round && "rounded-md", "p-2 overflow-hidden border-1")}>
             <h3 class="flex items-center">
                 {typeof props.icon === "boolean" ? DynamicIcon() : ensureFunctionResult(props.icon)}
                 <span class="flex-1">{ensureFunctionResult(props.message)}</span>
