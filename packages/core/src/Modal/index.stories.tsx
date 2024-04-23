@@ -5,13 +5,13 @@ import Mock from "mockjs-ts";
 import { createEffect } from "solid-js";
 import { Button } from "../button";
 import { Flex } from "../container";
-import { Modal } from "./index";
+import { ModalList } from "./index";
 
 const meta = {
     title: "Feedback 反馈组件/Modal 模态框",
-    component: Modal,
+    component: ModalList,
     argTypes: {},
-} satisfies Meta<typeof Modal>;
+} satisfies Meta<typeof ModalList>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -37,11 +37,11 @@ export const Primary: Story = {
                         弹出
                     </Button>
                 </Flex>
-                <Modal v-model={atom(true)} each={data()} by={(i) => i.id} position="bottom">
-                    {(item, index) => {
+                <ModalList v-model={atom(true)} each={data()} by={(i) => i.id} position="bottom">
+                    {(item) => {
                         return <div>{item.name}</div>;
                     }}
-                </Modal>
+                </ModalList>
             </>
         );
     },

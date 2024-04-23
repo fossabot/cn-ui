@@ -20,7 +20,7 @@ export const OriginDiv = OriginComponent(
                     props.prop.ref?.(el);
                     props.ref?.(el);
                 }}
-                class={props.prop.class("cn-origin-div", props.class())}
+                class={props.prop.class("cn-div", props.class())}
                 style={style()}
                 {...extendsEvent(props)}
                 {...extendsEvent(props.prop)}

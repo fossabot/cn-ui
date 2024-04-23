@@ -4,38 +4,42 @@ import {
     classNames,
     toCSSPx,
     useMapper,
+    OriginDiv,
 } from "@cn-ui/reactive";
 import { type Accessor, type JSXElement, Show } from "solid-js";
 import { VirtualList } from "../virtualList";
 import "./index.css";
-export type ModalPosition =
-    | "top-left"
-    | "top-right"
-    | "bottom-left"
-    | "bottom-right"
-    | "top"
-    | "bottom";
+export const MODAL_LIST_POSITION = [
+    "top-left",
+    "top-right",
+    "bottom-left",
+    "bottom-right",
+    "top",
+    "bottom",
+] as const;
+export type ModalListPosition = (typeof MODAL_LIST_POSITION)[number];
 import "../animation/fade.css";
-export interface ModalProps<T> {
+export interface ModalListProps<T> {
     maxStackItem?: number;
     each: T[];
     by: (item: T, index: number) => string | number;
     children: (item: T, index: Accessor<number>) => JSXElement;
     stack?: boolean;
-    position?: ModalPosition;
+    position?: ModalListPosition;
     itemSize?: {
         width: number;
         height: number;
     };
 }
 
-export const Modal = OriginComponent(function <T>(
-    props: OriginComponentInputType<ModalProps<T>, HTMLDivElement, boolean>,
+export const ModalList = OriginComponent(function <T>(
+    props: OriginComponentInputType<ModalListProps<T>, HTMLDivElement, boolean>,
 ) {
     const { position, modalShowPosition } = useModalPosition(props);
     return (
         <Show when={props.model()}>
-            <div
+            <OriginDiv
+                prop={props}
                 class={classNames(
                     props.stack !== false &&
                         props.each.length >= (props.maxStackItem ?? 5) &&
@@ -59,9 +63,6 @@ export const Modal = OriginComponent(function <T>(
                         itemClass("px-3 py-2");
                         return (
                             <div
-                                style={{
-                                    height: toCSSPx(props.itemSize?.height, "48px"),
-                                }}
                                 class={classNames(
                                     "w-full rounded-xl flex-none shadow-1 bg-design-card",
                                 )}
@@ -71,11 +72,11 @@ export const Modal = OriginComponent(function <T>(
                         );
                     }}
                 </VirtualList>
-            </div>
+            </OriginDiv>
         </Show>
     );
 });
-function useModalPosition(props: { position?: ModalPosition }) {
+function useModalPosition(props: { position?: ModalListPosition }) {
     const position = useMapper(() => props.position ?? "top-left", {
         "top-left": "top-4 left-0",
         "top-right": "top-4 right-0",
