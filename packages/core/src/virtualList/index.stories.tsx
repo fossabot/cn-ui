@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from "storybook-solidjs";
 import { ArrayFolder, atom } from "@cn-ui/reactive";
 import { expect, within } from "@storybook/test";
 import Mock from "mockjs-ts";
-import { VirtualList, type VirtualListExpose } from "./VirtualList";
-import { isVisible, scrollIntoView } from "../select/scrollHelper";
+import { isElementRealVisible, scrollElement } from "@cn-ui/reactive";
+import { VirtualList } from "./VirtualList";
 const meta = {
     title: "Data 数据展示/VirtualList 虚拟列表",
     component: VirtualList,
@@ -39,7 +39,7 @@ export const Primary: Story = {
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
         await step("滚动到最末尾", async () => {
-            await scrollIntoView(
+            await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
                 (scrollElement, context) => {
                     if (canvas.queryByText("99999")) {
@@ -48,11 +48,11 @@ export const Primary: Story = {
                 },
                 { step: 10000 },
             );
-            expect(await isVisible(canvas.getByText("99999"))).toBe(true);
-            expect(await isVisible(canvas.getByText("99990"))).toBe(true);
+            expect(await isElementRealVisible(canvas.getByText("99999"))).toBe(true);
+            expect(await isElementRealVisible(canvas.getByText("99990"))).toBe(true);
         });
         await step("滚动到最前面", async () => {
-            await scrollIntoView(
+            await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
                 (scrollElement, context) => {
                     if (canvas.queryByText("0")) {
@@ -143,21 +143,21 @@ export const horizontal: Story = {
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
         await step("滚动到最末尾", async () => {
-            await scrollIntoView(
+            await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
                 async (scrollElement, context) => {
                     const item = canvas.queryByText("999");
-                    if (item && (await isVisible(item))) {
+                    if (item && (await isElementRealVisible(item))) {
                         return true;
                     }
                 },
                 { step: 10000, horizontal: true },
             );
-            expect(await isVisible(canvas.getByText("999"))).toBe(true);
-            expect(await isVisible(canvas.getByText("998"))).toBe(true);
+            expect(await isElementRealVisible(canvas.getByText("999"))).toBe(true);
+            expect(await isElementRealVisible(canvas.getByText("998"))).toBe(true);
         });
         await step("滚动到最前面", async () => {
-            await scrollIntoView(
+            await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
                 (scrollElement, context) => {
                     if (canvas.queryByText("0")) {
@@ -208,21 +208,21 @@ export const Reverse: Story = {
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
         await step("从下往上滚动", async () => {
-            await scrollIntoView(
+            await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
                 async (scrollElement, context) => {
                     const item = canvas.queryByText("999");
-                    if (item && (await isVisible(item))) {
+                    if (item && (await isElementRealVisible(item))) {
                         return true;
                     }
                 },
                 { step: -10000 },
             );
-            expect(await isVisible(canvas.getByText("999"))).toBe(true);
-            expect(await isVisible(canvas.getByText("998"))).toBe(true);
+            expect(await isElementRealVisible(canvas.getByText("999"))).toBe(true);
+            expect(await isElementRealVisible(canvas.getByText("998"))).toBe(true);
         });
         await step("从上往下滚动", async () => {
-            await scrollIntoView(
+            await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
                 (scrollElement, context) => {
                     if (canvas.queryByText("0")) {
@@ -275,21 +275,21 @@ export const H_Reverse: Story = {
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
         await step("滚动到最末尾", async () => {
-            await scrollIntoView(
+            await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
                 async (scrollElement, context) => {
                     const item = canvas.queryByText("999");
-                    if (item && (await isVisible(item))) {
+                    if (item && (await isElementRealVisible(item))) {
                         return true;
                     }
                 },
                 { step: -20000, horizontal: true },
             );
-            expect(await isVisible(canvas.getByText("999"))).toBe(true);
-            expect(await isVisible(canvas.getByText("998"))).toBe(true);
+            expect(await isElementRealVisible(canvas.getByText("999"))).toBe(true);
+            expect(await isElementRealVisible(canvas.getByText("998"))).toBe(true);
         });
         await step("滚动到最前面", async () => {
-            await scrollIntoView(
+            await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
                 (scrollElement, context) => {
                     if (canvas.queryByText("0")) {

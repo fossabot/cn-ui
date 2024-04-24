@@ -5,7 +5,7 @@ import { expect, userEvent, within } from "@storybook/test";
 import Mock from "mockjs-ts";
 import { JSONViewer } from "../dataViewer";
 import { Select } from "./index";
-import { isVisible, scrollIntoView } from "./scrollHelper";
+import { isElementRealVisible, scrollElement } from "@cn-ui/reactive";
 const meta = {
     title: "Controls/Select 选择器",
     component: Select,
@@ -263,7 +263,7 @@ export const Virtual: Story = {
         await step("滚动并依次选中", async () => {
             await userEvent.click(canvas.getByLabelText("virtualSelect"));
             const tooltip = within(canvas.getByRole("tooltip"));
-            await scrollIntoView(
+            await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
                 async (scrollElement, context) => {
                     for (const i of scrollElement.children[0].children) {
@@ -275,7 +275,7 @@ export const Virtual: Story = {
                         )
                             await userEvent.click(i);
                         if (i.textContent === "Jack500") {
-                            const canSee = await isVisible(i);
+                            const canSee = await isElementRealVisible(i);
                             if (canSee) {
                                 return true;
                             } else {
@@ -300,12 +300,12 @@ export const Virtual: Story = {
         await step("滚动到底部", async () => {
             await userEvent.click(canvas.getByLabelText("virtualSelect"));
             const tooltip = within(canvas.getByRole("tooltip"));
-            await scrollIntoView(
+            await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
                 async (scrollElement, context) => {
                     for (const i of scrollElement.children[0].children) {
                         if (i.textContent === "Jack9999") {
-                            const canSee = await isVisible(i);
+                            const canSee = await isElementRealVisible(i);
                             if (canSee) {
                                 return true;
                             } else {

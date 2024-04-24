@@ -6,3 +6,4 @@ export * from "./AS";
 export * from "./SelectableList";
 export * from "./PortalEasy";
 export * from "./ComponentSlots";
+export * from "./scrollHelper";
