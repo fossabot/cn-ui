@@ -56,9 +56,7 @@ export const Calendar = OriginComponent<CalendarProps, HTMLDivElement, Dayjs[]>(
     const watchingDate = atom(props.model()[0] ?? dayjs());
     const calendarSystem = useDateCalendar(watchingDate, () => props);
     return (
-        <CalenderCtx.Provider
-            value={{ ...select, ...calendarSystem, calendarShowingType }}
-        >
+        <CalenderCtx.Provider value={{ ...select, ...calendarSystem, calendarShowingType }}>
             <OriginDiv prop={props} class="flex flex-col select-none  min-w-[15rem]">
                 <CalendarHeader />
                 <Switch>

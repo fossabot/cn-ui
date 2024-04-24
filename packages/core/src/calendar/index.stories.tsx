@@ -23,9 +23,14 @@ export const Primary: Story = {
         const year = atom([dayjs("2024-04-15")]);
         return (
             <Flex gap="20px">
-                <Calendar locales={'zh-Hans-CN'} data-testid="single" v-model={date} />
-                <Calendar locales={'zh-Hans-CN'} data-testid="multiple" v-model={month} mode="multiple" />
-                <Calendar locales={'zh-Hans-CN'} data-testid="range" v-model={year} mode="range" />
+                <Calendar locales={"zh-Hans-CN"} data-testid="single" v-model={date} />
+                <Calendar
+                    locales={"zh-Hans-CN"}
+                    data-testid="multiple"
+                    v-model={month}
+                    mode="multiple"
+                />
+                <Calendar locales={"zh-Hans-CN"} data-testid="range" v-model={year} mode="range" />
             </Flex>
         );
     },
@@ -206,9 +211,9 @@ export const Second: Story = {
         const date = atom([dayjs("2024-04-15")]);
         return (
             <Flex gap="20px">
-                <Calendar locales={'zh-Hans-CN'} v-model={date} view="month" />
-                <Calendar locales={'zh-Hans-CN'} v-model={date} view="month" mode="multiple" />
-                <Calendar locales={'zh-Hans-CN'} v-model={date} view="month" mode="range" />
+                <Calendar locales={"zh-Hans-CN"} v-model={date} view="month" />
+                <Calendar locales={"zh-Hans-CN"} v-model={date} view="month" mode="multiple" />
+                <Calendar locales={"zh-Hans-CN"} v-model={date} view="month" mode="range" />
             </Flex>
         );
     },
@@ -220,9 +225,9 @@ export const Year: Story = {
         const date = atom([dayjs("2024-04-15")]);
         return (
             <Flex gap="20px">
-                <Calendar v-model={date} locales={'zh-Hans-CN'} view="year" />
-                <Calendar v-model={date} locales={'zh-Hans-CN'} view="year" mode="multiple" />
-                <Calendar v-model={date} locales={'zh-Hans-CN'} view="year" mode="range" />
+                <Calendar v-model={date} locales={"zh-Hans-CN"} view="year" />
+                <Calendar v-model={date} locales={"zh-Hans-CN"} view="year" mode="multiple" />
+                <Calendar v-model={date} locales={"zh-Hans-CN"} view="year" mode="range" />
             </Flex>
         );
     },
