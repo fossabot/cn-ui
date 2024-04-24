@@ -265,7 +265,7 @@ export const Virtual: Story = {
             const tooltip = within(canvas.getByRole("tooltip"));
             await scrollIntoView(
                 canvasElement.querySelector(".cn-virtual-list")!,
-                async (scrollElement) => {
+                async (scrollElement, context) => {
                     for (const i of scrollElement.children[0].children) {
                         if (
                             ["Jack1", "Jack2", "Jack3", "Jack100", "Jack500"].includes(
@@ -277,13 +277,12 @@ export const Virtual: Story = {
                         if (i.textContent === "Jack500") {
                             const canSee = await isVisible(i);
                             if (canSee) {
-                                return 0;
+                                return true;
                             } else {
-                                return -1;
+                                context.slowDown(10);
                             }
                         }
                     }
-                    return 1;
                 },
                 { step: 128 },
             );
@@ -303,18 +302,17 @@ export const Virtual: Story = {
             const tooltip = within(canvas.getByRole("tooltip"));
             await scrollIntoView(
                 canvasElement.querySelector(".cn-virtual-list")!,
-                async (scrollElement) => {
+                async (scrollElement, context) => {
                     for (const i of scrollElement.children[0].children) {
                         if (i.textContent === "Jack9999") {
                             const canSee = await isVisible(i);
                             if (canSee) {
-                                return 0;
+                                return true;
                             } else {
-                                return -1;
+                                context.slowDown(100);
                             }
                         }
                     }
-                    return 1;
                 },
                 { step: 4196 },
             );

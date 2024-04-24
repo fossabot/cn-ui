@@ -4,6 +4,7 @@ import { ArrayFolder, atom } from "@cn-ui/reactive";
 import { expect, within } from "@storybook/test";
 import Mock from "mockjs-ts";
 import { VirtualList, type VirtualListExpose } from "./VirtualList";
+import { isVisible, scrollIntoView } from "../select/scrollHelper";
 const meta = {
     title: "Data 数据展示/VirtualList 虚拟列表",
     component: VirtualList,
@@ -12,24 +13,21 @@ const meta = {
 export default meta;
 export type Story = StoryObj<typeof meta>;
 
-interface DataType {
-    data: string[];
-}
 /**  */
 export const Primary: Story = {
     name: "ListRender 列表渲染",
     render() {
-        const cellsSize = 100 * 1000;
-        const items = atom(ArrayFolder([...Array(cellsSize).keys()], 100));
+        const cellsSize = 10 * 10000;
+        const items = atom(ArrayFolder([...Array(cellsSize).keys()], 10));
         return (
-            <div class="h-screen flex flex-col">
-                <div class="h-24">100x1000</div>
+            <div class="h-96 flex flex-col">
+                <div class="h-24">10x10000</div>
                 <VirtualList each={items()} estimateSize={24}>
                     {(item, index, { itemClass }) => {
                         return (
                             <div class="h-6 bg-gray-100 flex">
                                 {item.map((i) => {
-                                    return <div class="w-24 flex-none">{i}</div>;
+                                    return <div class="flex-1">{i}</div>;
                                 })}
                             </div>
                         );
@@ -38,7 +36,36 @@ export const Primary: Story = {
             </div>
         );
     },
-    args: {},
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+        await step("滚动到最末尾", async () => {
+            await scrollIntoView(
+                canvasElement.querySelector(".cn-virtual-list")!,
+                (scrollElement, context) => {
+                    if (canvas.queryByText("99999")) {
+                        return true;
+                    }
+                },
+                { step: 10000 },
+            );
+            expect(await isVisible(canvas.getByText("99999"))).toBe(true);
+            expect(await isVisible(canvas.getByText("99990"))).toBe(true);
+        });
+        await step("滚动到最前面", async () => {
+            await scrollIntoView(
+                canvasElement.querySelector(".cn-virtual-list")!,
+                (scrollElement, context) => {
+                    if (canvas.queryByText("0")) {
+                        return true;
+                    }
+                },
+                { step: -10000 },
+            );
+            // 判断 0 在视野中
+            expect(await canvas.findByText("0")).toBeInTheDocument();
+        });
+        // feat: 内存检查
+    },
 };
 export const DynamicHeight: Story = {
     name: "DynamicHeight 不等高测试",
@@ -73,25 +100,10 @@ export const DynamicHeight: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
-        const expose: VirtualListExpose = (globalThis as any).expose;
-        // 将 v-list 滚动到最末尾
-        await step("滚动到最末尾", async () => {
-            await expose.virtualizer.scrollToIndex(1000, { align: "center" });
-            await expect(
-                (await canvas.findAllByTestId("index")).every(
-                    (i) => Number.parseInt(i.textContent!) >= 900,
-                ),
-            ).toBe(true);
-        });
-        await step("滚动到最前面", async () => {
-            await expose.virtualizer.scrollToIndex(0);
-            // 判断 0 在视野中
-            expect(await canvas.findByText("0")).toBeInTheDocument();
-        });
-        const list = canvasElement.querySelector(".cn-virtual-list-container");
-        await step("判断 list 高度大于宽度", async () => {
-            const style = getComputedStyle(list!);
-            expect(Number.parseInt(style.height)).toBeGreaterThan(Number.parseInt(style.width));
+        await step("判断视野内的行都是不等高的", async () => {
+            const vList = [...canvasElement.querySelectorAll(".cn-virtual-item")];
+            const heights = vList.map((i) => getComputedStyle(i).height);
+            expect(heights.every((i, index, arr) => i !== arr[index + 1])).toBe(true);
         });
     },
 };
@@ -130,12 +142,34 @@ export const horizontal: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
-        const expose: VirtualListExpose = (globalThis as any).expose;
-        const list = canvasElement.querySelector(".cn-virtual-list-container");
-        await step("判断 list 宽度大于高度", async () => {
-            const style = getComputedStyle(list!);
-            expect(Number.parseInt(style.width)).toBeGreaterThan(Number.parseInt(style.height));
+        await step("滚动到最末尾", async () => {
+            await scrollIntoView(
+                canvasElement.querySelector(".cn-virtual-list")!,
+                async (scrollElement, context) => {
+                    const item = canvas.queryByText("999");
+                    if (item && (await isVisible(item))) {
+                        return true;
+                    }
+                },
+                { step: 10000, horizontal: true },
+            );
+            expect(await isVisible(canvas.getByText("999"))).toBe(true);
+            expect(await isVisible(canvas.getByText("998"))).toBe(true);
         });
+        await step("滚动到最前面", async () => {
+            await scrollIntoView(
+                canvasElement.querySelector(".cn-virtual-list")!,
+                (scrollElement, context) => {
+                    if (canvas.queryByText("0")) {
+                        return true;
+                    }
+                },
+                { step: -10000, horizontal: true },
+            );
+            // 判断 0 在视野中
+            expect(await canvas.findByText("0")).toBeInTheDocument();
+        });
+        // feat: 内存检查
     },
 };
 export const Reverse: Story = {
@@ -173,12 +207,35 @@ export const Reverse: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
-        const expose: VirtualListExpose = (globalThis as any).expose;
-        const list = canvasElement.querySelector(".cn-virtual-list-container");
-        await step("判断 list 高度大于宽度", async () => {
-            const style = getComputedStyle(list!);
-            expect(Number.parseInt(style.height)).toBeGreaterThan(Number.parseInt(style.width));
+        await step("从下往上滚动", async () => {
+            await scrollIntoView(
+                canvasElement.querySelector(".cn-virtual-list")!,
+                async (scrollElement, context) => {
+                    const item = canvas.queryByText("999");
+                    if (item && (await isVisible(item))) {
+                        return true;
+                    }
+                },
+                { step: -10000 },
+            );
+            expect(await isVisible(canvas.getByText("999"))).toBe(true);
+            expect(await isVisible(canvas.getByText("998"))).toBe(true);
         });
+        await step("从上往下滚动", async () => {
+            await scrollIntoView(
+                canvasElement.querySelector(".cn-virtual-list")!,
+                (scrollElement, context) => {
+                    if (canvas.queryByText("0")) {
+                        return true;
+                    }
+                },
+                { step: 10000 },
+            );
+            // 判断 0 在视野中
+            expect(await canvas.findByText("0")).toBeInTheDocument();
+        });
+
+        // feat: 内存检查
     },
 };
 export const H_Reverse: Story = {
@@ -217,16 +274,33 @@ export const H_Reverse: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
-        const expose: VirtualListExpose = (globalThis as any).expose;
-        const list = canvasElement.querySelector(".cn-virtual-list-container");
-        // 判断滚动条在 0 位置，并且 0 在视图中
-        await step("判断滚动条在 0 位置，并且 0 在视图中", async () => {
+        await step("滚动到最末尾", async () => {
+            await scrollIntoView(
+                canvasElement.querySelector(".cn-virtual-list")!,
+                async (scrollElement, context) => {
+                    const item = canvas.queryByText("999");
+                    if (item && (await isVisible(item))) {
+                        return true;
+                    }
+                },
+                { step: -20000, horizontal: true },
+            );
+            expect(await isVisible(canvas.getByText("999"))).toBe(true);
+            expect(await isVisible(canvas.getByText("998"))).toBe(true);
+        });
+        await step("滚动到最前面", async () => {
+            await scrollIntoView(
+                canvasElement.querySelector(".cn-virtual-list")!,
+                (scrollElement, context) => {
+                    if (canvas.queryByText("0")) {
+                        return true;
+                    }
+                },
+                { step: 10000, horizontal: true },
+            );
+            // 判断 0 在视野中
             expect(await canvas.findByText("0")).toBeInTheDocument();
-            expect(list?.scrollLeft).toBe(0);
         });
-        await step("判断 list 宽度大于高度", async () => {
-            const style = getComputedStyle(list!);
-            expect(Number.parseInt(style.width)).toBeGreaterThan(Number.parseInt(style.height));
-        });
+        // feat: 内存检查
     },
 };
