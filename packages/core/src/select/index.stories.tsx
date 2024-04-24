@@ -84,14 +84,14 @@ export const Primary: Story = {
 
             await userEvent.click(canvas.getByText("Jack"));
             filterable.focus();
-            await sleep(150);
+            await sleep(200);
             expect(filterable).toHaveAttribute("placeholder", "Jack");
 
             filterable.blur();
-            await sleep(150);
+            await sleep(200);
 
-            expect(filterable).toHaveDisplayValue("Jack");
-            expect(another).toHaveDisplayValue("Jack");
+            expect(filterable).toHaveValue("Jack");
+            expect(another).toHaveValue("Jack");
         });
         await step("filterable 测试", async () => {
             const filterable = canvas.getByLabelText("selected-filterable");

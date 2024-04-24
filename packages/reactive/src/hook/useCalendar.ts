@@ -110,6 +110,7 @@ export interface DateCalendarConfig {
     startOfWeek?: number;
     extraStartWeek?: number;
     extraEndWeek?: number;
+    locales?: Intl.LocalesArgument
 }
 
 /** 经典日期日历 */
@@ -156,11 +157,13 @@ export const useDateCalendar = (targetDate: Atom<Dayjs>, config: Accessor<DateCa
         allDateInMonth,
         extraStartWeek,
         extraEndWeek,
-        monthHeader(locales?: Intl.LocalesArgument) {
+        monthHeader() {
+            const locales = config().locales
             // @ts-ignore locale type 判断失效
             return MonthLocale(locales, { month: "short", locale: locales });
         },
-        weekHeader(locales?: Intl.LocalesArgument) {
+        weekHeader() {
+            const locales = config().locales
             const names = WeekTitleLocale(locales, { weekday: "narrow" });
             return genArray(7)
                 .map((i) => ((config().startOfWeek ?? 0) + i) % 7)
