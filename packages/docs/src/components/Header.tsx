@@ -1,6 +1,7 @@
 import { Flex } from "@cn-ui/core";
 import { Button } from "@cn-ui/core";
 import { toggleTheme } from "@cn-ui/core";
+import { For } from "solid-js";
 export const Header = () => {
     const menuList = [
         {
@@ -22,16 +23,18 @@ export const Header = () => {
                 <span class="px-1 bg-design-title text-design-pure">CN UI</span>
             </a>
             <Flex class="gap-4 flex-1">
-                {menuList.map((i) => {
-                    return (
-                        <a
-                            class="px-4 transition-colors hover:bg-primary-400 hover:text-design-pure h-full block"
-                            href={i.href}
-                        >
-                            {i.name}
-                        </a>
-                    );
-                })}
+                <For each={menuList}>
+                    {(i) => {
+                        return (
+                            <a
+                                class="px-4 transition-colors hover:bg-primary-400 hover:text-design-pure h-full block"
+                                href={i.href}
+                            >
+                                {i.name}
+                            </a>
+                        );
+                    }}
+                </For>
             </Flex>
 
             <Button onclick={toggleTheme} type="text">

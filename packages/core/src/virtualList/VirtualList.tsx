@@ -11,7 +11,7 @@ import {
     toCSSPx,
 } from "@cn-ui/reactive";
 import { Key } from "@solid-primitives/keyed";
-import { type Accessor, type JSXElement, type Setter, Show } from "solid-js";
+import { type Accessor, type JSXElement, type Setter, Show, createMemo } from "solid-js";
 import { TransitionGroup } from "solid-transition-group";
 import { useAutoResize } from "../table/hook/useAutoResize";
 import { type CNVirtualizer, createVirtualizer } from "../table/virtual/createVirtualizer";
@@ -97,6 +97,7 @@ export const VirtualList = OriginComponent(function <T>(
     });
     props.expose?.({ virtualizer });
     const { height, width } = useAutoResize(() => tableContainerRef());
+
     const CoreList = () => {
         return (
             <Key
@@ -109,6 +110,15 @@ export const VirtualList = OriginComponent(function <T>(
                     const itemRef = NullAtom<HTMLDivElement>(null);
                     const context = { itemClass, itemRef };
 
+                    /** 当数据错位时，将使用上次的数据定位 */
+                    const child = createMemo<JSXElement>((last) => {
+                        if (props.each[virtualRow().index] === undefined) return last;
+                        return props.children(
+                            props.each[virtualRow().index],
+                            () => virtualRow().index,
+                            context,
+                        );
+                    });
                     return (
                         <div
                             class={classNames(
@@ -131,11 +141,7 @@ export const VirtualList = OriginComponent(function <T>(
                                       : "top"]: `${virtualRow().start}px`,
                             }}
                         >
-                            {props.children(
-                                props.each[virtualRow().index],
-                                () => virtualRow().index,
-                                context,
-                            )}
+                            {child()}
                         </div>
                     );
                 }}

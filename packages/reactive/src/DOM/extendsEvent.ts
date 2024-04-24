@@ -10,10 +10,10 @@ export type ExtractOnKeys<T extends object> = {
  */
 export const extendsEvent = <T extends object>(props: T): ExtractOnKeys<T> => {
     const allowPrefix = ["on", "data-", "aria-"];
-    const allProp = ['role','id']
+    const allProp = ["role", "id"];
     const events = untrack(() => {
         return Object.keys(props).filter(
-            (i) => allowPrefix.some((prefix) => i.startsWith(prefix)) || allProp.includes(i) ,
+            (i) => allowPrefix.some((prefix) => i.startsWith(prefix)) || allProp.includes(i),
         );
     });
 

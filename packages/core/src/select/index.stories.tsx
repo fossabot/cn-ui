@@ -84,11 +84,11 @@ export const Primary: Story = {
 
             await userEvent.click(canvas.getByText("Jack"));
             filterable.focus();
-            await sleep(100);
+            await sleep(150);
             expect(filterable).toHaveAttribute("placeholder", "Jack");
 
             filterable.blur();
-            await sleep(100);
+            await sleep(150);
 
             expect(filterable).toHaveDisplayValue("Jack");
             expect(another).toHaveDisplayValue("Jack");

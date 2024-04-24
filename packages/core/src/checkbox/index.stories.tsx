@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
 
 import { Atom, NullAtom, atom, computed } from "@cn-ui/reactive";
+import { expect, userEvent, within } from "@storybook/test";
 import { Flex } from "../container/Flex";
 import { Checkbox, CheckboxGroup, type CheckboxGroupExpose, useControlCheckbox } from "./index";
-import { expect, userEvent, within } from "@storybook/test";
 
 const expectCheckBox = (el: HTMLElement) => {
     return expect(el.children[0]);

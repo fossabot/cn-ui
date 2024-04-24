@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
 
-import { SelectOptionsType, atom, sleep } from "@cn-ui/reactive";
-import { createEffect } from "solid-js";
-import { Button } from "../button";
-import { Alert, Message } from "./index";
+import { type SelectOptionsType, atom, sleep } from "@cn-ui/reactive";
 import { expect, userEvent, within } from "@storybook/test";
+import { createEffect } from "solid-js";
+import { MODAL_LIST_POSITION, type ModalListPosition } from "../Modal";
+import { Button } from "../button";
 import { Select } from "../select";
-import { MODAL_LIST_POSITION, ModalListPosition } from "../Modal";
+import { Alert, Message } from "./index";
 
 const meta = {
     title: "Feedback 反馈组件/Message 消息弹窗",

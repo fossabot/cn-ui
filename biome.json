@@ -18,10 +18,12 @@
     "linter": {
         "enabled": true,
         "rules": {
-            "correctness": {
-                "useJsxKeyInIterable": false
-            },
             "recommended": true,
+            "correctness": {
+                "useJsxKeyInIterable": {
+                    "level": "off"
+                }
+            },
             "suspicious": {
                 "noExplicitAny": "warn",
                 "noConfusingVoidType": "warn"

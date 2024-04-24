@@ -1,8 +1,8 @@
-import { Atom, atom, type JSXSlot } from "@cn-ui/reactive";
-import { MODAL_LIST_POSITION, ModalList, ModalListPosition } from "../Modal";
-import { Alert, AlertProps } from "./Alert";
-import { createRuntimeArea } from "./runtime";
+import { type Atom, type JSXSlot, atom } from "@cn-ui/reactive";
 import { For } from "solid-js";
+import { MODAL_LIST_POSITION, ModalList, type ModalListPosition } from "../Modal";
+import { Alert, type AlertProps } from "./Alert";
+import { createRuntimeArea } from "./runtime";
 
 export interface MessageInfo extends Partial<AlertProps> {
     id?: string;

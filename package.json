@@ -4,10 +4,7 @@
     "version": "0.0.1",
     "type": "module",
     "main": "./dist/index.js",
-    "files": [
-        "dist",
-        "src"
-    ],
+    "files": ["dist", "src"],
     "scripts": {
         "storybook": "storybook dev -p 6006",
         "type-check": "tsc -p tsconfig.node.json",
@@ -24,7 +21,7 @@
     },
     "devDependencies": {
         "@ant-design/colors": "^7.0.2",
-        "@biomejs/biome": "^1.7.0",
+        "@biomejs/biome": "^1.7.1",
         "@chromatic-com/storybook": "^1.3.3",
         "@joshwooding/vite-plugin-react-docgen-typescript": "^0.3.1",
         "@solidjs/testing-library": "^0.8.7",
@@ -73,8 +70,8 @@
         "yorkie": "^2.0.0"
     },
     "lint-staged": {
-        "*.{ts,tsx,js,jsx,json}": "biome check --diagnostic-level=error  ",
-        "*.{css,md,mdx}": "prettier --ignore-unknown "
+        "*.{ts,tsx,js,jsx}": "biome check --diagnostic-level=error  ",
+        "*.{css,md,mdx,json}": "prettier --ignore-unknown "
     },
     "gitHooks": {
         "pre-commit": "lint-staged"
