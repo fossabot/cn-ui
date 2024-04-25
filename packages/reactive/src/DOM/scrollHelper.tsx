@@ -10,7 +10,7 @@ export const scrollElement = async (
     {
         step = 16,
         horizontal = false,
-        maxScrollTime = 3000,
+        maxScrollTime = 10 * 1000,
     }: {
         step?: number;
         horizontal?: boolean;

@@ -299,8 +299,8 @@ export const Virtual: Story = {
                 canvasElement.querySelector(".cn-virtual-list")!,
                 async (scrollElement, context) => {
                     const item = canvas.queryByText("Jack9999");
-                    if(item && (await isElementRealVisible(item))){
-                        return true
+                    if (item && (await isElementRealVisible(item))) {
+                        return true;
                     }
                 },
                 { step: 10000 },

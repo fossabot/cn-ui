@@ -8,7 +8,6 @@ import { autoChangeTheme } from "../packages/core/src/utils/darkMode";
 autoChangeTheme();
 const preview: Preview = {
     parameters: {
-        actions: { argTypesRegex: "^on[A-Z].*" },
         controls: {
             expanded: true,
         },

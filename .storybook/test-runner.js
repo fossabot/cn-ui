@@ -2,7 +2,6 @@ import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
 import { getStoryContext } from "@storybook/test-runner";
 
 const DEFAULT_VIEWPORT_SIZE = { width: 1280, height: 720 };
-
 const config = {
     async preVisit(page, story) {
         // Accesses the story's parameters and retrieves the viewport used to render it

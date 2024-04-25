@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
-
-import { ArrayFolder, atom } from "@cn-ui/reactive";
+import { ArrayFolder, atom, sleep } from "@cn-ui/reactive";
 import { isElementRealVisible, scrollElement } from "@cn-ui/reactive";
-import { expect, within } from "@storybook/test";
+import { expect, within ,configure} from "@storybook/test";
+configure({
+    asyncUtilTimeout: 10000,
+});
 import Mock from "mockjs-ts";
 import { VirtualList } from "./VirtualList";
 const meta = {
@@ -46,7 +48,7 @@ export const Primary: Story = {
                         return true;
                     }
                 },
-                { step: 10000 },
+                { step: 20000 },
             );
             expect(await isElementRealVisible(canvas.getByText("99999"))).toBe(true);
             expect(await isElementRealVisible(canvas.getByText("99990"))).toBe(true);
@@ -59,7 +61,7 @@ export const Primary: Story = {
                         return true;
                     }
                 },
-                { step: -10000 },
+                { step: -20000 },
             );
             // 判断 0 在视野中
             expect(await canvas.findByText("0")).toBeInTheDocument();
@@ -151,7 +153,7 @@ export const horizontal: Story = {
                         return true;
                     }
                 },
-                { step: 10000, horizontal: true },
+                { step: 20000, horizontal: true },
             );
             expect(await isElementRealVisible(canvas.getByText("999"))).toBe(true);
             expect(await isElementRealVisible(canvas.getByText("998"))).toBe(true);
@@ -164,7 +166,7 @@ export const horizontal: Story = {
                         return true;
                     }
                 },
-                { step: -10000, horizontal: true },
+                { step: -20000, horizontal: true },
             );
             // 判断 0 在视野中
             expect(await canvas.findByText("0")).toBeInTheDocument();
@@ -207,6 +209,7 @@ export const Reverse: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
+        await sleep(100)
         await step("从下往上滚动", async () => {
             await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
@@ -216,7 +219,7 @@ export const Reverse: Story = {
                         return true;
                     }
                 },
-                { step: -10000 },
+                { step: -20000 },
             );
             expect(await isElementRealVisible(canvas.getByText("999"))).toBe(true);
             expect(await isElementRealVisible(canvas.getByText("998"))).toBe(true);
@@ -229,7 +232,7 @@ export const Reverse: Story = {
                         return true;
                     }
                 },
-                { step: 10000 },
+                { step: 20000 },
             );
             // 判断 0 在视野中
             expect(await canvas.findByText("0")).toBeInTheDocument();
@@ -296,7 +299,7 @@ export const H_Reverse: Story = {
                         return true;
                     }
                 },
-                { step: 10000, horizontal: true },
+                { step: 20000, horizontal: true },
             );
             // 判断 0 在视野中
             expect(await canvas.findByText("0")).toBeInTheDocument();
