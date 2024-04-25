@@ -5,7 +5,7 @@ export const scrollElement = async (
     scrollElement: HTMLElement,
     predict: (
         scrollElement: HTMLElement,
-        context: { reverse: () => void; slowDown: (diff: number) => void },
+        context: { getStep: () => number; reverse: () => void; slowDown: (diff: number) => void },
     ) => true | void | Promise<true | void>,
     {
         step = 16,
@@ -24,6 +24,9 @@ export const scrollElement = async (
             setTimeout(() => {
                 resolve(
                     predict(scrollElement, {
+                        getStep() {
+                            return step;
+                        },
                         slowDown(diff) {
                             step - diff;
                         },
@@ -32,7 +35,7 @@ export const scrollElement = async (
                         },
                     }),
                 );
-            }, 0);
+            }, 50);
         });
         if (isVisible) return;
 

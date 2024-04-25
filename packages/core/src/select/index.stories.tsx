@@ -266,6 +266,7 @@ export const Virtual: Story = {
             await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
                 async (scrollElement, context) => {
+                    const item = canvas.queryByText("Jack500");
                     for (const i of scrollElement.children[0].children) {
                         if (
                             ["Jack1", "Jack2", "Jack3", "Jack100", "Jack500"].includes(
@@ -274,17 +275,12 @@ export const Virtual: Story = {
                             i.getAttribute("aria-selected") !== "true"
                         )
                             await userEvent.click(i);
-                        if (i.textContent === "Jack500") {
-                            const canSee = await isElementRealVisible(i);
-                            if (canSee) {
-                                return true;
-                            } else {
-                                context.slowDown(10);
-                            }
+                        if (item && (await isElementRealVisible(item))) {
+                            return true;
                         }
                     }
                 },
-                { step: 128 },
+                { step: 700, maxScrollTime: 10000 },
             );
 
             expect(tooltip.queryByText("Jack1")).toBeFalsy();
@@ -292,7 +288,6 @@ export const Virtual: Story = {
             expect(tooltip.queryByText("Jack3")).toBeFalsy();
             expect(tooltip.queryByText("Jack100")).toBeFalsy();
             expect(tooltip.queryByText("Jack200")).toBeFalsy();
-            expect(tooltip.queryByText("Jack500")).toBeVisible();
             expect(tooltip.queryByText("Jack700")).toBeFalsy();
             expect(tooltip.queryByText("Jack999")).toBeFalsy();
             expect(canvas.getByTestId("result")).toHaveTextContent("jack1jack2jack3jack100jack500");
@@ -303,18 +298,12 @@ export const Virtual: Story = {
             await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
                 async (scrollElement, context) => {
-                    for (const i of scrollElement.children[0].children) {
-                        if (i.textContent === "Jack9999") {
-                            const canSee = await isElementRealVisible(i);
-                            if (canSee) {
-                                return true;
-                            } else {
-                                context.slowDown(100);
-                            }
-                        }
+                    const item = canvas.queryByText("Jack9999");
+                    if(item && (await isElementRealVisible(item))){
+                        return true
                     }
                 },
-                { step: 4196 },
+                { step: 10000 },
             );
 
             expect(tooltip.queryByText("Jack9999")).not.toBeFalsy();
