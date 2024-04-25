@@ -51,7 +51,7 @@ export const scrollElement = async (
 };
 /** 使用 IntersectionObserver 判断元素是否能被看到 */
 export const isElementRealVisible = (element: Element) => {
-    return new Promise((resolve) => {
+    return new Promise<boolean>((resolve) => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 observer.disconnect();

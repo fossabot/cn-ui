@@ -102,7 +102,6 @@ export const Primary: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
-
         await step("disabled 状态测试", async () => {
             // 点击按钮，无事件触发，dom 元素含有 disabled 属性
             await expectDarkTheme(false);

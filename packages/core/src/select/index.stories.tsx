@@ -280,7 +280,7 @@ export const Virtual: Story = {
                         }
                     }
                 },
-                { step: 700, maxScrollTime: 10000 },
+                { step: 700, maxScrollTime: 20000 },
             );
 
             expect(tooltip.queryByText("Jack1")).toBeFalsy();

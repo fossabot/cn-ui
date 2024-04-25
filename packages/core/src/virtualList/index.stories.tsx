@@ -1,10 +1,8 @@
-import type { Meta, StoryObj } from "storybook-solidjs";
 import { ArrayFolder, atom, sleep } from "@cn-ui/reactive";
 import { isElementRealVisible, scrollElement } from "@cn-ui/reactive";
-import { expect, within ,configure} from "@storybook/test";
-configure({
-    asyncUtilTimeout: 10000,
-});
+import { expect, within } from "@storybook/test";
+import type { Meta, StoryObj } from "storybook-solidjs";
+
 import Mock from "mockjs-ts";
 import { VirtualList } from "./VirtualList";
 const meta = {
@@ -40,6 +38,7 @@ export const Primary: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
+        await sleep(100)
         await step("滚动到最末尾", async () => {
             await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
@@ -144,6 +143,7 @@ export const horizontal: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
+        await sleep(100)
         await step("滚动到最末尾", async () => {
             await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
@@ -277,6 +277,7 @@ export const H_Reverse: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
+        await sleep(100)
         await step("滚动到最末尾", async () => {
             await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
