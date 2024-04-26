@@ -4,10 +4,7 @@
     "version": "0.0.1",
     "type": "module",
     "main": "./dist/index.js",
-    "files": [
-        "dist",
-        "src"
-    ],
+    "files": ["dist", "src"],
     "scripts": {
         "storybook": "storybook dev -p 6006",
         "preview": "pnpx http-server storybook-static --port 6006 --silent",
@@ -46,6 +43,7 @@
         "@unocss/reset": "^0.58.9",
         "@unocss/transformer-directives": "^0.58.9",
         "@vant/touch-emulator": "^1.4.0",
+        "dotenv": "^16.4.5",
         "fs-extra": "^11.2.0",
         "glob": "^10.3.12",
         "hast-util-to-jsx-runtime": "^2.3.0",
@@ -62,6 +60,7 @@
         "storybook-solidjs": "^1.0.0-beta.2",
         "storybook-solidjs-docgen": "workspace:^",
         "storybook-solidjs-vite": "^1.0.0-beta.2",
+        "tar": "^7.0.1",
         "typescript": "^5.4.5",
         "unocss": "^0.58.9",
         "unocss-preset-chinese": "^0.3.2",

@@ -13,3 +13,14 @@ export const MyApp = () => {
     return <Button>Hello</Button>
 }
 ```
+
+
+### 下载测试文件包
+
+```sh
+node script/snapshotSync.mjs download # 下载测试文件包
+
+
+node script/snapshotSync.mjs upload # 上传测试文件包，需要在 .env 文件中写入 UPLOAD_TOKEN=
+
+```
