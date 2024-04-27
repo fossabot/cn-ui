@@ -7,7 +7,7 @@ import { ColumnOrdering } from "./example/ColumnOrdering";
 import { Expanded } from "./example/Expanded";
 import { FormTable } from "./example/FormTable";
 import { PaginationExample } from "./example/Pagination";
-import { MagicTable, type MagicTableExpose, useVirtual } from "./index";
+import { MagicTable, type MagicTableExpose, useTableVirtual } from "./index";
 
 const meta = {
     title: "Data 数据展示/Table 表格组件",
@@ -56,7 +56,7 @@ export const Primary: Story = {
         const cols = makeColumns(1000);
         const data = makeData(1000, cols);
         console.timeEnd("createData");
-        return <MagicTable virtual={useVirtual} columns={cols} data={data} />;
+        return <MagicTable virtual={useTableVirtual} columns={cols} data={data} />;
     },
     args: {},
 };
@@ -69,7 +69,16 @@ export const Selection: Story = {
         const data = makeData(100, cols);
         console.timeEnd("createData");
         const expose = NullAtom<MagicTableExpose<Record<string, string>>>(null);
-        return <MagicTable selection index columns={cols} data={data} expose={expose} />;
+        return (
+            <MagicTable
+                virtual={useTableVirtual}
+                selection
+                index
+                columns={cols}
+                data={data}
+                expose={expose}
+            />
+        );
     },
     args: {},
 };

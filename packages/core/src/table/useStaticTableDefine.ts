@@ -1,4 +1,7 @@
 import { atom } from "@cn-ui/reactive";
+import { createMemo } from "solid-js";
+import { expandingConfig, indexConfig, selectionConfig } from "./defaultConfig";
+import type { MagicTableProps } from "./interface";
 import {
     type ColumnDef,
     type ColumnOrderState,
@@ -12,10 +15,7 @@ import {
     getCoreRowModel,
     getExpandedRowModel,
     getSortedRowModel,
-} from "@tanstack/solid-table";
-import { createMemo } from "solid-js";
-import { expandingConfig, indexConfig, selectionConfig } from "./defaultConfig";
-import type { MagicTableProps } from "./interface";
+} from "./solidTable";
 import { useSticky } from "./useSticky";
 
 export const useStaticTableDefine = <T>(props: MagicTableProps<T>) => {

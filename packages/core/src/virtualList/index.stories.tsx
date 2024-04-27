@@ -38,7 +38,7 @@ export const Primary: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
-        await sleep(100)
+        await sleep(100);
         await step("滚动到最末尾", async () => {
             await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
@@ -143,7 +143,7 @@ export const horizontal: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
-        await sleep(100)
+        await sleep(100);
         await step("滚动到最末尾", async () => {
             await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
@@ -209,7 +209,7 @@ export const Reverse: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
-        await sleep(100)
+        await sleep(100);
         await step("从下往上滚动", async () => {
             await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,
@@ -277,7 +277,7 @@ export const H_Reverse: Story = {
     },
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
-        await sleep(100)
+        await sleep(100);
         await step("滚动到最末尾", async () => {
             await scrollElement(
                 canvasElement.querySelector(".cn-virtual-list")!,

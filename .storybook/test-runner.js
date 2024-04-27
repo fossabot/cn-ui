@@ -29,6 +29,9 @@ const setupScreenSize = async (page, story) => {
 };
 
 const setupVisualTest = async (page, context) => {
+    // Accesses the story's parameters and retrieves the viewport used to render it
+    const context = await getStoryContext(page, story);
+    const needVirtual = context?.virtualTest === true;
     await waitForPageReady(page);
     const ScreenshotCompare = async (suffix = "") => {
         const image = await page.screenshot();
@@ -37,7 +40,8 @@ const setupVisualTest = async (page, context) => {
             customSnapshotIdentifier: context.id + suffix,
         });
     };
-    return ScreenshotCompare
+
+    if (needVirtual) ScreenshotCompare();
 };
 
 const config = {
@@ -46,8 +50,7 @@ const config = {
     },
     async preVisit(page, story) {
         await setupScreenSize(page, story);
-        const ScreenshotCompare = await setupVisualTest(page, story);
-        await ScreenshotCompare()
+        await setupVisualTest(page, story);
     },
 };
 
