@@ -179,7 +179,9 @@ export const ColumnGroup: Story = {
     name: "ColumnGroup 多级表头",
     decorators: Primary.decorators,
     render: ColumnGroups,
-    virtualTest: true,
+    parameters: {
+        virtualTest: true,
+    },
 };
 export const _ColumnOrdering: Story = {
     name: "ColumnOrdering 列排序",
