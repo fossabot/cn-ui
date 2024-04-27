@@ -1,15 +1,15 @@
 import { genArray, isElementRealVisible, scrollElement, sleep } from "@cn-ui/reactive";
+import { expect, userEvent, within } from "@storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs";
 import { ColumnGroups } from "./example/ColumnGroups";
 import { ColumnOrdering } from "./example/ColumnOrdering";
-import { Expanded } from "./example/Expanded";
 import { ColumnPinned } from "./example/ColumnPinned";
+import { makeVirtualColumns, makeVirtualData } from "./example/DataMaker";
+import { DefaultSelection } from "./example/DefaultSelection";
+import { Expanded } from "./example/Expanded";
 import { FormTable } from "./example/FormTable";
 import { PaginationExample } from "./example/Pagination";
 import { MagicTable, useTableVirtual } from "./index";
-import { makeVirtualColumns, makeVirtualData } from "./example/DataMaker";
-import { DefaultSelection } from "./example/DefaultSelection";
-import { expect, userEvent, within } from "@storybook/test";
 const meta = {
     title: "Data 数据展示/Table 表格组件",
     component: MagicTable,

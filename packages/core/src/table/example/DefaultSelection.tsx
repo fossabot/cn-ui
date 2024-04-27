@@ -1,8 +1,8 @@
 import { NullAtom } from "@cn-ui/reactive";
-import { MagicTable } from "../Table";
-import { useTableVirtual } from "../useVirtual";
 import { random } from "mockjs-ts";
 import type { ColumnDef, MagicTableExpose } from "..";
+import { MagicTable } from "../Table";
+import { useTableVirtual } from "../useVirtual";
 const makeColumns = (num: number) =>
     [...Array(num)].map((_, i) => {
         return {

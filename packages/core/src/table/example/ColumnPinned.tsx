@@ -1,6 +1,6 @@
 import { NullAtom } from "@cn-ui/reactive";
-import { type ColumnDef, MagicTable, type MagicTableExpose } from "..";
 import { random } from "mockjs-ts";
+import { type ColumnDef, MagicTable, type MagicTableExpose } from "..";
 
 const makeColumns = (num: number) =>
     [...Array(num)].map((_, i) => {
