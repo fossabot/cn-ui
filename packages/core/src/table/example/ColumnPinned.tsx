@@ -19,12 +19,11 @@ const makeData = (num: number, columns: any[]): Record<string, string>[] =>
     }));
 export const ColumnPinned = () => {
     console.time("createData");
-    const cols = makeColumns(100);
-    const data = makeData(100, cols);
+    const cols = makeColumns(50);
+    const data = makeData(50, cols);
     cols.slice(0, 5).forEach((i, index) => {
         i.fixed = index % 2 ? "left" : "right";
     });
-    console.log(data);
     console.timeEnd("createData");
     const expose = NullAtom<MagicTableExpose<Record<string, string>>>(null);
     return <MagicTable columns={cols} data={data} expose={expose} />;

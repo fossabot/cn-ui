@@ -1,4 +1,4 @@
-import { classNames, toCSSPx } from "@cn-ui/reactive";
+import { classHelper, classNames, toCSSPx } from "@cn-ui/reactive";
 import { type Header, flexRender } from "@tanstack/solid-table";
 import { AiOutlineSwapRight } from "solid-icons/ai";
 import { Show, createMemo } from "solid-js";
@@ -19,16 +19,21 @@ export function HeaderCell<T, D>(props: {
     const column = createMemo(() => header().column);
     return (
         <th
-            class={classNames(
-                column().getIsPinned() ? "sticky" : props.absolute !== false && "absolute",
+            class={classHelper.base(
                 "pointer-events-auto block bg-gray-100 py-2 text-sm border-b border-r border-solid border-gray-300/80 ",
+            )(
+                column().getIsPinned() && "sticky",
+                props.absolute !== false && "absolute",
+                "relative",
             )}
             style={{
                 width: toCSSPx(header().getSize()),
                 height: toCSSPx(estimateHeight(), "48px"),
-                left: props.useHeaderStart
-                    ? toCSSPx(props.paddingLeft + header().getStart() + paddingLeft())
-                    : toCSSPx(props.paddingLeft + props.item.start),
+                left: !props.absolute
+                    ? "relative"
+                    : props.useHeaderStart
+                      ? toCSSPx(props.paddingLeft + header().getStart() + paddingLeft())
+                      : toCSSPx(props.paddingLeft + props.item.start),
                 ...getCommonPinningStyles(column(), props.paddingLeft, true),
             }}
         >
@@ -80,18 +85,16 @@ export const SortingStateIcon = (props: {
             onClick={props.onClick}
         >
             {/* TODO Fallback 情况 */}
-            <Show when={props.state}>
-                <AiOutlineSwapRight
-                    class={classNames(
-                        "fill-primary-600",
-                        props.state === "asc" ? "rotate-90" : "-rotate-90",
-                    )}
-                    style={{
-                        scale: props.state === "asc" ? "" : "-1 1",
-                    }}
-                    size={16}
-                />
-            </Show>
+            <AiOutlineSwapRight
+                class={classNames(
+                    props.state ? "fill-primary-600" : "fill-gray-500",
+                    props.state === "asc" ? "rotate-90" : "-rotate-90",
+                )}
+                style={{
+                    scale: props.state === "asc" ? "" : "-1 1",
+                }}
+                size={16}
+            />
         </div>
     );
 };

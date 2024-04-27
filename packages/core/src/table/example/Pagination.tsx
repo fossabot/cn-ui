@@ -5,6 +5,7 @@ import { Pagination } from "../../pagination";
 import { MagicTable } from "../Table";
 import { newPerson } from "./Expanded";
 import Mock from "mockjs-ts";
+import { shuffle } from "radash";
 
 type Person = {
     firstName: string;
@@ -63,17 +64,22 @@ const columns = [
 export const PaginationExample = () => {
     const pageSize = atom(100);
     const a = usePagination<Person[]>(
-        async (_, max, count) => {
+        async (page, max, count) => {
             max(100);
             count(pageSize() * 100);
-            return genArray(100).map(() => Mock.mock<Person>(newPerson()));
+            return shuffle(
+                genArray(100).map((index) => ({
+                    ...Mock.mock<Person>(newPerson()),
+                    age: 18 + index + 100 * page,
+                })),
+            );
         },
         { initValue: [] },
     );
     return (
         <Container class="h-full">
             <Header />
-            <Main>
+            <Main class="overflow-y-scroll mb-4" style={{ padding: 0 }}>
                 <MagicTable data={a.currentData()} columns={columns} />
             </Main>
             <Footer>

@@ -11,6 +11,7 @@ export const selectionConfig = {
         return (
             <div class="px-2">
                 <Checkbox
+                    aria-label={"Select All Rows"}
                     label=""
                     value=""
                     v-model={() => table.getIsAllRowsSelected()}
@@ -26,6 +27,7 @@ export const selectionConfig = {
         return (
             <div class="p-2">
                 <Checkbox
+                    aria-label={`${!checked() ? "Select" : "Unselect"} Row ${props.row.index + 1}`}
                     v-model={checked}
                     label=""
                     value=""
@@ -41,9 +43,9 @@ export const selectionConfig = {
 export const indexConfig = {
     id: "$index",
     size: 60,
-    header: " ",
+    header: "#",
     cell(ctx) {
-        return <div class="p-2 w-full text-center">{ctx.row.index}</div>;
+        return <div class="p-2 w-full text-center">{ctx.row.index + 1}</div>;
     },
     fixed: "left",
     enableResizing: false,
