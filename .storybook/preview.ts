@@ -5,6 +5,7 @@ import { extractArgTypes } from "storybook-solidjs-docgen/src/docs/extractArgTyp
 import "../packages/core/src/css/dark.css";
 import "../packages/core/src/css/scrollbar.css";
 import { autoChangeTheme } from "../packages/core/src/utils/darkMode";
+import "./index.css";
 autoChangeTheme();
 const preview: Preview = {
     parameters: {
