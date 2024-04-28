@@ -1,14 +1,14 @@
 import { toCSSPx } from "@cn-ui/reactive";
 import { type Accessor, type JSX, type ResolvedJSXElement, createMemo } from "solid-js";
-import { useElementBounding, type MaybeElement } from "solidjs-use";
+import { type MaybeElement, useElementBounding } from "solidjs-use";
 
-export interface FloatingProps {
+export interface FloatingCoverProps {
     target: string | Accessor<MaybeElement | ResolvedJSXElement>;
     show?: Accessor<boolean>;
 }
 /** 创建虚拟浮动层的 hook */
 
-export const useFloatingCover = (props: FloatingProps) => {
+export const useFloatingCover = (props: FloatingCoverProps) => {
     const el = createMemo(() => {
         return typeof props.target === "string"
             ? (document.querySelector(props.target) as MaybeElement)
