@@ -1,0 +1,3 @@
+[submodule "packages/table"]
+	path = packages/table
+	url = https://github.com/KonghaYao/table.git

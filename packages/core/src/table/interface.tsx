@@ -1,7 +1,7 @@
 import type { CellContext, ColumnDef } from "@tanstack/solid-table";
 import type { JSX } from "solid-js";
 import type { MagicTableCtxType } from "./MagicTableCtx";
-import type { useVirtual } from "./useVirtual";
+import type { useTableVirtual } from "./useVirtual";
 
 export interface MagicTableProps<T> {
     data: T[];
@@ -18,7 +18,7 @@ export interface MagicTableProps<T> {
     /** 自动根据外部适配大小 */
     autoSize?: boolean;
     /** 使用虚拟列表 */
-    virtual?: typeof useVirtual;
+    virtual?: typeof useTableVirtual;
 }
 
 export interface MagicTableExpose<T> extends MagicTableCtxType<T> {

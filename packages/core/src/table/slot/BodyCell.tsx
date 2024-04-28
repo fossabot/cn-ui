@@ -1,8 +1,8 @@
 import { type Atom, atom, classNames, createCtx, toCSSPx } from "@cn-ui/reactive";
-import { type Cell, type CellContext, flexRender } from "@tanstack/solid-table";
 import { createMemo, onMount } from "solid-js";
 import { MagicTableCtx, MagicVirtualTableCtx } from "../MagicTableCtx";
 import { checkEllipsis } from "../hook/useCheckEllipsis";
+import { type Cell, type CellContext, flexRender } from "../solidTable";
 import type { VirtualItem } from "../virtual";
 import { getCommonPinningStyles } from "./getCommonPinningStyles";
 export const MagicTableCellCtx = /* @__PURE__ */ createCtx<{

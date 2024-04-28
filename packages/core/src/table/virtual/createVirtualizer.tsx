@@ -11,7 +11,6 @@ import {
     windowScroll,
 } from "./core/index";
 export * from "./core/index";
-
 import {
     createComputed,
     createSignal,
@@ -22,6 +21,7 @@ import {
 } from "solid-js";
 import { createStore, reconcile } from "solid-js/store";
 import { nextTick } from "solidjs-use";
+import { rAFDebounce } from "./rAFDebounce";
 
 export interface CNVirtualizer<
     TScrollElement extends Element | Window,
@@ -67,19 +67,20 @@ function createVirtualizerBase<
         virtualizer._willUpdate();
         onCleanup(cleanup);
     });
-
-    const updateView = (instance: Virtualizer<TScrollElement, TItemElement>, sync: boolean) => {
-        instance._willUpdate();
-        startTransition(() => {
-            setVirtualItems(
-                reconcile(instance.getVirtualItems(), {
-                    key: "id",
-                }),
-            );
-        });
-        setTotalSize(instance.getTotalSize());
-        options.onChange?.(instance, sync);
-    };
+    const updateView = rAFDebounce(
+        (instance: Virtualizer<TScrollElement, TItemElement>, sync: boolean) => {
+            instance._willUpdate();
+            startTransition(() => {
+                setVirtualItems(
+                    reconcile(instance.getVirtualItems(), {
+                        key: "id",
+                    }),
+                );
+            });
+            setTotalSize(instance.getTotalSize());
+            options.onChange?.(instance, sync);
+        },
+    );
 
     createComputed(() => {
         virtualizer.setOptions(

@@ -4,7 +4,7 @@ import { type Accessor, createMemo } from "solid-js";
 import type { useSticky } from "./useSticky";
 import { createVirtualizer } from "./virtual/createVirtualizer";
 
-export function useVirtual<T>(
+export function useTableVirtual<T>(
     table: Table<T>,
     tableContainerRef: Atom<HTMLDivElement | null>,
     data: {
@@ -43,7 +43,9 @@ export function useVirtual<T>(
                 : undefined,
         overscan: 12,
     });
-    const rows = createMemo(() => table.getRowModel().rows);
+    const rows = createMemo(() => {
+        return table.getRowModel().rows;
+    });
 
     return {
         rowVirtualizer,

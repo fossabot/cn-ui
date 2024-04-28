@@ -1,6 +1,7 @@
-import { atom, usePagination } from "@cn-ui/reactive";
+import { atom, genArray, usePagination } from "@cn-ui/reactive";
 import { createColumnHelper } from "@tanstack/solid-table";
 import Mock from "mockjs-ts";
+import { shuffle } from "radash";
 import { Container, Footer, Header, Main } from "../../container";
 import { Pagination } from "../../pagination";
 import { MagicTable } from "../Table";
@@ -63,19 +64,22 @@ const columns = [
 export const PaginationExample = () => {
     const pageSize = atom(100);
     const a = usePagination<Person[]>(
-        async (_, max, count) => {
+        async (page, max, count) => {
             max(100);
             count(pageSize() * 100);
-            return Mock.mock<{ data: Person[] }>({
-                [`data|${pageSize}`]: newPerson(),
-            }).data;
+            return shuffle(
+                genArray(100).map((index) => ({
+                    ...Mock.mock<Person>(newPerson()),
+                    age: 18 + index + 100 * page,
+                })),
+            );
         },
         { initValue: [] },
     );
     return (
         <Container class="h-full">
             <Header />
-            <Main>
+            <Main class="overflow-y-scroll mb-4" style={{ padding: 0 }}>
                 <MagicTable data={a.currentData()} columns={columns} />
             </Main>
             <Footer>

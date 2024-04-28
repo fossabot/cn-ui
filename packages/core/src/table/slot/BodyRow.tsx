@@ -85,15 +85,13 @@ export function BodyRow<T, _D>(props: {
                 {props.absolute ? (
                     <Key by="key" each={columns() as VirtualItem[]}>
                         {(item) => {
-                            const cell = createMemo(() => visibleCells()[item().index]);
+                            const cell = createMemo((last) => visibleCells()[item().index] ?? last);
                             return (
-                                <Show when={cell()}>
-                                    <BodyCell
-                                        absolute={props.absolute}
-                                        cell={cell() as Cell<T, unknown>}
-                                        item={item()}
-                                    />
-                                </Show>
+                                <BodyCell
+                                    absolute={props.absolute}
+                                    cell={cell() as Cell<T, unknown>}
+                                    item={item()}
+                                />
                             );
                         }}
                     </Key>

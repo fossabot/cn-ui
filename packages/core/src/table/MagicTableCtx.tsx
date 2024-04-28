@@ -6,7 +6,7 @@ import type { useScroll } from "solidjs-use";
 import type { MagicTableProps } from "./interface";
 import type { useStaticTableDefine } from "./useStaticTableDefine";
 import type { useSticky } from "./useSticky";
-import type { useVirtual } from "./useVirtual";
+import type { useTableVirtual } from "./useVirtual";
 
 export interface MagicTableCtxType<T = unknown>
     extends ReturnType<typeof useSticky>,
@@ -24,5 +24,5 @@ export interface MagicTableCtxType<T = unknown>
 export const MagicTableCtx = /* @__PURE__ */ createCtx<MagicTableCtxType>();
 
 export const MagicVirtualTableCtx = /* @__PURE__ */ createCtx<
-    ReturnType<typeof useVirtual<unknown>>
+    ReturnType<typeof useTableVirtual<unknown>>
 >(undefined, true);
