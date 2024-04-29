@@ -37,9 +37,9 @@ jobs:
             - name: pnpm install
               run: pnpm i --no-frozen-lockfile
             - name: Build Storybook
-              run: pnpm build-storybook --quiet
+              run: pnpm build:test --quiet
             - name: Serve Storybook and run tests
               run: |
                   npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
-                    "npx http-server storybook-static --port 6006 --silent" \
+                    "pnpm preview" \
                     "npx wait-on http://0.0.0.0:6006 && pnpm test"

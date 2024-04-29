@@ -6,7 +6,6 @@ import { ResultAlert } from "./index";
 const meta = {
     title: "Utils/Result",
     component: ResultAlert,
-    argTypes: {},
 } satisfies Meta<typeof ResultAlert>;
 
 export default meta;
@@ -31,6 +30,7 @@ export const Default: Story = {
     parameters: {
         virtualTest: true,
     },
+    play() {},
 };
 export const EmptyExample: Story = {
     render: () => {
@@ -43,4 +43,5 @@ export const EmptyExample: Story = {
     parameters: {
         virtualTest: true,
     },
+    play() {},
 };
