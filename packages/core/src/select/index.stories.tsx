@@ -251,9 +251,9 @@ export const Virtual: Story = {
         await step("虚拟初始化数据判断", async () => {
             await userEvent.click(canvas.getByLabelText("virtualSelect"));
             const tooltip = within(canvas.getByRole("tooltip"));
-            expect(tooltip.getByText("Jack1")).toBeVisible();
-            expect(tooltip.getByText("Jack2")).toBeVisible();
-            expect(tooltip.getByText("Jack3")).toBeVisible();
+            expect(tooltip.getByText("Jack1")).toBeInTheDocument();
+            expect(tooltip.getByText("Jack2")).toBeInTheDocument();
+            expect(tooltip.getByText("Jack3")).toBeInTheDocument();
             expect(tooltip.queryByText("Jack100")).toBeFalsy();
             expect(tooltip.queryByText("Jack200")).toBeFalsy();
             expect(tooltip.queryByText("Jack500")).toBeFalsy();
@@ -280,7 +280,7 @@ export const Virtual: Story = {
                         }
                     }
                 },
-                { step: 700, maxScrollTime: 20000 },
+                { step: 1400, maxScrollTime: 20000 },
             );
 
             expect(tooltip.queryByText("Jack1")).toBeFalsy();

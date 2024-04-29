@@ -22,12 +22,29 @@ pnpm i
 ```
 
 
-### 下载测试文件包
+## 项目测试
+
+项目采用 Storybook play 测试与 Playwright 视觉测试统一的测试方式进行组件库核心功能测试，保证功能迭代的稳定性。
+
+## 如何启动测试
+
+```sh
+# 安装 Playwright 依赖
+pnpm i playwright -g
+pnpx playwright install --with-deps
+
+# 运行测试前构建
+pnpm build:test
+pnpm preview
+
+# 另开一个命令行
+pnpm test
+```
+
+### 下载视觉测试文件包
 
 ```sh
 node script/snapshotSync.mjs download # 下载测试文件包
 
-
 node script/snapshotSync.mjs upload # 上传测试文件包，需要在 .env 文件中写入 UPLOAD_TOKEN=
-
 ```
