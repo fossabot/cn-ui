@@ -8,6 +8,8 @@ jobs:
             image: mcr.microsoft.com/playwright:v1.43.0-jammy
         steps:
             - uses: actions/checkout@v4
+              with:
+                  submodules: true
             - uses: pnpm/action-setup@v2
               with:
                 version: 9.0.5
@@ -15,8 +17,6 @@ jobs:
               with:
                 node-version: 18.13.0
                 cache: 'pnpm'
-            - name: Install dependencies
-              run: git submodule update --init
             - name: Install dependencies
               run: npm i pnpm -g && sudo npm i concurrently http-server wait-on -g && npm install playwright -g
             - name: pnpm install
