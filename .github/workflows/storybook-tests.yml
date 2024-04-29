@@ -4,6 +4,8 @@ jobs:
     test:
         timeout-minutes: 10
         runs-on: ubuntu-latest
+        container:
+            image: mcr.microsoft.com/playwright:v1.43.0-jammy
         steps:
             - uses: actions/checkout@v4
             - uses: pnpm/action-setup@v2
@@ -13,23 +15,10 @@ jobs:
               with:
                 node-version: 18.13.0
                 cache: 'pnpm'
-            - name: Get installed Playwright version
-              id: playwright-version
-              run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').dependencies['@playwright/test'].version)")" >> $GITHUB_ENV
-            - name: Cache playwright binaries
-              uses: actions/cache@v3
-              id: playwright-cache
-              with:
-                path: |
-                  ~/.cache/ms-playwright
-                key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
             - name: Install dependencies
               run: git submodule update --init
             - name: Install dependencies
               run: npm i pnpm -g && sudo npm i concurrently http-server wait-on -g && npm install playwright -g
-            - name: Install Playwright
-              run: npx playwright install --with-deps
-              if: steps.playwright-cache.outputs.cache-hit != 'true'
             - name: pnpm install
               run: pnpm i --no-frozen-lockfile
             - name: Build Storybook
