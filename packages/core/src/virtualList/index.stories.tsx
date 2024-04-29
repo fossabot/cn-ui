@@ -251,7 +251,7 @@ export const H_Reverse: Story = {
     render() {
         const cellsSize = 1000;
         const items = atom(
-            Mock.mock<{ data: string[] }>({ [`data|${cellsSize}`]: ["@paragraph"] }).data,
+            Mock.mock<{ data: string[] }>({ [`data|${cellsSize}`]: ["@sentence"] }).data,
         );
 
         return (
@@ -259,7 +259,7 @@ export const H_Reverse: Story = {
                 <div class="h-24">1000</div>
                 <VirtualList
                     data-testid="v-list"
-                    class="flex-1"
+                    class="flex-1 h-96"
                     reverse
                     horizontal
                     each={items()}
