@@ -18,7 +18,7 @@ jobs:
                 node-version: 18.13.0
                 cache: 'pnpm'
             - name: Install dependencies
-              run: npm i pnpm -g && sudo npm i concurrently http-server wait-on -g && npm install playwright -g
+              run:  pnpm i concurrently http-server wait-on playwright -g
             - name: pnpm install
               run: pnpm i --no-frozen-lockfile
             - name: Build Storybook
