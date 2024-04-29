@@ -17,7 +17,7 @@ export const MyApp = () => {
 ### DEV
 
 ```sh
-git submodules update
+git submodule update --init
 pnpm i
 ```
 
