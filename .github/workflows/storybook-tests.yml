@@ -25,6 +25,6 @@ jobs:
               run: pnpm build:test --quiet
             - name: Serve Storybook and run tests
               run: |
-                  npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+                  pnpx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
                     "pnpm preview" \
-                    "npx wait-on http://0.0.0.0:6006 && pnpm test"
+                    "pnpx wait-on http://0.0.0.0:6006 && pnpm test"
