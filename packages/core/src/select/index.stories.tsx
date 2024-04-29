@@ -219,7 +219,7 @@ export const Search: Story = {
 export const Virtual: Story = {
     name: "Virtual 虚拟化",
     render() {
-        const options = genArray(10000).map((i) => {
+        const options = genArray(1000).map((i) => {
             return {
                 value: `jack${i}`,
                 label: `Jack${i}`,
@@ -243,11 +243,6 @@ export const Virtual: Story = {
     play: async ({ canvasElement, step }) => {
         const canvas = within(canvasElement);
 
-        const selectOption = async (key: string, selected = true, scope = canvas) => {
-            const zero = scope.getAllByRole("option").find((i) => i.textContent === key);
-            await userEvent.click(zero!);
-            if (selected) expect(zero).toHaveAttribute("aria-selected", "true");
-        };
         await step("虚拟初始化数据判断", async () => {
             await userEvent.click(canvas.getByLabelText("virtualSelect"));
             const tooltip = within(canvas.getByRole("tooltip"));
@@ -269,18 +264,16 @@ export const Virtual: Story = {
                     const item = canvas.queryByText("Jack500");
                     for (const i of scrollElement.children[0].children) {
                         if (
-                            ["Jack1", "Jack2", "Jack3", "Jack100", "Jack500"].includes(
+                            ["Jack1", "Jack2", "Jack3", "Jack100"].includes(
                                 i.textContent!,
                             ) &&
                             i.getAttribute("aria-selected") !== "true"
                         )
                             await userEvent.click(i);
-                        if (item && (await isElementRealVisible(item))) {
-                            return true;
-                        }
+                        if (item) return true;
                     }
                 },
-                { step: 2800, maxScrollTime: 20000 },
+                { step: 1000, maxScrollTime: 10000 },
             );
 
             expect(tooltip.queryByText("Jack1")).toBeFalsy();
@@ -288,27 +281,28 @@ export const Virtual: Story = {
             expect(tooltip.queryByText("Jack3")).toBeFalsy();
             expect(tooltip.queryByText("Jack100")).toBeFalsy();
             expect(tooltip.queryByText("Jack200")).toBeFalsy();
+            expect(tooltip.queryByText("Jack500")).toBeInTheDocument();
             expect(tooltip.queryByText("Jack700")).toBeFalsy();
             expect(tooltip.queryByText("Jack999")).toBeFalsy();
+            await userEvent.click(tooltip.getByText("Jack500"))
             expect(canvas.getByTestId("result")).toHaveTextContent("jack1jack2jack3jack100jack500");
         });
-        // 运行时间过长
-        // await step("滚动到底部", async () => {
-        //     await userEvent.click(canvas.getByLabelText("virtualSelect"));
-        //     const tooltip = within(canvas.getByRole("tooltip"));
-        //     await scrollElement(
-        //         canvasElement.querySelector(".cn-virtual-list")!,
-        //         async (scrollElement, context) => {
-        //             const item = canvas.queryByText("Jack9999");
-        //             if (item && (await isElementRealVisible(item))) {
-        //                 return true;
-        //             }
-        //         },
-        //         { step: 40000 },
-        //     );
+        await step("滚动到底部", async () => {
+            await userEvent.click(canvas.getByLabelText("virtualSelect"));
+            const tooltip = within(canvas.getByRole("tooltip"));
+            await scrollElement(
+                canvasElement.querySelector(".cn-virtual-list")!,
+                async (scrollElement, context) => {
+                    const item = tooltip.queryByText("Jack999");
+                    if (item && (await isElementRealVisible(item))) {
+                        return true;
+                    }
+                },
+                { step: 40000 },
+            );
 
-        //     expect(tooltip.queryByText("Jack9999")).not.toBeFalsy();
-        //     expect(tooltip.queryByText("Jack9998")).not.toBeFalsy();
-        // });
+            expect(tooltip.queryByText("Jack999")).not.toBeFalsy();
+            expect(tooltip.queryByText("Jack998")).not.toBeFalsy();
+        });
     },
 };
